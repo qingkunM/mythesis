@@ -1,0 +1,29 @@
+# Gnuplot data for cdf plot on time
+# SMT-LIB group log
+#
+# lines format: <filename> <status> <time>
+leader_election_safe_02 unsatisfiable 0.45
+leader_election_safe_03 unsatisfiable 1.29
+railway_control_safe_02 unsatisfiable 2.13
+ticket_safe_02 unsatisfiable 3.73
+railway_control_safe_03 unsatisfiable 5.65
+temperature_safe_04 unsatisfiable 7.73
+temperature_safe_02 unsatisfiable 9.82
+temperature_safe_03 unsatisfiable 12.4
+railway_control_safe_04 unsatisfiable 15.28
+temperature_safe_07 unsatisfiable 18.37
+temperature_safe_05 unsatisfiable 21.83
+temperature_safe_09 unsatisfiable 25.39
+temperature_safe_10 unsatisfiable 29.86
+temperature_safe_08 unsatisfiable 34.35
+temperature_safe_06 unsatisfiable 38.96
+ticket_safe_03 unsatisfiable 44.21
+leader_election_safe_04 unsatisfiable 52.56
+temperature_safe_11 unsatisfiable 61.8
+quorum_safe_02 unsatisfiable 75.07
+railway_control_safe_05 unsatisfiable 90.86
+railway_control_safe_06 unsatisfiable 125.38
+ticket_safe_04 unsatisfiable 203.71
+railway_control_safe_08 unsatisfiable 311.3
+railway_control_safe_07 unsatisfiable 468.29
+ticket_safe_05 unsatisfiable 713.04

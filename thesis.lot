@@ -1,0 +1,18 @@
+\contentsline {table}{\numberline {3.1}{\ignorespaces 缓冲区溢出漏洞实验\relax }}{45}{table.caption.23}
+\contentsline {table}{\numberline {3.2}{\ignorespaces 格式化字符串漏洞实验\relax }}{45}{table.caption.24}
+\contentsline {table}{\numberline {3.3}{\ignorespaces Use After Free漏洞挖掘实验\relax }}{46}{table.caption.25}
+\contentsline {table}{\numberline {3.4}{\ignorespaces 缓冲区溢出漏洞三种sink类型\relax }}{48}{table.caption.27}
+\contentsline {table}{\numberline {3.5}{\ignorespaces 容器属性\relax }}{50}{table.caption.28}
+\contentsline {table}{\numberline {3.6}{\ignorespaces 索引操作类型\relax }}{51}{table.caption.29}
+\contentsline {table}{\numberline {3.7}{\ignorespaces 地址操作类型\relax }}{51}{table.caption.31}
+\contentsline {table}{\numberline {3.8}{\ignorespaces 长度操作类型\relax }}{52}{table.caption.32}
+\contentsline {table}{\numberline {3.9}{\ignorespaces 混淆矩阵\relax }}{56}{table.caption.35}
+\contentsline {table}{\numberline {3.10}{\ignorespaces 实验数据列表\relax }}{57}{table.caption.36}
+\contentsline {table}{\numberline {3.11}{\ignorespaces 五个分类器的性能\relax }}{58}{table.caption.37}
+\contentsline {table}{\numberline {3.12}{\ignorespaces BOMiner性能\relax }}{59}{table.caption.38}
+\contentsline {table}{\numberline {3.13}{\ignorespaces 与Joern性能比较\relax }}{59}{table.caption.40}
+\contentsline {table}{\numberline {3.14}{\ignorespaces 五个分类器在Poppler0.10.6上的性能测试\relax }}{60}{table.caption.42}
+\contentsline {table}{\numberline {4.1}{\ignorespaces FastSE、KLEE-Fix与KLEE的错误发现数量以及总时间耗费对比\relax }}{79}{table.caption.52}
+\contentsline {table}{\numberline {4.2}{\ignorespaces FastSE、KLEE-Fix与KLEE发现错误数量交叉对比\relax }}{79}{table.caption.53}
+\contentsline {table}{\numberline {5.1}{\ignorespaces 测试软件基本信息\relax }}{93}{table.caption.61}
+\contentsfinish 

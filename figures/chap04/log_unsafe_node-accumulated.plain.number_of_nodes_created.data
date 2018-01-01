@@ -1,0 +1,40 @@
+# Gnuplot data for cdf plot on number_of_nodes_created
+# SMT-LIB group log_unsafe_node
+#
+# lines format: <filename> <status> <number_of_nodes_created>
+temperature_unsafe_02 satisfiable 6.0
+temperature_unsafe_03 satisfiable 13.0
+temperature_unsafe_04 satisfiable 21.0
+temperature_unsafe_05 satisfiable 30.0
+temperature_unsafe_06 satisfiable 40.0
+ticket_unsafe_02 satisfiable 50.0
+temperature_unsafe_07 satisfiable 61.0
+temperature_unsafe_08 satisfiable 73.0
+temperature_unsafe_09 satisfiable 86.0
+temperature_unsafe_10 satisfiable 100.0
+temperature_unsafe_11 satisfiable 115.0
+ticket_unsafe_03 satisfiable 132.0
+ticket_unsafe_04 satisfiable 158.0
+railway_control_unsafe_02 satisfiable 189.0
+ticket_unsafe_05 satisfiable 226.0
+ticket_unsafe_06 satisfiable 276.0
+ticket_unsafe_07 satisfiable 341.0
+quorum_unsafe_02 satisfiable 416.0
+leader_election_unsafe_02 satisfiable 492.0
+ticket_unsafe_08 satisfiable 574.0
+ticket_unsafe_09 satisfiable 675.0
+quorum_unsafe_03 satisfiable 783.0
+ticket_unsafe_10 satisfiable 905.0
+ticket_unsafe_11 satisfiable 1050.0
+quorum_unsafe_04 satisfiable 1197.0
+quorum_unsafe_05 satisfiable 1389.0
+quorum_unsafe_06 satisfiable 1632.0
+quorum_unsafe_07 satisfiable 1932.0
+quorum_unsafe_08 satisfiable 2295.0
+quorum_unsafe_09 satisfiable 2727.0
+quorum_unsafe_10 satisfiable 3234.0
+quorum_unsafe_11 satisfiable 3822.0
+leader_election_unsafe_03 satisfiable 4648.0
+atm_unsafe_02 satisfiable 11201.0
+railway_control_unsafe_03 satisfiable 18693.0
+railway_control_unsafe_04 satisfiable 42698.0

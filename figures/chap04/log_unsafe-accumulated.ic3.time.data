@@ -1,0 +1,48 @@
+# Gnuplot data for cdf plot on time
+# SMT-LIB group log_unsafe
+#
+# lines format: <filename> <status> <time>
+temperature_unsafe_10 satisfiable 0.09
+temperature_unsafe_11 satisfiable 0.18
+temperature_unsafe_02 satisfiable 0.28
+temperature_unsafe_03 satisfiable 0.38
+temperature_unsafe_05 satisfiable 0.49
+temperature_unsafe_07 satisfiable 0.61
+temperature_unsafe_04 satisfiable 0.74
+temperature_unsafe_09 satisfiable 0.88
+temperature_unsafe_06 satisfiable 1.05
+temperature_unsafe_08 satisfiable 1.22
+railway_control_unsafe_02 satisfiable 1.4
+railway_control_unsafe_03 satisfiable 1.58
+ticket_unsafe_02 satisfiable 1.8
+railway_control_unsafe_04 satisfiable 2.09
+railway_control_unsafe_05 satisfiable 2.41
+railway_control_unsafe_06 satisfiable 2.81
+railway_control_unsafe_07 satisfiable 3.32
+ticket_unsafe_03 satisfiable 4.23
+railway_control_unsafe_08 satisfiable 5.17
+railway_control_unsafe_10 satisfiable 6.22
+railway_control_unsafe_11 satisfiable 7.38
+leader_election_unsafe_02 satisfiable 8.61
+railway_control_unsafe_09 satisfiable 9.95
+ticket_unsafe_04 satisfiable 11.48
+ticket_unsafe_05 satisfiable 13.36
+quorum_unsafe_02 satisfiable 15.68
+ticket_unsafe_06 satisfiable 20.89
+ticket_unsafe_07 satisfiable 26.43
+ticket_unsafe_09 satisfiable 33.58
+quorum_unsafe_03 satisfiable 44.24
+ticket_unsafe_10 satisfiable 56.14
+quorum_unsafe_04 satisfiable 71.42
+leader_election_unsafe_03 satisfiable 87.28
+quorum_unsafe_05 satisfiable 112.34
+atm_unsafe_02 satisfiable 151.09
+ticket_unsafe_08 satisfiable 191.72
+quorum_unsafe_07 satisfiable 233.42
+quorum_unsafe_06 satisfiable 281.27
+ticket_unsafe_11 satisfiable 356.2
+quorum_unsafe_08 satisfiable 443.43
+quorum_unsafe_10 satisfiable 554.26
+atm_unsafe_03 satisfiable 729.07
+leader_election_unsafe_04 satisfiable 916.96
+quorum_unsafe_09 satisfiable 1109.32
