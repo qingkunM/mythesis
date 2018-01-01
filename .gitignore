@@ -161,3 +161,17 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
+
+#mqk thesis ignore the derivative
+thesis.aux
+thesis.bbl
+thesis.blg
+thesis.lof
+thesis.log
+thesis.lot
+thesis.out
+thesis.pdf
+thesis.synctex.gz
+thesis.tex.recover.bak~
+thesis.thm
+thesis.toc
