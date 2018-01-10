@@ -4,29 +4,29 @@ The top-level auxiliary file: thesis.aux
 The style file: bstutf8.bst
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
-Reallocated field_info (elt_size=4) to 10445 items from 5000.
+Reallocated field_info (elt_size=4) to 10715 items from 5000.
 Database file #1: ref/refs.bib
-Repeated entry---line 247 of file ref/refs.bib
+Repeated entry---line 316 of file ref/refs.bib
  : @inproceedings{bekrar_finding_2011
  :                                   ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 984 of file ref/refs.bib
+Repeated entry---line 1053 of file ref/refs.bib
  : @misc{noauthor_zzuf_nodate
  :                           ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 991 of file ref/refs.bib
+Repeated entry---line 1060 of file ref/refs.bib
  : @article{miller_empirical_1990
  :                               ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 1130 of file ref/refs.bib
+Repeated entry---line 1199 of file ref/refs.bib
  : @inproceedings{christakis_guiding_2016
  :                                       ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 1150 of file ref/refs.bib
+Repeated entry---line 1219 of file ref/refs.bib
  : @article{ma_directed_2011
  :                          ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 1191 of file ref/refs.bib
+Repeated entry---line 1260 of file ref/refs.bib
  : @inproceedings{sparks_automated_2007
  :                                     ,
 I'm skipping whatever remains of this entry
@@ -182,6 +182,7 @@ Warning--empty editor in liu_vulnerability_2008
 Warning--The author in noauthor_antiparser_nodate is missing.
 Warning--There is month but no year in noauthor_antiparser_nodate
 Warning--The author in noauthor_sulley:_2017 is missing.
+Warning--there's neither address nor publisher in dekok_pscan:_2000
 Warning--there's a publisher but no address in parr_definitive_2013
 Warning--The editor in moonen_generating_2001 is missing.
 Warning--empty editor in moonen_generating_2001
@@ -191,11 +192,17 @@ Warning--The author in gremlin is missing.
 Warning--There is month but no year in gremlin
 Warning--The author in noauthor_cve_nodate is missing.
 Warning--There is month but no year in noauthor_cve_nodate
+Warning--The author in noauthor_neo4j_nodate is missing.
+Warning--There is month but no year in noauthor_neo4j_nodate
+Warning--The editor in rodriguez_gremlin_2015 is missing.
+Warning--empty editor in rodriguez_gremlin_2015
 Warning--The author in noauthor_a2ps_nodate is missing.
 Warning--There is month but no year in noauthor_a2ps_nodate
 Warning--there's neither address nor publisher in kratkiewicz_evaluating_2005
 Warning--The editor in zitser_testing_2004 is missing.
 Warning--empty editor in zitser_testing_2004
+Warning--The editor in logozzo_pentagons:_2008 is missing.
+Warning--empty editor in logozzo_pentagons:_2008
 Warning--The author in noauthor_clang_nodate is missing.
 Warning--There is month but no year in noauthor_clang_nodate
 Warning--The editor in santelices_test-suite_2008 is missing.
@@ -213,45 +220,45 @@ Warning--empty pages in abadi_tensorflow:_2016
 Warning--empty pages in kingma_adam:_2014
 
 Done.
-You've used 121 entries,
+You've used 127 entries,
             4554 wiz_defined-function locations,
-            1583 strings with 28883 characters,
-and the built_in function-call counts, 63505 in all, are:
-= -- 7109
-> -- 958
-< -- 78
-+ -- 581
-- -- 279
-* -- 5090
-:= -- 6931
-add.period$ -- 435
-call.type$ -- 121
+            1608 strings with 29766 characters,
+and the built_in function-call counts, 66089 in all, are:
+= -- 7407
+> -- 991
+< -- 82
++ -- 600
+- -- 288
+* -- 5281
+:= -- 7203
+add.period$ -- 456
+call.type$ -- 127
 change.case$ -- 0
 chr.to.int$ -- 0
-cite$ -- 299
-duplicate$ -- 4207
-empty$ -- 6956
-format.name$ -- 279
-if$ -- 15470
+cite$ -- 312
+duplicate$ -- 4365
+empty$ -- 7243
+format.name$ -- 288
+if$ -- 16113
 int.to.chr$ -- 0
-int.to.str$ -- 121
+int.to.str$ -- 127
 missing$ -- 0
-newline$ -- 681
-num.names$ -- 98
-pop$ -- 659
+newline$ -- 714
+num.names$ -- 103
+pop$ -- 688
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1832
+skip$ -- 1919
 stack$ -- 0
-substring$ -- 7166
-swap$ -- 1270
-text.length$ -- 78
+substring$ -- 7428
+swap$ -- 1331
+text.length$ -- 82
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 896
-warning$ -- 178
-while$ -- 601
-width$ -- 124
-write$ -- 1000
+type$ -- 942
+warning$ -- 185
+while$ -- 627
+width$ -- 130
+write$ -- 1049
 (There were 6 error messages)

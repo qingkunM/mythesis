@@ -275,7 +275,7 @@ Symbolic execution and program loops~[D].
 
 \bibitem{godefroid_automatic_2011}
 Godefroid~P, Luchaup~D.
-Automatic partial loop summarization in dynamic test generation~[C].
+Automatic partial loop summarization in dynamic test geneation~[C].
 In Proceedings of the 2011 {International} {Symposium} on {Software} {Testing}
   and {Analysis}.
 2011:  23--33.
@@ -613,6 +613,11 @@ Vulnerability detection systems: {Think} cyborg, not robot~[J].
 IEEE Security \& Privacy.
 2011, 9~(3):  74--77.
 
+\bibitem{dekok_pscan:_2000}
+DeKok~A.
+{PScan}: {A} limited problem scanner for {C} source files~[M].
+2000.
+
 \bibitem{parr_definitive_2013}
 Parr~T.
 The definitive {ANTLR} 4 reference~[M].
@@ -639,6 +644,16 @@ gremlin.
 {CVE}-2016-9537.
 \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-953}.
 
+\bibitem{noauthor_neo4j_nodate}
+The {Neo}4j {Graph} {Platform} – {The} \#1 {Platform} for {Connected} {Data}.
+\url{https://neo4j.com/}.
+
+\bibitem{rodriguez_gremlin_2015}
+Rodriguez~M~A.
+The gremlin graph traversal machine and language (invited talk)~[C].
+In Proceedings of the 15th {Symposium} on {Database} {Programming} {Languages}.
+2015:  1--10.
+
 \bibitem{noauthor_a2ps_nodate}
 a2ps - {GNU} {Project} - {Free} {Software} {Foundation} ({FSF}).
 \url{https://www.gnu.org/software/a2ps/#TOCdownloading}.
@@ -660,6 +675,26 @@ Stehman~S~V.
 Selecting and interpreting measures of thematic classification accuracy~[J].
 Remote sensing of Environment.
 1997, 62~(1):  77--89.
+
+\bibitem{chen_interval_2009}
+Chen~L, Miné~A, Wang~J, et~al.
+Interval polyhedra: {An} abstract domain to infer interval linear
+  relationships~[J].
+Static Analysis.
+2009:  309--325.
+
+\bibitem{logozzo_pentagons:_2008}
+Logozzo~F, Fähndrich~M.
+Pentagons: a weakly relational abstract domain for the efficient validation of
+  array accesses~[C].
+In Proceedings of the 2008 {ACM} symposium on {Applied} computing.
+2008:  184--188.
+
+\bibitem{mine_octagon_2006}
+Miné~A.
+The octagon abstract domain~[J].
+Higher-order and symbolic computation.
+2006, 19~(1):  31--100.
 
 \bibitem{noauthor_clang_nodate}
 "clang" {C} {Language} {Family} {Frontend} for {LLVM}.
