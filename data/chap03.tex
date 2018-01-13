@@ -2,7 +2,7 @@
 
 根据Rice定理\upcite{rice_classes_1953}，通过一个程序完全的自动检测其他程序的复杂属性是不可行的。
 一般的源代码静态分析工具都是基于字符串匹配或者抽象语法树匹配的，
-所以现行的工具要么局限于特定类型的漏洞，要么需要大量的人工审计工作\upcite{heelan_vulnerability_2011}用以消除误报。例如PREfast\upcite{bush_static_2000}、RATS\upcite{wnoauthor_cern_nodate}以及PScan\upcite{dekok_pscan:_2000}虽然能够检测一些程序开发过程中产生的漏洞，但是很难检测成因复杂的漏洞。而另外一些工具，例如Splint\upcite{noauthor_splint_nodate}只能检测特定的漏洞。
+所以现行的工具要么局限于特定类型的漏洞，要么需要大量的人工审计工作\upcite{heelan_vulnerability_2011}消除误报。例如PREfast\upcite{bush_static_2000}、RATS\upcite{wnoauthor_cern_nodate}以及PScan\upcite{dekok_pscan:_2000}虽然能够检测一些程序开发过程中产生的漏洞，但是很难检测成因复杂的漏洞。而另外一些工具，例如Splint\upcite{noauthor_splint_nodate}只能检测特定的漏洞。
 
 %审计像Linux内核这样具有庞大代码量的软件系统是一件不可能完成的事情。基于动态测试的方法，例如模糊测试和符号执行，虽然能够挖掘不同类型的漏洞而且能够产生测试用例，但是符号执行随着软件规模的增加会出现路径爆炸问题，此外符号执行还有交互环境模拟问题以及约束求解器求解能力的限制问题；模糊测试则存在随机性强，代码覆盖率低的问题。所以，首先漏进行洞可疑区域标定然后再动态测试可疑区域是一个解决办法。
 
@@ -12,6 +12,28 @@
 本章提出了一种基于机器学习的缓冲区溢出漏洞挖掘方法。该方法首先将缓冲区溢出静态特征分成7类；然后，在已标记的漏洞中，利用扩展的程序性质图获取静态特征并将其映射到向量空间，作为机器学习算法的训练集；最后，选取5种有监督机器学习算法在训练集中训练分类器，并通过分类器在新的源代码中挖掘缓冲区溢出漏洞。
 
 \section{程序性质图生成}\label{程序性质图生成}
+
+程序性质图（Code Property Graph，CPG）是源代码（Property Graph，PG）在性质图上的表现形式。本小节介绍了性质图的概念、各种中间表示的生成过程、程序性质图以及程序性质图的各种遍历方式。
+
+\subsection{性质图}
+
+在图理论当中，有向图可以用一个关系对表示，$G=(V,E)$，$V$是节点集合，$E\subseteq(V \times V)$是节点之间边的集合。性质图的节点具有以下特性：{（1）}每个节点都对应一个唯一标识符；{（2）}每个节点都包含一个入边和出边集；{（3）}每个节点都包含键-值集。性质图的边具有相似的性质：{（1）}每条边对应一个唯一标识符；{（2）}每条边都包含一个标签表示边的类型；{（3）}每条边都有一个键值集；{（4）}每条边都有一个源节点和目的节点。图\ref{性质图示意图}展示了上述特性。
+
+%\textbf{下面的图删除，}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[scale=1.5]{性质图示意图}
+\caption{性质图示意图}
+\label{性质图示意图}
+\end{figure}
+
+
+\begin{definition}
+ \label{性质图定义}
+ 性质图$G=(V,E,\lambda ,\mu, s,d)$是一个有向的、边标记的、属性化的多重图，$V$是节点的集合，$E$是有向边的集合，$s: E \rightarrow V$和$d:E \rightarrow V$分别是有向边到源节点和目的节点的映射，$\lambda : E \rightarrow \sum $是边标记函数，将一条边映射到字符集$\sum$中的一个字符。节点和边都用键—值对表示性质，性质的赋值函数为$\mu:(V \cup E) \times K \rightarrow S$，$K$和$S$分别是性质的键和值。
+\end{definition}
+
 源代码软件漏洞分析依赖于多种代码的中间表示例如语法分析树、抽象语法树、数据流图、控制流图等，对于C/C++，很多编译器的前端能够很容易的通过插桩的方式生成中间表示。但是当分析涉及到复杂的程序或者跨越多个程序搜集中间表示时，编译程序所需要的环境就很难得到保证，特别的是，一般的编译器前端无法处理代码有头文件缺失的情况。与源代码相关的中间表示都直接或者间接的建立在语法分析树的基础上，所以程序性质图的生成首先需要将源代码转换成语法分析树。在语法分析树的基础上生成抽象语法树、控制流图、数据流图，然后将各种中间表示合并为一个统一的表示形式——程序性质图，并存入图数据库中以备查询。程序性质图的生成过程如图\ref{程序性质图生成过程}所示。
 
 \begin{figure}[htp]
@@ -23,19 +45,24 @@
 
 \subsection{鲁棒的源代码中间表示生成}
 \label{源代码的鲁棒分析}
-鲁棒的源代码中间表示生成顺序依次是语法分析树、抽象语法树、控制流图、数据流图。语法分析树建立在ANTLR\upcite{parr_definitive_2013}{(ANother Tool for Language Recognition)}的基础上。ANTLRv4是一种非常强大的用于读取、执行或者翻译结构性的文本以及二进制文件的解析器生成器，广泛的应用于建立编程语言、工具和框架上。输入一个语法和源代码，ANLTR能够生成一个用于构建遍历解析树的解析器。对于C/C++,鲁棒的语法分析基于岛屿语法{（Island Grammar）}实现了三个层次上的语法分析器：分别是模块解析器、函数解析器以及语句解析器。模块解析器解析粗略的结构信息，例如函数、命名空间以及全局的变量声明。函数解析器解析辨别在一个函数内部能够影响到程序控制流的程序结构，例如跳转语句goto、continue和break；选择语句if语句、switch语句；循环语句for循环、while循环和do-while循环。语句解析器主要的作用是将任意一个语句分解为表达式、操作符以及标识符等。岛屿语法\upcite{moonen_generating_2001}是一种定义文本结构的语言，通过此语法可以定制解析器的粒度。
+鲁棒的源代码中间表示生成顺序依次是语法分析树、抽象语法树、控制流图、数据流图。语法分析树建立在ANTLR\upcite{parr_definitive_2013}{(ANother Tool for Language Recognition)}的基础上。ANTLR是一种非常强大的用于读取、执行或者翻译结构性的文本以及二进制文件的解析器生成器，广泛的应用于建立编程语言、工具和框架上。输入一个语法和源代码，ANTLR能够生成一个用于构建遍历解析树的解析器。对于C/C++,鲁棒的语法分析基于岛屿语法{（Island Grammar）}实现了三个层次上的语法分析器：分别是模块解析器、函数解析器以及语句解析器。模块解析器解析粗略的结构信息，例如函数、命名空间以及全局的变量声明。函数解析器解析辨别在一个函数内部能够影响到程序控制流的程序结构，例如跳转语句goto、continue和break；选择语句if语句、switch语句；循环语句for循环、while循环和do-while循环。语句解析器主要的作用是将任意一个语句分解为表达式、操作符以及标识符等。岛屿语法\upcite{moonen_generating_2001}是一种定义文本结构的语言，通过此语法可以定制解析器的粒度。
 
-Listing \ref{模块解析器的岛屿语法片段}是模块解析器的岛屿语法片段，第一行中的module表示一个模块，function\_def表示一个函数，simple\_decl表示变量或者类的声明，water表示其他的任意未定义字符，Listing \ref{模块解析器的岛屿语法片段}表达的意思是一个module可以由一个或者多个functionDef、simple\_decl、using\_directive或者water组成。Listing \ref{函数解析器的岛屿语法片段}是函数解析器的岛屿语法片段，表示函数有哪些元素组成，其中template\_declStart，return\_type，function\_name，compound\_statement分别表示函数模板、函数返回类型、函数名以及函数内容。Listing \ref{语句解析器的岛屿语法片段}是语句的岛屿语法片段，第一行表示statements可以由条件编译标识符{（pre\_opener，pre\_closer，pre\_else分别表示\#if，\#endif和\#else）}和语句statement构成。statement的组成当中最主要的是simple\_decl和expr\_statement。expr\_statement是Ｃ/C++作为程序主体的一行行代码，在岛屿语法中需要按照运算符的优先级、结合进行设计{（14-17行）}。解析器按照语法文件上规定的顺序解析程序中的非终结符，其他的未被制定的终结符和非终结符用water表示。
+图\ref{模块解析器的岛屿语法片段}是模块解析器的岛屿语法片段，第一行中的module表示一个模块，function\_def表示一个函数，simple\_decl表示变量或者类的声明，water表示其他的任意未定义字符，图\ref{模块解析器的岛屿语法片段}表达的意思是一个module可以由一个或者多个functionDef、simple\_decl、using\_directive或者water组成。图\ref{函数解析器的岛屿语法片段}是函数解析器的岛屿语法片段，表示函数有哪些元素组成，其中template\_declStart，return\_type，function\_name，compound\_statement分别表示函数模板、函数返回类型、函数名以及函数内容。图\ref{语句解析器的岛屿语法片段}是语句的岛屿语法片段，第一行表示statements可以由条件编译标识符{（pre\_opener，pre\_closer，pre\_else分别表示\#if，\#endif和\#else）}和语句statement构成。statement的组成当中最主要的是simple\_decl和expr\_statement。expr\_statement是Ｃ/C++作为程序主体的每一行代码，在岛屿语法中需要按照运算符的优先级、结合进行设计{（14-17行）}。解析器按照语法文件上规定的顺序解析程序中的非终结符，其他的未被制定的终结符和非终结符用water表示。
 
-\begin{lstlisting}[language=C,caption=模块解析器的岛屿语法片段,label=模块解析器的岛屿语法片段]
+\begin{figure}[h]
+\begin{lstlisting}[language=C]
 module : (function_def | simple_decl | using_directive | water)*;
 using_directive: USING NAMESPACE identifier ';';
 simple_decl : (TYPEDEF? template_decl_start?) var_decl;
 ...
 water : any_token
 \end{lstlisting}
+\caption{模块解析器的岛屿语法片段}
+\label{模块解析器的岛屿语法片段}
+\end{figure}
 
-\begin{lstlisting}[language=C,caption=函数解析器的岛屿语法片段,label=函数解析器的岛屿语法片段]
+\begin{figure}[h]
+\begin{lstlisting}[language=C]
 function_def : template_declStart? return_type? function_name function_paramList ctorList? compound_statement;
 template_decl_start : TEMPLATE '<' template_param_list '>';
 ...
@@ -50,8 +77,12 @@ function_name: '(' function_name ')' | identifier | OPERATOR operator;
 compound_statement: opening_curly (statements) closing_curly;
 ...
 \end{lstlisting}
+\caption{函数解析器的岛屿语法片段}
+\label{函数解析器的岛屿语法片段}
+\end{figure}
 
-\begin{lstlisting}[language=C,caption="语句解析器的岛屿语法片段",label=语句解析器的岛屿语法片段]
+\begin{figure}[h]
+\begin{lstlisting}[language=C]
 statements: (pre_opener | pre_closer | pre_else | statement)*;
 statement: opening_curly
          | closing_curly
@@ -71,15 +102,17 @@ or_expression : and_expression ('||' or_expression)?;
 and_expression : inclusive_or_expression ('&&' and_expression)?;
 ...
 \end{lstlisting}
+\caption{语句解析器的岛屿语法片段}
+\label{语句解析器的岛屿语法片段}
+\end{figure}
 
-输入一个程序，解析器根据语法文件辨别每一个终结符和非终结符，将这些标识符连接之后会得到语法分析树。语法分析树能够展示编程语言元素的类别、结构以及相互之间的关系.语法分析树是上述解析器输出的唯一表示形式，它忠实的按照语法文件解释源代码的结构细节，其表现形式较为冗余且对微小改动非常敏感。ANTLRv4内置了生成语法分析树的功能。语法分析树如图\ref{抽象语法树示意图}所示。
+输入一个程序，解析器根据语法文件辨别每一个终结符和非终结符，将这些标识符连接之后会得到语法分析树。语法分析树能够展示编程语言元素的类别、结构以及相互之间的关系.语法分析树是上述解析器输出的唯一表示形式，它忠实的按照语法文件解释源代码的结构细节，其表现形式较为冗余且对微小改动非常敏感。ANTLR内置了生成语法分析树的功能。以第二章图\ref{一个简单的实例程序}为例，生成的语法分析树如图\ref{抽象语法树示意图}所示。
 
-抽象语法树能够直接从语法分析树生成，与语法分析树相比，抽象语法树删除了对程序没有影响的实现细节，更加注重代码的结构，是一种更为紧致简明的中间表示形式也更加的适合于源代码的分析。图\ref{抽象语法树示意图}是Listing \ref{一个简单的实例程序}的抽象语法树的示意图。抽象语法树能够松的定位和检测程序中的每一行代码以及每行代码中的变量、变量类型操作符等信息，但却不适用于检测代码的执行顺序，所以需要程序的控制流图来展示程序语句的执行顺序以及控制条件。
+抽象语法树能够直接从语法分析树生成，与语法分析树相比，抽象语法树删除了对程序没有影响的实现细节，更加注重代码的结构，是一种更为紧致简明的中间表示形式也更加的适合于源代码的分析。图\ref{抽象语法树示意图}是图\ref{一个简单的实例程序}的抽象语法树的示意图。抽象语法树能够松的定位和检测程序中的每一行代码以及每行代码中的变量、变量类型操作符等信息，但却不适用于检测代码的执行顺序，所以需要程序的控制流图来展示程序语句的执行顺序以及控制条件。
 
-在辨别程序跳转关键词的基础上，程序的控制流图可以从抽象语法树直接生成，常见的关键词有$if$，$for$以及$goto$。根据这些信息，可以使用以下两步将抽象语法树转换成控制流图。首先，在过程内顺序连接抽象语法树中的语句节点，定义$if$，$for$以及$while$语句转换为控制流图的方式并在所有的抽象语法树上使用此规则；然后处理$break$，$continue$以及$goto$等跳转语句矫正控制流图。实际上，第二阶段仅仅在控制流图上加入了由跳转语句引入的额外的边。图\ref{控制流图}是Listing \ref{一个简单的实例程序}的控制流图。
+在辨别程序跳转关键词的基础上，程序的控制流图可以从抽象语法树直接生成，常见的关键词有$if$，$for$以及$goto$。根据这些信息，可以使用以下两步将抽象语法树转换成控制流图。首先，在过程内顺序连接抽象语法树中的语句节点，定义$if$，$for$以及$while$语句转换为控制流图的方式并在所有的抽象语法树上使用此规则；然后处理$break$，$continue$以及$goto$等跳转语句矫正控制流图。实际上，第二阶段仅仅在控制流图上加入了由跳转语句引入的额外的边。图\ref{控制流图}是图\ref{一个简单的实例程序}的控制流图。
 
-每一个程序语句可以使用（use）或者使用（define）变量。如果语句$s2$使用了$s1$定义的变量$v$，且从$s1$到$s2$存在一条路径，且$v$在这条路径中未被重定义，则称$s2$数据依赖于$s1$。将具有数据依赖关系的程序语句使用数据流边连接起来则形成程序的数据流图。
-
+每一个程序语句可以使用（use）或者定义（define）变量。如果语句$s2$使用了$s1$定义的变量$v$，且从$s1$到$s2$存在一条路径上，$v$在这条路径中未被重定义，则称$s2$数据依赖于$s1$。将具有数据依赖关系的程序语句使用数据流边连接起来则形成程序的数据流图。图\ref{程序数据流图}是图\ref{一个简单的实例程序}的控制流图。
 %\begin{figure}[htp]
 %\centering
 %\includegraphics{抽象语法树示意图}
@@ -114,33 +147,9 @@ and_expression : inclusive_or_expression ('&&' and_expression)?;
 
 \subsection{程序性质图}\label{程序性质图}
 
-抽象语法树、控制流图和数据流图中的任何一种都不能单独的提取完全的缓冲区信息，所以需要一种综合的表示形式{——}程序性质图（Code Property Graph, CPG）
+由于不同种类的源代码软件漏洞具有不同的特征，现存的基于模式匹配的漏洞挖掘工具，一方面不能检测多种源代码软件漏洞，另外一方面则会造成很高的误报，所以需要一种综合的表示形式{——}程序性质图（Code Property Graph, CPG）。
 %\upcite{yamaguchi_modeling_2014, yamaguchi_automatic_2015}。
-程序性质图可以通过存入专门的图数据库例如Neo4j，Titan和OrientDB，然后利用专门的数据库查询语句对程序语句节点以及语句节点之间的关系进行查询。本节首先介绍性质图（Property Graph，PG）的基本概念；然后介绍如何将抽象语法树、控制流图和数据流图合成程序性质图，最后介绍了如何将程序性质图如何扩展以完成过程间的程序分析。
-
-%在总体的程序性质图中增加小论文里面的
-\subsubsection{性质图}
-
-在图理论当中，有向图可以用一个关系对表示，$G=(V,E)$，$V$是节点集合，$E\subseteq(V \times V)$是节点之间边的集合。性质图的节点具有以下特性：{（1）}每个节点都对应一个唯一标识符；{（2）}每个节点都包含一个入边和出边集；{（3）}每个节点都包含键-值集。性质图的边具有相似的性质：{（1）}每条边对应一个唯一标识符；{（2）}每条边都包含一个标签表示边的类型；{（3）}每条边都有一个键-值集；{（4）}每条边都有一个源节点和目的节点。图\ref{性质图示意图}展示了上述特性。
-
-%\textbf{下面的图删除，}
-
-\begin{figure}[htp]
-\centering
-\includegraphics{性质图示意图}
-\caption{性质图示意图}
-\label{性质图示意图}
-\end{figure}
-
-
-\begin{definition}
- \label{性质图定义}
- 性质图$G=(V,E,\lambda ,\mu, s,d)$是一个有向的、边标记的、属性化的多重图，$V$是节点的集合，$E$是有向边的集合，$s: E \rightarrow V$和$d:E \rightarrow V$分别是有向边到源节点和目的节点的映射，$\lambda : E \rightarrow \sum $是边标记函数，将一条边映射到字符集$\sum$中的一个字符。节点和边都用键—值对表示性质，性质的赋值函数为$\mu:(V \cup E) \times K \rightarrow S$，$K$和$S$分别是性质的键和值。
-\end{definition}
-
-\subsubsection{抽象语法树性质图}
-
-程序性质图是一个抽象语法树、控制流图和数据流图的综合表示。在本小节分别定义三类中间表示的性质图表现形式，然后再定义程序性质图。
+程序性质图可以通过存入专门的图数据库例如Neo4j，Titan和OrientDB，然后利用数据库查询的方式对程序语句节点以及语句节点之间的关系进行查询。程序性质图是一个抽象语法树性质图、控制流性质图和数据流性质图的综合表示。在本小节分别定义了三类中间表示的性质图表现形式，然后在此基础上定义程序性质图。
 
 \begin{definition}
 \label{抽象语法树定义}
@@ -240,7 +249,7 @@ $$
 \textit{traversal}可以使用复合函数符号$\circ$组合使用。如首先搜索所有的数组节点{（$type=Array$的节点）}，然后获取这个包裹此节点的语句节点，这个过程可以表示为$Statement \circ Filter_{\mu (\upsilon, type) = Array} (X)$。
 
 \section{基于程序性质图的源代码漏洞挖掘方法研究}\label{基于程序性质图的源代码漏洞粗定位方法研究}
-程序性质图里包含了源代码静态分析的所有信息，本小节主要阐述程序性质图的遍历方式{（\textit{traversal}）}，以及如何定制和组合程序性质图\textit{traversal}粗定位三种源代码软件漏洞：缓冲区溢出漏洞、格式化字符串漏洞、Use After Free{（UAF）}漏洞。
+程序性质图里包含了源代码静态分析的所有信息，本小节主要阐述程序性质图的遍历方式{（\textit{traversal}）}，以及如何定制和组合程序性质图\textit{traversal}粗定位三种源代码软件漏洞：缓冲区溢出漏洞、格式化字符串漏洞、UAF（Use After Free）漏洞。
 %以及Double Free{（DF）}漏洞。
 
 \subsection{缓冲区溢出漏洞挖掘方法}
@@ -457,8 +466,8 @@ void foo(char *p, int length, int padding)
 	\end{algorithmic}
 \end{algorithm}
 
-\subsection{Use After Free漏洞挖掘方法}
-UAF(Use After Free) 漏洞属于指针相关的漏洞,其主要表现形式是引用已经被释放的内存对象。UAF 漏洞可能导致程序行为异常,经过精心构造的攻击代码可以利用 UAF 漏洞实现任意代码执行。根据 UAF 漏洞的表现形式,可以分析在内存释放函数 (如free、delete 等等) 调用后,被释放的内存对象指针是否任然“存活”,即是否存在后续指令继续使用该指针的行为,如果发现被释放的内存对象指针任然“存活”,则报告一个可疑 UAF 漏洞。要实现上述过程需要分析每一个语句使用的符号和内存释放是否有控制依赖关系，而每个语句节点使用的符号可以由程序符号图PSG（Program Symbol Graph）表示。
+\subsection{UAF漏洞挖掘方法}
+UAF漏洞属于指针相关的漏洞,其主要表现形式是引用已经被释放的内存对象。UAF 漏洞可能导致程序行为异常,经过精心构造的攻击代码可以利用 UAF 漏洞实现任意代码执行。根据 UAF 漏洞的表现形式,可以分析在内存释放函数 (如free、delete 等等) 调用后,被释放的内存对象指针是否任然“存活”,即是否存在后续指令继续使用该指针的行为,如果发现被释放的内存对象指针任然“存活”,则报告一个可疑 UAF 漏洞。要实现上述过程需要分析每一个语句使用的符号和内存释放是否有控制依赖关系，而每个语句节点使用的符号可以由程序符号图PSG（Program Symbol Graph）表示。
 
 \begin{definition}
  \label{符号图定义}
@@ -502,19 +511,19 @@ UAF(Use After Free) 漏洞属于指针相关的漏洞,其主要表现形式是�
 
 %\subsection{数据泄露漏洞}
 
-\subsection{实验结果与分析}
+\subsection{实验与分析}
 
 \subsubsection{实验设计}
 （1）实验目的
 
-本实验的目的是验证基于程序性质图的源代码软件漏洞挖掘方法在挖掘缓冲区溢出漏洞、格式化字符串漏洞以及Use After Free漏洞上的有效性。
+本实验的目的是验证基于程序性质图的源代码软件漏洞挖掘方法在挖掘缓冲区溢出漏洞、格式化字符串漏洞以及UAF漏洞上的有效性。
 
 （2）实验环境与过程
 
-本节在poppler0.10.6、a2ps4.14以及libxml2-2.9.3三个软件上分别对缓冲区溢出漏洞检测算法、格式化字符串漏洞检测算法以及Use After Free漏洞检测算法进行测试。实验采用的源代码语法解析器ANTLR\upcite{parr_definitive_2013}，图数据库为Neo4J\upcite{noauthor_neo4j_nodate}，图查询语言为Gremlin\upcite{rodriguez_gremlin_2015}，漏洞挖掘脚本语言为python。
+本节在poppler0.10.6、a2ps4.14以及libxml2-2.9.3三个软件上分别对缓冲区溢出漏洞检测算法、格式化字符串漏洞检测算法以及UAF漏洞检测算法进行测试。实验采用的源代码语法解析器ANTLRv4\upcite{parr_definitive_2013}，图数据库为Neo4J\upcite{noauthor_neo4j_nodate}，图查询语言为Gremlin\upcite{rodriguez_gremlin_2015}，漏洞挖掘脚本语言为python。
 实验的采用的硬件环境是Inter Xeon CPU E3-1231 v3 @ 3.40GHz，16G RAM。
 
-在漏洞挖掘之前，需要将源代码转化成程序性质图，然后使用算法\ref{内存拷贝函数缓冲区溢出漏洞检测算法}、算法\ref{缓冲区循环写缓冲区溢出漏洞检测算法}挖掘缓冲区溢出漏洞、使用算法\ref{格式化字符串漏洞检测算法}挖掘格式化字符串漏洞、使用算法\ref{UAF检测算法}挖掘Use After Free漏洞。
+在漏洞挖掘之前，需要将源代码转化成程序性质图，然后使用算法\ref{内存拷贝函数缓冲区溢出漏洞检测算法}、算法\ref{缓冲区循环写缓冲区溢出漏洞检测算法}挖掘缓冲区溢出漏洞、使用算法\ref{格式化字符串漏洞检测算法}挖掘格式化字符串漏洞、使用算法\ref{UAF检测算法}挖掘UAF漏洞。
 
 \subsubsection{结果分析}
 
@@ -586,9 +595,9 @@ splash/Splash.cc & drawImage & Y & CVE-2009-3604\tabularnewline
 \end{table}
 
 
-（3）Use After Free漏洞挖掘实验
+（3）UAF漏洞挖掘实验
 
-本实验测试的软件是libxml2-2.9.3，libxml2是一个xml c语言版的解析器，本为Gnome项目开发的工具，是一个基于MIT License的免费开源软件。它除了支持c语言版以外，还支持c++、PHP、Pascal、Ruby、Tcl等语言的绑定，能在Windows、Linux、Solaris、MacOsX等平台上运行。表\ref{use after free漏洞挖掘实验}是算法\ref{UAF检测算法}运行在libxml2-2.9.3上的实验结果。算法共检测了2个Use After Free漏洞对应的CVE编号分别为CVE-2016-1837和CVE-2016-1835。同时也产生了13个误报，误报率为86.7\%。虽然误报率较高，但是libxml2-2.9.3中包含245个内存释放，所以总体上算法\ref{UAF检测算法}大大缩小了需要关注的代码范围。
+本实验测试的软件是libxml2-2.9.3，libxml2是一个xml c语言版的解析器，本为Gnome项目开发的工具，是一个基于MIT License的免费开源软件。它除了支持c语言版以外，还支持c++、PHP、Pascal、Ruby、Tcl等语言的绑定，能在Windows、Linux、Solaris、MacOsX等平台上运行。表\ref{use after free漏洞挖掘实验}是算法\ref{UAF检测算法}运行在libxml2-2.9.3上的实验结果。算法共检测了2个UAF漏洞对应的CVE编号分别为CVE-2016-1837和CVE-2016-1835。同时也产生了13个误报，误报率为86.7\%。虽然误报率较高，但是libxml2-2.9.3中包含245个内存释放，所以总体上算法\ref{UAF检测算法}大大缩小了需要关注的代码范围。
 
 \begin{table}[ht]
 \begin{center}
@@ -628,7 +637,7 @@ xzlib.c & xz\_head & N & N/A\tabularnewline
 
 第\ref{缓冲区溢出漏洞检测}节中仅仅考虑了缓冲区写的表现形式和边界检测两个缓冲区溢出的直接因素，同时对缓冲区溢出检测方法执行了非常严格的边界检测策略，即缓冲区大小控制变量不存在任何的条件语句当中，此策略能够非常精确的检测缓冲区溢出漏洞，但同时会造成很多的漏报。在程序的编写过程中，造成缓冲区溢出的因素不仅仅这些，Kratkiewicz\upcite{kratkiewicz_evaluating_2005}将缓冲区溢出漏洞根据不同程序静态特征分成22类。程序静态特征被广泛的应用在建立程序的抽象模型，本小节在程序静态特征的基础上，提出了一种基于机器学习的缓冲区漏洞挖掘方法方法。
 
-%首先，将22种程序静态特征约简成7类，分别是sink类型、缓冲区位置、容器、索引/地址/长度复杂度、边界检测、循环/条件/函数调用深度以及是否输入可控。其次，建立过程间边界检测性质图（ISPG, Inter-procedural Sanitization Property Graph）和函数调用性质图（CCPG, Call Code Property Graph），并将其并入程序性质图，形成扩展程序性质图（ECPG,Extended Property Graph）。然后，在CVE库中查找现存的缓冲区溢出程序和未溢出程序，将此二类分别标记，并利用ECPG获取缓冲区溢出的静态特征并将其映射到向量空间，作为机器学习算法的训练集。最后，选取5种有监督机器学习算法在训练集中训练分类器。5个分类器的平均召回率（recall亦称为TPR,True Positive Rate） 是83.5\%,平均真负率（TNR，True Negative Rate）为85.9\%，最好的召回率达到了96.6\%，最好的真负率达到了91.4\%。因为实验的数据是非均衡数据，所以准确率（Precision）和$F_1$稍低，分别为68.9\%和75.2\%。将此方法应用到poppler0.10.6上，并和经典的静态分析工具FlawFinder做对比，本方法能够讲误报率消减到1/12。实验证明，本方法能够有效的辅助挖掘缓冲区溢出漏洞。
+%首先，将22种程序静态特征约简成7类，分别是sink类型、缓冲区位置、容器、索引/地址/长度复杂度、边界检测、循环/条件/函数调用深度以及是否输入可控。其次，建立过程间边界检测性质图（ISPG, Inter-procedural Sanitization Property Graph）和函数调用性质图（CCPG, Call Code Property Graph），并将其并入程序性质图，形成扩展程序性质图（ECPG,Extended Property Graph）。然后，在CVE库中查找现存的缓冲区溢出程序和未溢出程序，将此二类分别标记，并利用ECPG获取缓冲区溢出的静态特征并将其映射到向量空间，作为机器学习算法的训练集。最后，选取5种有监督机器学习算法在训练集中训练分类器。5个分类器的平均召回率（recall亦称为TPR,True Positive Rate） 是83.5\%,平均真负率（TNR，True Negative Rate）为85.9\%，最好的召回率达到了96.6\%，最好的真负率达到了91.4\%。因为实验的数据是非均衡数据，所以准确率（Precision）和$F_1$稍低，分别为68.9\%和75.2\%。将此方法应用到poppler0.10.6上，并和经典的静态分析工具FlawFinder做对比，本方法能够将误报率消减到1/12。实验证明，本方法能够有效的辅助挖掘缓冲区溢出漏洞。
 
 \subsection{基本框架}
 
@@ -913,16 +922,15 @@ void foo(char* src, int n){
 & \lambda = \lambda_{A} \cup \lambda_{C} \cup \lambda_{P} \cup \lambda_{IP} \cup \lambda_{CC} \\
 & \mu = \mu_{A} \cup \mu_{C} \cup \mu_{P} \cup \mu_{IP} \cup \mu_{CC}
 \end{align*}
-。通过组合\ref{程序性质图的基本遍历方式}的遍历方式，获取缓冲区溢出漏洞静态属性。
+通过组合程序性质图的基本遍历方式，获取缓冲区溢出漏洞静态属性。
 
-\subsection{实验结果与分析}
+\subsection{实验与分析}
 
 \subsubsection{实验设计}
 
 （1）实验目的与评估参数
 
-通过实验以及和其他工具对比，验证基于机器学习的缓冲区溢出漏洞方法的有效性。方法的性能通过混淆矩阵展示。
-在机器学习领域，混淆矩阵\upcite{stehman_selecting_1997}经常被用来评判分类器的性能，如表\ref{confusion_matrix}所示。混淆矩阵描述了实际类别和挖掘类别的交叉组合，即真正类（True Positive，TP），假负类（False Positive，FP），真负类（True Negative，TN）以及假负类（False Negative，FN）。在漏洞挖掘领域，FP又被称为误报，表示一个非漏洞被分类器归为漏洞；FN又称为漏报，表示一个漏洞被分类器归为非漏洞；TP表示一个漏洞被分类器归为漏洞；TN表示一个非漏洞被分类器归为漏洞。在一个正常的程序中，非漏洞函数要远比漏洞函数多，如此会造成训练和测试集的不均衡，所以再次添加了其他的衍生评估参数，即召回率（recall）同时也被称为真值率（True Positive Rate，TPR），真负率（True Negative Rate，TNR），精度（precision）也被称为阳性预测值（Positive Predictive Value，PPV）以及$F_1$值，此四参数的计算如式\ref{衍生标准}所示。
+通过实验以及和其他工具对比，验证基于机器学习的缓冲区溢出漏洞方法的有效性。方法的性能通过混淆矩阵\upcite{stehman_selecting_1997}展示，如表\ref{confusion_matrix}所示。混淆矩阵描述了实际类别和挖掘类别的交叉组合，即真正类（True Positive，TP），假负类（False Positive，FP），真负类（True Negative，TN）以及假负类（False Negative，FN）。在漏洞挖掘领域，FP又被称为误报，表示一个非漏洞被分类器归为漏洞；FN又称为漏报，表示一个漏洞被分类器归为非漏洞；TP表示一个漏洞被分类器归为漏洞；TN表示一个非漏洞被分类器归为漏洞。在一个正常的程序中，非漏洞函数要远比漏洞函数多，如此会造成训练和测试集的不均衡，所以再次添加了其他的衍生评估参数，即召回率（recall）同时也被称为真值率（True Positive Rate，TPR），真负率（True Negative Rate，TNR），精度（precision）也被称为阳性预测值（Positive Predictive Value，PPV）以及$F_1$值，此四参数的计算如式\ref{衍生标准}所示。
 
 \begin{table}[ht]
 \begin{center}
@@ -1088,6 +1096,6 @@ SVM & 10 & 1 & 35 & 650 & 90.9 & 94.9 & 22.2 & 35.7 & 45  \\ \hline
 
 本章主要研究了基于程序性质图源代码漏洞挖掘方法与基于机器学习的缓冲区溢出漏洞挖掘方法，具体包括以下两个内容。
 
-（1）提出了基于程序性质图的源代码漏洞挖掘方法，用于标定可疑区域。该方法首先利用鲁棒的中间表示生成语法分析树、抽象语法树、控制流图、数据流图；然后通过性质图将三种中间表示聚合成统一的程序性质图，并定义程序性质图遍历方式；最后根据缓冲区溢出漏洞、格式化字符串漏洞以及Use After Free漏洞的特征给出三类漏洞的挖掘算法。通过在poppler0.10.6、a2ps4.14以及libxml2-2.9.3三个软件上的实验表明，基于程序性质图能够有效的挖掘源代码漏洞。
+（1）提出了基于程序性质图的源代码漏洞挖掘方法，用于标定可疑区域。该方法首先利用鲁棒的中间表示生成语法分析树、抽象语法树、控制流图、数据流图；然后通过性质图将三种中间表示聚合成统一的程序性质图，并定义程序性质图遍历方式；最后根据缓冲区溢出漏洞、格式化字符串漏洞以及UAF漏洞的特征给出三类漏洞的挖掘算法。通过在poppler0.10.6、a2ps4.14以及libxml2-2.9.3三个软件上的实验表明，基于程序性质图能够有效的挖掘源代码漏洞。
 
-（2）提出了一种基于机器学习的缓冲区溢出漏洞挖掘方法。该方法首先将22种程序静态特征约简成7类，分别是sink类型、缓冲区位置、容器、索引/地址/长度复杂度、边界检测、循环/条件/函数调用深度以及是否输入可控；其次通过扩展的程序性质图提取静态特征；然后在CVE库中查找现存的缓冲区溢出程序和未溢出程序作为训练集，并选取5种有监督机器学习算法在训练集中训练分类器；最后利用分类器在新的源代码程序中挖掘漏洞。实验结果表明，5个分类器的平均召回率（recall亦称为TPR,True Positive Rate） 是83.5\%,平均真负率（TNR，True Negative Rate）为85.9\%，最好的召回率达到了96.6\%，最好的真负率达到了91.4\%。因为实验的数据是非均衡数据，所以准确率（Precision）和$F_1$稍低，分别为68.9\%和75.2\%。将此方法应用到poppler0.10.6上，并和经典的静态分析工具FlawFinder做对比，本方法能够讲误报率消减到1/12。实验证明，本方法能够有效的挖掘缓冲区溢出漏洞。
+（2）提出了一种基于机器学习的缓冲区溢出漏洞挖掘方法。该方法首先将22种程序静态特征约简成7类，分别是sink类型、缓冲区位置、容器、索引/地址/长度复杂度、边界检测、循环/条件/函数调用深度以及是否输入可控；其次通过扩展的程序性质图提取静态特征；然后在CVE库中查找现存的缓冲区溢出程序和未溢出程序作为训练集，并选取5种有监督机器学习算法在训练集中训练分类器；最后利用分类器在新的源代码程序中挖掘漏洞。实验结果表明，5个分类器的平均召回率（recall亦称为TPR,True Positive Rate） 是83.5\%,平均真负率（TNR，True Negative Rate）为85.9\%，最好的召回率达到了96.6\%，最好的真负率达到了91.4\%。因为实验的数据是非均衡数据，所以准确率（Precision）和$F_1$稍低，分别为68.9\%和75.2\%。将此方法应用到poppler0.10.6上，并和经典的静态分析工具FlawFinder做对比，本方法能够将误报率消减到1/12。实验证明，本方法能够有效的挖掘缓冲区溢出漏洞。

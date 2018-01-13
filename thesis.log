@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.8.8)  10 JAN 2018 15:34
+This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.8.8)  14 JAN 2018 00:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2204,18 +2204,6 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 ]
 [2]
-Overfull \hbox (3.01932pt too wide) in paragraph at lines 60--68
-[]\EU1/TimesNewRoman(0)/m/n/12.045 This thesis analyzes the main problems of cu
-rrent software vulnerability detection,and
- []
-
-
-Overfull \hbox (0.32173pt too wide) in paragraph at lines 60--68
-\EU1/TimesNewRoman(0)/m/n/12.045 proposes a new framework of vulnerability dete
-ction technique targeting binary pro- gram,
- []
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [3
@@ -2277,8 +2265,6 @@ File: lstlang1.sty 2013/08/26 1.5b listings language file
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2013/08/26 1.5b (Carsten Heinz)
 )
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 17.
 \g_fontspec_family_Adobe Kaiti Std_int=\count347
 .................................................
 . fontspec info: "no-font-shape"
@@ -2318,7 +2304,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 File: figures/抽象语法树示意图.pdf Graphic file (type QTm)
 
 <use  "figures/抽象语法树示意图.pdf" >
-Overfull \hbox (21.13098pt too wide) in paragraph at lines 45--46
+Overfull \hbox (21.13098pt too wide) in paragraph at lines 50--51
  [][] 
  []
 
@@ -2330,7 +2316,10 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [18]
 File: figures/chap02/程序数据流图.pdf Graphic file (type QTm)
 
-<use  "figures/chap02/程序数据流图.pdf" > [19]
+<use  "figures/chap02/程序数据流图.pdf" >
+Underfull \vbox (badness 2065) has occurred while \output is active []
+
+ [19]
 .................................................
 . fontspec info: "defining-font"
 . 
@@ -2340,9 +2329,9 @@ File: figures/chap02/程序数据流图.pdf Graphic file (type QTm)
 . This font family consists of the following shapes:
 .................................................
 Package hyperref Info: bookmark level for unknown definition defaults to 0 on i
-nput line 91.
+nput line 96.
 
-Overfull \hbox (12.16428pt too wide) in paragraph at lines 108--109
+Overfull \hbox (12.16428pt too wide) in paragraph at lines 113--114
 []\EU1/AdobeKaitiStd(0)/m/n/12.045 基 于 控 制 流 图 的 漏 洞 可 以 用 一 个 四 元 组 $\OT1/txr/
 m/n/12.045 (\OML/txmi/m/it/12.045 S[]; S[]; S[]; \OMS/txsy/m/n/12.045 f\OT1/txr
 /m/n/12.045 (\OML/txmi/m/it/12.045 S[]; t[]\OT1/txr/m/n/12.045 )\OMS/txsy/m/n/1
@@ -2353,46 +2342,55 @@ m/n/12.045 (\OML/txmi/m/it/12.045 S[]; S[]; S[]; \OMS/txsy/m/n/12.045 f\OT1/txr
 File: figures/chap04/example1.pdf Graphic file (type QTm)
  <use  "figures/chap04/example1.pdf" > [22]
 Missing character: There is no ， in font txr!
+ [23]
 Package hyperref Info: bookmark level for unknown lemma defaults to 0 on input 
-line 238.
+line 243.
 Package hyperref Info: bookmark level for unknown proof defaults to 0 on input 
-line 242.
+line 247.
 Missing character: There is no ， in font txr!
- [23] [24]
+ [24]
 Missing character: There is no ① in font Times New Roman/OT:mapping=tex-text;!
+ [25]
 File: figures/chap02/动态符号执行流程.png Graphic file (type QTm)
 
-<use  "figures/chap02/动态符号执行流程.png" >
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[25]
+<use  "figures/chap02/动态符号执行流程.png" > [26]
 File: figures/chap02/KLEE架构.pdf Graphic file (type QTm)
- <use  "figures/chap02/KLEE架构.pdf" >
-Underfull \vbox (badness 10000) has occurred while \output is active []
+ <use  "figures/chap02/KLEE架构.pdf" >) (./data/chap03.tex [27]
+File: figures/性质图示意图.pdf Graphic file (type QTm)
+ <use  "figures/性质图示意图.pdf" > [28
 
- [26])
-(./data/chap03.tex [27]
+
+]
 File: figures/chap03/程序性质图生成.pdf Graphic file (type QTm)
- <use  "figures/chap03/程序性质图生成.pdf" >
-Overfull \hbox (3.81635pt too wide) in paragraph at lines 19--20
+
+<use  "figures/chap03/程序性质图生成.pdf" >
+Overfull \hbox (3.81635pt too wide) in paragraph at lines 41--42
  [][] 
  []
 
-[28
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [29]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-] [29] [30]
-File: figures/性质图示意图.pdf Graphic file (type QTm)
- <use  "figures/性质图示意图.pdf" > [31]
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[30]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [31]
 File: figures/抽象语法树实例.png Graphic file (type QTm)
- <use  "figures/抽象语法树实例.png" >
-File: figures/funCFG.png Graphic file (type QTm)
 
-<use  "figures/funCFG.png" >
+<use  "figures/抽象语法树实例.png" >
+File: figures/funCFG.png Graphic file (type QTm)
+ <use  "figures/funCFG.png" > [32]
 File: figures/funDFG.png Graphic file (type QTm)
- <use  "figures/funDFG.png" >
-Overfull \hbox (24.14096pt too wide) in paragraph at lines 191--192
+
+<use  "figures/funDFG.png" >
+Overfull \hbox (24.14096pt too wide) in paragraph at lines 200--201
 []\EU1/AdobeKaitiStd(0)/m/n/12.045 程 序 性 质 图 可 以 用 $\OML/txmi/m/it/12.045 G \OT
 1/txr/m/n/12.045 = (\OML/txmi/m/it/12.045 V; E; ^^U; ^^V; s; d\OT1/txr/m/n/12.0
 45 )$ \EU1/AdobeKaitiStd(0)/m/n/12.045 表 示，|  其 中 $\OML/txmi/m/it/12.045 V \OT1
@@ -2401,7 +2399,7 @@ Overfull \hbox (24.14096pt too wide) in paragraph at lines 191--192
 |
  []
 
-[32] [33]
+[33]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [34]
@@ -2409,33 +2407,29 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [35]
 [36]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [37]
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
+nput line 276.
+ [37] [38]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 314.
-
-[38]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
+put line 323.
  [39]
-[40]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [41]
-Overfull \hbox (2.73pt too wide) in paragraph at lines 410--410
+ [40]
+[41]
+Overfull \hbox (2.73pt too wide) in paragraph at lines 419--419
 [] []\EU1/TimesNewRoman(0)/bx/n/12.045 if \EU1/TimesNewRoman(0)/m/n/12.045 isIn
 teract(condition, symbols) or isInteract(condition, bufferVar)
  []
 
 [42]
-Underfull \hbox (badness 3803) in paragraph at lines 451--451
+Underfull \hbox (badness 3803) in paragraph at lines 460--460
 [] []\EU1/TimesNewRoman(0)/bx/n/12.045 if  \EU1/TimesNewRoman(0)/m/n/12.045 (DD
 GEdgeConoveySymbol(arg)) or DDGBeginWithInputFunc-
  []
 
 [43]
-Underfull \hbox (badness 10000) in paragraph at lines 492--493
+Underfull \hbox (badness 10000) in paragraph at lines 501--502
 [] []\EU1/TimesNewRoman(0)/m/n/12.045 UAFS.add(freeCall.location, statement.loc
 ation, state-
  []
@@ -2444,13 +2438,18 @@ ation, state-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [46]
-[47]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [47]
 File: figures/基于机器学习的缓冲区溢出漏洞挖掘框架.pdf Graphic file (type QTm)
- <use  "figures/基于机器学习的缓冲区溢出漏洞挖掘框架.pdf" >
+
+<use  "figures/基于机器学习的缓冲区溢出漏洞挖掘框架.pdf" >
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [48]
-[49]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [49]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [50]
@@ -2460,35 +2459,41 @@ File: figures/accumulating_the_operations_of_i.pdf Graphic file (type QTm)
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [52]
-[53] [54]
+[53]
+Underfull \vbox (badness 7238) has occurred while \output is active []
+
+ [54]
+[55]
 File: figures/Simplified_CPG_of_code_for_Fig7.pdf Graphic file (type QTm)
  <use  "figures/Simplified_CPG_of_code_for_Fig7.pdf" >
-Overfull \hbox (25.64786pt too wide) in paragraph at lines 897--898
+Overfull \hbox (25.64786pt too wide) in paragraph at lines 906--907
  [][] 
  []
 
 File: figures/IPSG_and_DSSG.pdf Graphic file (type QTm)
-<use  "figures/IPSG_and_DSSG.pdf" > [55]
+<use  "figures/IPSG_and_DSSG.pdf" >
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [56]
-[57]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [57]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [58]
 File: figures/compareToBOMiner.pdf Graphic file (type QTm)
 
-<use  "figures/compareToBOMiner.pdf" >
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [59]
+<use  "figures/compareToBOMiner.pdf" > [59]
 File: figures/compareToJoern.pdf Graphic file (type QTm)
 
 <use  "figures/compareToJoern.pdf" >
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [60])
-(./data/chap04.tex [61] [62]
+ [60]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [61])
+(./data/chap04.tex [62]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
@@ -2561,16 +2566,20 @@ LaTeX Font Info:    Font shape `U/fsy/m/n' will be
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [76]
+File: figures/chap04/结合静态程序分析的高效符号执行技术实验过程.pdf Graphic file (type QTm)
 
-LaTeX Warning: Text page 77 contains only floats.
+<use  "figures/chap04/结合静态程序分析的高效符号执行技术实验过程.pdf" >
+
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [77]
-File: figures/chap04/结合静态程序分析的高效符号执行技术实验过程.pdf Graphic file (type QTm)
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-<use  "figures/chap04/结合静态程序分析的高效符号执行技术实验过程.pdf" > [78]) (./data/chap05.tex
+ [78])
+(./data/chap05.tex
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [79]
@@ -2684,16 +2693,22 @@ Python. Runs on TensorFlow,
  []
 
 [109]) (./data/resume.tex [110]
-Overfull \hbox (5.25798pt too wide) in paragraph at lines 13--15
-\EU1/TimesNewRoman(0)/m/n/12.045 ing, BioMedical Engineering and Informatics.  
-|\EU1/AdobeSongStd(1)/m/n/12.045 （\EU1/TimesNewRoman(0)/m/n/12.045 EI \EU1/Adob
-eSongStd(1)/m/n/12.045 检 索，|  检 索 号：| \EU1/TimesNewRoman(0)/m/n/12.045 20171303
-496365\EU1/AdobeSongStd(1)/m/n/12.045 ）| 
+Overfull \hbox (20.27905pt too wide) in paragraph at lines 9--10
+\EU1/TimesNewRoman(0)/m/n/12.045 nerability Through Similar Functions. PIERS201
+6.(EI \EU1/AdobeSongStd(1)/m/n/12.045 检 索，|  检 索 号 \EU1/TimesNewRoman(0)/m/n/12
+.045 20165203169818) 
  []
 
-) [111
 
-]
+Overfull \hbox (25.26315pt too wide) in paragraph at lines 15--16
+\EU1/TimesNewRoman(0)/m/n/12.045 Static Integer Operation Attributes. ICCSNT201
+6. (EI \EU1/AdobeSongStd(1)/m/n/12.045 检 索，|  检 索 号：| \EU1/TimesNewRoman(0)/m/n
+/12.045 20180104610722) 
+ []
+
+[111
+
+]) [112]
 \tf@thm=\write9
 \openout9 = `thesis.thm'.
 
@@ -2710,15 +2725,15 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 147.
  )
 (\end occurred inside a group at level 1)
 
-### simple group (level 1) entered at line 150 ({)
+### simple group (level 1) entered at line 159 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
  40400 strings out of 493918
  758650 string characters out of 6150564
- 895323 words of memory out of 5000000
+ 922261 words of memory out of 5000000
  42947 multiletter control sequences out of 15000+600000
  84330 words of font info for 318 fonts, out of 8000000 for 9000
  1144 hyphenation exceptions out of 8191
  66i,24n,77p,10452b,2533s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on thesis.pdf (124 pages).
+Output written on thesis.pdf (125 pages).
