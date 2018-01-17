@@ -6,14 +6,14 @@
 
 %审计像Linux内核这样具有庞大代码量的软件系统是一件不可能完成的事情。基于动态测试的方法，例如模糊测试和符号执行，虽然能够挖掘不同类型的漏洞而且能够产生测试用例，但是符号执行随着软件规模的增加会出现路径爆炸问题，此外符号执行还有交互环境模拟问题以及约束求解器求解能力的限制问题；模糊测试则存在随机性强，代码覆盖率低的问题。所以，首先漏进行洞可疑区域标定然后再动态测试可疑区域是一个解决办法。
 
-本章提出了一种基于程序性质图的源代码漏洞挖掘方法。该方法利用程序性质图聚合抽象语法树、控制流图、数据流图三种中间表示，通过定义以及组合不同的程序性质图遍历方式能够检测多种源代码软件漏洞。
+针对C/C++源代码软件，本章提出了一种基于程序性质图的源代码漏洞挖掘方法。该方法利用程序性质图聚合抽象语法树、控制流图、数据流图三种中间表示，通过定义以及组合不同的程序性质图遍历方式能够检测多种源代码软件漏洞。
 %对于缓冲区溢出漏洞，影响漏洞的特征有很多种，漏洞的形成是多个特征综合作用的结果。
 针对缓冲区溢出漏洞挖掘精确度不高的问题，
 本章提出了一种基于机器学习的缓冲区溢出漏洞挖掘方法。该方法首先将缓冲区溢出静态特征分成7类；然后，在已标记的漏洞中，利用扩展的程序性质图获取静态特征并将其映射到向量空间，作为机器学习算法的训练集；最后，选取5种有监督机器学习算法在训练集中训练分类器，并通过分类器在新的源代码中挖掘缓冲区溢出漏洞。
 
 \section{程序性质图生成}\label{程序性质图生成}
 
-程序性质图（Code Property Graph，CPG）是源代码（Property Graph，PG）在性质图上的表现形式。本小节介绍了性质图的概念、各种中间表示的生成过程、程序性质图以及程序性质图的各种遍历方式。
+程序性质图（Code Property Graph，CPG）是源代码在性质图（Property Graph，PG）\upcite{rodriguez_graph_2010}上的表现形式。本节介绍了性质图的概念、各种中间表示的生成过程、程序性质图以及程序性质图的各种遍历方式。
 
 \subsection{性质图}
 
@@ -34,7 +34,7 @@
  性质图$G=(V,E,\lambda ,\mu, s,d)$是一个有向的、边标记的、属性化的多重图，$V$是节点的集合，$E$是有向边的集合，$s: E \rightarrow V$和$d:E \rightarrow V$分别是有向边到源节点和目的节点的映射，$\lambda : E \rightarrow \sum $是边标记函数，将一条边映射到字符集$\sum$中的一个字符。节点和边都用键—值对表示性质，性质的赋值函数为$\mu:(V \cup E) \times K \rightarrow S$，$K$和$S$分别是性质的键和值。
 \end{definition}
 
-源代码软件漏洞分析依赖于多种代码的中间表示例如语法分析树、抽象语法树、数据流图、控制流图等，对于C/C++，很多编译器的前端能够很容易的通过插桩的方式生成中间表示。但是当分析涉及到复杂的程序或者跨越多个程序搜集中间表示时，编译程序所需要的环境就很难得到保证，特别的是，一般的编译器前端无法处理代码有头文件缺失的情况。与源代码相关的中间表示都直接或者间接的建立在语法分析树的基础上，所以程序性质图的生成首先需要将源代码转换成语法分析树。在语法分析树的基础上生成抽象语法树、控制流图、数据流图，然后将各种中间表示合并为一个统一的表示形式——程序性质图，并存入图数据库中以备查询。程序性质图的生成过程如图\ref{程序性质图生成过程}所示。
+源代码软件漏洞分析依赖于多种代码的中间表示例如语法分析树、抽象语法树、数据流图、控制流图等，对于C/C++，很多编译器的前端能够很容易的通过插桩的方式生成中间表示。但是当分析涉及到复杂的程序或者跨越多个程序搜集中间表示时，编译程序所需要的环境就很难得到保证，特别的是，一般的编译器前端无法处理代码有头文件缺失的情况。与源代码相关的中间表示都直接或者间接的建立在语法分析树的基础上，所以程序性质图的生成首先需要将源代码转换成语法分析树。在语法分析树的基础上生成抽象语法树、控制流图、数据流图，然后将各种中间表示合并为一个统一的表示形式——程序性质图，然后将程序性质图存入图数据库，用查询的方式搜索节点和边。程序性质图的生成过程如图\ref{程序性质图生成过程}所示。
 
 \begin{figure}[htp]
 \centering
@@ -45,7 +45,7 @@
 
 \subsection{鲁棒的源代码中间表示生成}
 \label{源代码的鲁棒分析}
-鲁棒的源代码中间表示生成顺序依次是语法分析树、抽象语法树、控制流图、数据流图。语法分析树建立在ANTLR\upcite{parr_definitive_2013}{(ANother Tool for Language Recognition)}的基础上。ANTLR是一种非常强大的用于读取、执行或者翻译结构性的文本以及二进制文件的解析器生成器，广泛的应用于建立编程语言、工具和框架上。输入一个语法和源代码，ANTLR能够生成一个用于构建遍历解析树的解析器。对于C/C++,鲁棒的语法分析基于岛屿语法{（Island Grammar）}实现了三个层次上的语法分析器：分别是模块解析器、函数解析器以及语句解析器。模块解析器解析粗略的结构信息，例如函数、命名空间以及全局的变量声明。函数解析器解析辨别在一个函数内部能够影响到程序控制流的程序结构，例如跳转语句goto、continue和break；选择语句if语句、switch语句；循环语句for循环、while循环和do-while循环。语句解析器主要的作用是将任意一个语句分解为表达式、操作符以及标识符等。岛屿语法\upcite{moonen_generating_2001}是一种定义文本结构的语言，通过此语法可以定制解析器的粒度。
+鲁棒的源代码中间表示生成顺序依次是语法分析树、抽象语法树、控制流图、数据流图。语法分析树建立在ANTLR\upcite{parr_definitive_2013}{(ANother Tool for Language Recognition)}的基础上。ANTLR是一种非常强大的用于读取、执行或者翻译结构性的文本以及二进制文件的解析器生成器，广泛的应用于构建编程语言解析器、工具和框架上。对于C/C++，基于岛屿语法{（Island Grammar）}，可以利用ANTLR实现三个层次上的语法解析器：分别是模块解析器、函数解析器以及语句解析器。模块解析器解析粗略的结构信息，例如函数、命名空间以及全局的变量声明。函数解析器解析辨别函数内部能够影响到程序控制流的程序结构，例如跳转语句goto、continue和break；选择语句，如if语句、switch语句；循环语句，如for循环、while循环和do-while循环。语句解析器主要的作用是将任意一个语句分解为表达式、操作符以及标识符等。岛屿语法\upcite{moonen_generating_2001}是一种定义文本结构的语言，通过此语法可以定制解析器的粒度。
 
 图\ref{模块解析器的岛屿语法片段}是模块解析器的岛屿语法片段，第一行中的module表示一个模块，function\_def表示一个函数，simple\_decl表示变量或者类的声明，water表示其他的任意未定义字符，图\ref{模块解析器的岛屿语法片段}表达的意思是一个module可以由一个或者多个functionDef、simple\_decl、using\_directive或者water组成。图\ref{函数解析器的岛屿语法片段}是函数解析器的岛屿语法片段，表示函数有哪些元素组成，其中template\_declStart，return\_type，function\_name，compound\_statement分别表示函数模板、函数返回类型、函数名以及函数内容。图\ref{语句解析器的岛屿语法片段}是语句的岛屿语法片段，第一行表示statements可以由条件编译标识符{（pre\_opener，pre\_closer，pre\_else分别表示\#if，\#endif和\#else）}和语句statement构成。statement的组成当中最主要的是simple\_decl和expr\_statement。expr\_statement是Ｃ/C++作为程序主体的每一行代码，在岛屿语法中需要按照运算符的优先级、结合进行设计{（14-17行）}。解析器按照语法文件上规定的顺序解析程序中的非终结符，其他的未被制定的终结符和非终结符用water表示。
 
@@ -149,32 +149,32 @@ and_expression : inclusive_or_expression ('&&' and_expression)?;
 
 由于不同种类的源代码软件漏洞具有不同的特征，现存的基于模式匹配的漏洞挖掘工具，一方面不能检测多种源代码软件漏洞，另外一方面则会造成很高的误报，所以需要一种综合的表示形式{——}程序性质图（Code Property Graph, CPG）。
 %\upcite{yamaguchi_modeling_2014, yamaguchi_automatic_2015}。
-程序性质图可以通过存入专门的图数据库例如Neo4j，Titan和OrientDB，然后利用数据库查询的方式对程序语句节点以及语句节点之间的关系进行查询。程序性质图是一个抽象语法树性质图、控制流性质图和数据流性质图的综合表示。在本小节分别定义了三类中间表示的性质图表现形式，然后在此基础上定义程序性质图。
+程序性质图可以通过存入专门的图数据库，例如Neo4j\upcite{noauthor_neo4j_nodate}，Titan\upcite{noauthor_titan:_nodate}和OrientDB\upcite{noauthor_newsletter_nodate}，然后利用数据库查询的方式对程序语句节点以及语句节点之间的关系进行查询。程序性质图是一个抽象语法树性质图、控制流性质图和数据流性质图的综合表示。本节分别定义了三类中间表示的性质图表现形式，然后在此基础上定义程序性质图。
 
 \begin{definition}
 \label{抽象语法树定义}
 抽象语法树性质图$G _{A}=(V_{A},E_{A},\lambda _{A}, \mu _{A}, s _{A}, d _{A})$，$V_{A}$是抽象语法树节点的集合，$E_{A}$是边集合，$\lambda _{A}$是边的标签函数，用任意字符标记每一条边，$s _{A}$和$d _{A}$是边到节点的映射，分别将边映射到源节点和目的节点。
 \end{definition}
 
-抽象语法树节点的性质包括：节点类型{(\textit{type})}、代码{（\textit{code}）}、节点序号{（\textit{childnum}）}、操作符{（\textit{operator}）}、位置{\textit{location)}、所属文件{\textit{file}}是否控制流节点{（\textit{isCFGNode}）}。图\ref{抽象语法树实例}为Listing \ref{一个简单的实例程序}的生成的部分抽象语法树。
+抽象语法树节点的性质包括：节点类型{(type)}、代码{（code）}、节点序号{（childnum）}、操作符{（operator）}、位置{（location）、所属文件{（file）}是否控制流节点{（isCFGNode）}。图\ref{抽象语法树性质图实例}为图\ref{一个简单的实例程序}的生成的部分抽象语法树性质图实例。
 
-\begin{figure}[htp]\
+\begin{figure}[htp]
 \centering
-\includegraphics[width=12cm,height=9cm]{抽象语法树实例}
-\caption{抽象语法树实例}
-\label{抽象语法树实例}
+\includegraphics{chap03/抽象语法树性质图实例}
+\caption{抽象语法树性质图实例}
+\label{抽象语法树性质图实例}
 \end{figure}
 
 \begin{definition}
 \label{控制流性质图定义}
-控制流性质图可以用$G _{C}=(V_{C},E_{C},\lambda _{C}, \mu _{C}, s _{C}, d _{C})$表示，其中$V_{C}=\{ \upsilon | \upsilon \in V_{A} \cup \{ENTRY,EXIT\},\text{且} \mu_C(\upsilon, \textit{type})=\textit{Stmt} \text{或者} \textit{C} \}$，其中$ENTRY$和$EXIT$是控制流性质图的入口节点和结束节点，$E_{C}$是边的集合，标签函数$\lambda_C$将边映射到字符集 $\sum_C=\{true, false, \epsilon \}$，$true$和$false$用于标记$Condition$语句的两种出边，$\epsilon$用于表示其他没有控制流跳转的边。
+控制流性质图可以用$G _{C}=(V_{C},E_{C},\lambda _{C}, \mu _{C}, s _{C}, d _{C})$表示，其中$V_{C}=\{ \upsilon | \upsilon \in V_{A} \cup \{ENTRY,EXIT\},\text{且} 对于每一个节点有\mu_C(isCFGNode, type)=True \}$，其中$ENTRY$和$EXIT$是控制流性质图的入口节点和结束节点，$E_{C}$是边的集合，标签函数$\lambda_C$将边映射到字符集 $\sum_C=\{true, false, \epsilon \}$，$true$和$false$用于标记$Condition$语句的两种出边，$\epsilon$用于表示其他没有控制流跳转的边。
 \end{definition}
 
-图\ref{控制依赖性质图实例}是Listing \ref{控制依赖性质图实例}的控制依赖性质图的一部分，在此图中删除了$ENTRY$节点且节点的属性{\textit{isCFGNode=True}}。
+图\ref{控制依赖性质图实例}是图\ref{一个简单的实例程序}的控制依赖性质图的一部分（删除了$ENTRY$节点），从图中可以看出所有节点的$isCFGNode$属性都为$True$。
 
-\begin{figure}[htp]\
+\begin{figure}[htp]
 \centering
-\includegraphics[height=18cm]{funCFG}
+\includegraphics[height=18cm]{chap03/控制依赖性质图实例}
 \caption{控制依赖性质图实例}
 \label{控制依赖性质图实例}
 \end{figure}
@@ -184,11 +184,11 @@ and_expression : inclusive_or_expression ('&&' and_expression)?;
 数据依赖性质图可以用$G _{D}=(V_{D},E_{D},\lambda _{D}, \mu _{D}, s _{D}, d _{D})$表示，其中$V_{D} \subseteq V_C \subseteq V_A$，$E_{D}$是边的集合，标签函数$\lambda_{D} : E_{D} \rightarrow \sum_{D}$，$\sum_{D} = \{D\}$，其中$D$表示数据依赖，同时在表示数据依赖关系的边上增加一个属性$symbol$表示传递的标识符。
 \end{definition}
 
-图\ref{数据依赖性质图实例}是Listing \ref{一个简单的实例程序}的数据依赖图的一部分，此图的节点是是控制流依赖图节点的子集，每条边都有\textit{symbol}属性表示传递的数据。
+图\ref{数据依赖性质图实例}是图\ref{一个简单的实例程序}的数据依赖图的一部分，此图的节点是是控制流依赖图节点的子集，每条边都有symbol属性表示传递的数据。
 
-\begin{figure}[htp]\
+\begin{figure}[htp]
 \centering
-\includegraphics[height=10cm]{funDFG}
+\includegraphics{chap03/数据依赖性质图实例}
 \caption{数据依赖性质图实例}
 \label{数据依赖性质图实例}
 \end{figure}
@@ -197,44 +197,44 @@ and_expression : inclusive_or_expression ('&&' and_expression)?;
 
 \begin{definition}
 \label{程序性质图定义}
-程序性质图可以用$G=(V,E,\lambda, \mu, s, d)$表示，其中$V=V_{A} \cup \{ENTRY, EXIT\}$，$E = E_{A} \cup E_{C} \cup E_{D}$，$\lambda = \lambda_{A} \cup \lambda_{C} \cup \lambda{} $，$\mu = \mu_{A} \cup \mu_{C} \cup \mu_{D}$，$s = s_{A} \cup s_{C} \cup s_{D}$，$d = d_{A} \cup d_{C} \cup d_{D}$。
+程序性质图可以用$G=(V,E,\lambda, \mu, s, d)$表示，其中$V=V_{A} \cup \{ENTRY, EXIT\}$，$E = E_{A} \cup E_{C} \cup E_{D}$，$\lambda = \lambda_{A} \cup \lambda_{C} \cup \lambda{D} $，$\mu = \mu_{A} \cup \mu_{C} \cup \mu_{D}$，$s = s_{A} \cup s_{C} \cup s_{D}$，$d = d_{A} \cup d_{C} \cup d_{D}$。
 \end{definition}
 
 \subsection{程序性质图的基本遍历方式}
 \label{程序性质图的基本遍历方式}
-生成程序性质图之后，需要有效的数据检索方法用以搜索源代码中特定的代码片段。图数据库提供了专门的查询语言Gremlin\upcite{gremlin}，给定节点或边，根据程序性质图边和节点的性质寻找相关节点和边，\textit{traversals}表示其形式化的表现形式。
+生成程序性质图之后，需要有效的数据检索方法用以搜索源代码中特定的代码片段。图数据库提供了专门的查询语言Gremlin\upcite{gremlin}，给定节点或边，根据程序性质图边和节点的性质寻找相关节点和边，traversals为其形式化的表现形式。
 
 \begin{definition}
 \label{traversal定义}
-\textit{traversal}可以表示为$\tau : P(V \cup E) \rightarrow P(V \cup E)$，其中$V$和$E$分别表示程序性质图的节点和边的集合，$P(V \cup E)$表示$(V \cup E)$的子集。
+traversal可以表示为$\tau : P(V \cup E) \rightarrow P(V \cup E)$，其中$V$和$E$分别表示程序性质图的节点和边的集合，$P(V \cup E)$表示$(V \cup E)$的子集。
 \end{definition}
 
-最基本的\textit{traversal}是在性质图数据库中搜索符合条件的节点，称之为过滤器，用$Filter_{p}$表示，如下式所示，其中$p$表示过滤条件的谓词形式。$p$可以任意指定，例如在查找所有$type=Array$的抽象语法树。
+最基本的traversal是在性质图数据库中搜索符合条件的节点，称之为过滤器，用$Filter_{p}$表示，如下式所示，其中$p$表示过滤条件的谓词形式。$p$可以任意指定，例如，查找所有$type=Array$的抽象语法树可以表示为$Filter_{\mu(type,Array)}(X)$。
 \begin{align*}
 Filter_{p} (X) = \{x \in X : p(x) \}
 \end{align*}
 
 
-给定节点搜索查找相应边的\textit{traversal}可以用下面的公式表示。$X$是所有节点的集合，第一行公式表示在$X$中搜索所有的出边被标记为$l$，且边的性质$k$等于$a$的所有节点。相应的，第二个公式表示在$X$中搜索所有的入边被标记为$l$，且边的性质$k$等于$a$的所有节点。
+给定节点搜索查找相应边的traversal可以用下面的公式表示。$X$是所有节点的集合，第一行公式表示在$X$中搜索所有的出边被标记为$l$，且边的性质$k$等于$a$的所有节点。相应的，第二个公式表示在$X$中搜索所有的入边被标记为$l$，且边的性质$k$等于$a$的所有节点。
 
 \begin{align*}
 OutE^{k,a}_{l}(X) = \bigcup_{x \in X} \{e: e \in E \ and\ s(e)=x \ and \ \lambda(e) = l \ and \ \mu(e,k) = a \} \\
 InE^{k,a}_{l}(X) = \bigcup_{x \in X} \{e: e \in E \ and\ s(e)=x \ and \ \lambda(e) = l \ and \ \mu(e,k) = a \}
 \end{align*}
 
-除了根据节点搜索边，根据边查找源节点和目的节点是另外一个基本的\textit{traversal}，如下式所示。
+除了根据节点搜索边，根据边查找源节点和目的节点是另外一个基本的traversal，如下式所示。
 \begin{align*}
 Src(X) = \{s(e): e \in X \} \\
 Dst(X) = \{d(e): e \in X \} 
 \end{align*}
 
-在搜索具体的代码元素时，需要一些定义一些基本的\textit{traversal}。给定一个抽象语法树节点，搜索此节点的所有抽象语法子树节点,本章将其定义为$TNode$,如下式所示，其中$Out_{l} (\{v \})$表示查找$\upsilon$的子节点。
+在搜索具体的代码元素时，需要一些定义一些基本的traversal。给定一个抽象语法树节点，搜索此节点的所有抽象语法子树节点,本章将其定义为$TNode$,如下式所示，其中$Out_{l} (\{v \})$表示查找$\upsilon$的子节点。
 
 \begin{align*}
 TNodes(X) = \bigcup_{\upsilon \in X} \big(\upsilon \cup \big( \bigcup_{\upsilon_{c} \in Out_{l} (\{v \}) } TNodes(\{\upsilon_{c} \}) \big) \big)
 \end{align*}
 
-给定一个抽象语法树节点，搜索包裹的语句节点也是一个基本需求。例如已知一个$type=Array$的抽象语法树节点，找到包裹这个节点的语句，然后才能进一步根据语句节点进行控制流分析，其\textit{traversal}如下式所示。
+给定一个抽象语法树节点，搜索包裹的语句节点也是一个基本需求。例如，已知一个$type=Array$的抽象语法树节点，找到包裹这个节点的语句，然后才能进一步根据语句节点进行控制流分析，其traversal如下式所示。
 $$
 Statement(X) = \bigcup s(\{ \upsilon \})
 $$
@@ -246,34 +246,38 @@ $$
 \end{aligned}
 \right.
 $$
-\textit{traversal}可以使用复合函数符号$\circ$组合使用。如首先搜索所有的数组节点{（$type=Array$的节点）}，然后获取这个包裹此节点的语句节点，这个过程可以表示为$Statement \circ Filter_{\mu (\upsilon, type) = Array} (X)$。
+traversal可以使用复合函数符号$\circ$组合使用。如首先搜索所有的数组节点{（$type=Array$的节点）}，然后获取这个包裹此节点的语句节点，这个过程可以表示为$Statement \circ Filter_{\mu (\upsilon, type) = Array} (X)$。
 
 \section{基于程序性质图的源代码漏洞挖掘方法研究}\label{基于程序性质图的源代码漏洞粗定位方法研究}
-程序性质图里包含了源代码静态分析的所有信息，本小节主要阐述程序性质图的遍历方式{（\textit{traversal}）}，以及如何定制和组合程序性质图\textit{traversal}粗定位三种源代码软件漏洞：缓冲区溢出漏洞、格式化字符串漏洞、UAF（Use After Free）漏洞。
+程序性质图里包含了源代码静态分析的所有信息，本小节主要阐述基于程序性质图如何挖掘三种源代码软件漏洞：缓冲区溢出漏洞、格式化字符串漏洞、UAF（Use After Free）漏洞。
 %以及Double Free{（DF）}漏洞。
 
-\subsection{缓冲区溢出漏洞挖掘方法}
+\subsection{缓冲区溢出漏洞挖掘方法研究}
 \label{缓冲区溢出漏洞检测}
 
-在程序开发中缓冲区是指在栈或者堆上的一段内存区域，在源代码上表示为一个指向内存的指针或者一个数组变量。在源代码中，缓冲区的写操作有两种形式：（1）内存拷贝函数的调用，如\textit{strcpy}，\textit{strncpy}，\textit{memcpy}，\textit{strcat}等；（2）数组赋值或者指针解引用赋值；对于内存拷贝函数，如果拷贝的内存大小受输入控制且超过了分配的内存就会造成缓冲区溢出。对于数组赋值或者指针解引用赋值，如果出现在循环内部，在循环控制变量很大或者受输入控制也很容易造成缓冲区溢出。非循环的写操作也可以造成缓冲区溢出，但相对来说溢出的可能性较小。综上，缓冲区溢出漏洞的判定可总结为三个条件：（1）缓冲区的循环写或内存拷贝操作；（2）循环写或内存拷贝操作输入可控；（3）没有边界检测。
+%\subsubsection{源代码缓冲区溢出漏洞描述}
 
-内存拷贝函数用MCF{（Memory Copy Functions）}表示，可以分成分两类：第一种包含三个参数，第一个参数是拷贝的目的内存地址，第二个参数是被拷贝的源数据地址，第三个参数是拷贝内存的数量，如\textit{strncpy}，\textit{memcpy}等；另外一种包含前两个参数，不限制拷贝的内存数量，如\textit{strcpy}等。对于缓冲区循环写BLW（Buffer Loop Write），在一个函数中判断其是否存在需要两个条件：（1）赋值语句的左半部分是数组索引或者是指针的解引用；（2）赋值语句必须要包含在循环里。对于缓冲区写操作本章统称为BOSink（Buffer Overflow Sinks），所以有$BOSink = MCF \cup BLW$。另外，编程人员自己定义的和内存拷贝函数也需要考虑在内。例如，CVE-2016-9537 \upcite{noauthor_cve_nodate}是一个缓冲区溢出漏洞，溢出的原因是自定义的内存拷贝函数\_TIFFmemcpy没有进行正确的边界检测。此类函数其参数的含义和数量和传统的内存拷贝函数相似，所以这种自定义函数可以和传统的统一进行处理。
+在程序开发中缓冲区是指在栈或者堆上的一段内存区域，在源代码上表示为一个指向内存的指针或者一个数组变量。在源代码中，缓冲区的写操作有两种形式：（1）内存拷贝函数的调用，如strcpy，strncpy，memcpy，strcat等；（2）数组赋值或者指针解引用赋值；对于内存拷贝函数，如果拷贝的内存大小受输入控制且超过了分配的内存就会造成缓冲区溢出。对于数组赋值或者指针解引用赋值，如果出现在循环内部，在循环控制变量很大或者受输入控制也很容易造成缓冲区溢出。非循环的写操作也可以造成缓冲区溢出，但相对来说溢出的可能性较小。综上，缓冲区溢出漏洞的判定可总结为三个条件：（1）缓冲区的循环写或内存拷贝操作；（2）循环写或内存拷贝操作输入可控；（3）没有边界检测。
 
-输入可控IC（Input Control）是指BOSink中的关键变量和输入变量有数据依赖关系。输入变量可以是函数的参数，也可以通过命令行、环境变量、文件输入或者网络传入的变量。对于包含三个参数的内存拷贝函数如\textit{strcnpy}，需要第二和第三个参数输入可控；对于两个参数的内存拷贝函数如\textit{strcpy}，只需要第二个参数输入可控。内存拷贝函数的输入可控表示为ICMCF（Input Control of Memory Copy Functions）。对于缓冲区的循环写入则要求赋值语句的右操作数、数组索引变量或者循环控制变量输入可控，表示为ICBLW（Input Control of Buffer Loop Write）。所以输入可控可以表示为$IC = ICMCF \cup ICBLW$
+内存拷贝函数用MCF{（Memory Copy Functions）}表示，可以分成分两类：第一类包含三个参数，第一个参数是拷贝的目的内存地址，第二个参数是被拷贝的源数据地址，第三个参数是拷贝内存的数量，如strncpy，memcpy等；另外一类包含两个参数，不限制拷贝的内存数量，如strcpy等。对于缓冲区循环写BLW（Buffer Loop Write），在一个函数中判断其是否存在需要两个条件：（1）赋值语句的左半部分是数组索引或者是指针的解引用；（2）赋值语句必须要包含在循环里。对于缓冲区写操作本章统称为BOSink（Buffer Overflow Sinks），所以有$BOSink = MCF \cup BLW$。另外，编程人员自己定义的和内存拷贝函数也需要考虑在内。例如，CVE-2016-9537 \upcite{noauthor_cve_nodate}是一个缓冲区溢出漏洞，溢出的原因是自定义的内存拷贝函数\_TIFFmemcpy没有进行正确的边界检测。此类函数其参数的含义和数量和传统的内存拷贝函数相似，所以这种自定义函数可以和传统的统一进行处理。
+
+输入可控IC（Input Control）是指BOSink中的关键变与和输入变量有数据依赖关系。输入变量可以是函数的参数，也可以通过命令行、环境变量、文件输入或者网络传入的变量。对于包含三个参数的内存拷贝函数如strcnpy，需要满足第二和第三个参数输入可控；对于两个参数的内存拷贝函数如strcpy，需要第二个参数输入可控。内存拷贝函数的输入可控表示为ICMCF（Input Control of Memory Copy Functions）。对于缓冲区的循环写入则要求赋值语句的右操作数、数组索引变量或者循环控制变量输入可控，表示为ICBLW（Input Control of Buffer Loop Write）。所以输入可控可以表示为$IC = ICMCF \cup ICBLW$
 
 缓冲区溢出的边界检测San（Sanitization）包含四种表现形式。
 
-（1）关系表达式中包含内存拷贝函数的长度变量或者表达式，对于Listing \ref{缓冲区溢出边界检测示例代码}中第5行的\textit{memcpy}函数，第4行的边界检测就属于此类，表示为LS（Length Sanitization）。
+（1）关系表达式中包含内存拷贝函数的长度变量或者表达式，以图\ref{缓冲区溢出边界检测示例代码}中程序为例，
+对于第5行的memcpy函数，第4行的边界检测就属于此类，表示为LS（Length Sanitization）。
 
-{（2）}关系表达式中包含内存拷贝函数长度变量所依赖的变量，对于Listing \ref{缓冲区溢出边界检测示例代码}中第6行的\textit{strncpy}，表示为LDS（Length Dependency Sanitization）。
+{（2）}关系表达式中包含内存拷贝函数长度变量所依赖的变量，对于图\ref{缓冲区溢出边界检测示例代码}中第6行的strncpy，表示为LDS（Length Dependency Sanitization）。
 
-（3）关系表达式中包含目的缓冲区变量，对于Listing \ref{缓冲区溢出边界检测示例代码}中第9行的\textit{memcpy}函数，第8行的边界检测属于此类，表示为BVS（Buffer Variable Sanitization）。
+（3）关系表达式中包含目的缓冲区变量，对于图\ref{缓冲区溢出边界检测示例代码}中第9行的memcpy函数，第8行的边界检测属于此类，表示为BVS（Buffer Variable Sanitization）。
 
-(4)对于缓冲区循环写，关系表达式中包含循环控制变量，如Listing \ref{缓冲区溢出边界检测示例代码}中第13行的数组写，第11行的边界检测属于此类，表示为LCVS（Loop Control Variable Sanitization）。
+(4)对于缓冲区循环写，关系表达式中包含循环控制变量，如图\ref{缓冲区溢出边界检测示例代码}中第13行的数组写，第11行的边界检测属于此类，表示为LCVS（Loop Control Variable Sanitization）。
 
-综合以上四种情况，缓冲区溢出边界检测可表示为$San = LS \cup LDS \cup BVS \cup LCVS$。以上四种边界检测判断条件是非常严格的，能够滤除大部分的误报，但同是也一定会引起漏报。
+综合以上四种情况，缓冲区溢出边界检测可表示为$San = LS \cup LDS \cup BVS \cup LCVS$。以上四种边界检测判断条件是非常严格的，能够滤除大部分的误报，但同时也一定会引起漏报。
 
-\begin{lstlisting}[language=C,caption=缓冲区溢出边界检测示例代码,label=缓冲区溢出边界检测示例代码]
+\begin{figure}[h]
+\begin{lstlisting}[language=C]
 void foo(char *p, int length, int padding)
 {
 	char dst[255], char dst1[255];
@@ -291,14 +295,20 @@ void foo(char *p, int length, int padding)
 	}
 }
 \end{lstlisting}
+\caption{缓冲区溢出边界检测示例代码}
+\label{缓冲区溢出边界检测示例代码}
+\end{figure}
 
-下面就基于上述的三个条件给出缓冲区溢出基于程序性质图特性的形式化定义。
+
+下面就基于上述的三个条件给出源代码缓冲区溢出的静态模型。
 \begin{definition}
 \label{缓冲区溢出定义}
-缓冲区溢出漏洞可以用一个三元组表示$(IC, BOSink, San)$，其中$IC = ICMCF \cup ICBLW$表示程序的外部输入，$BOSink = MCF \cup BLW$表示缓冲区溢出在源代码上的表示形式，$San = LS \cup LDS \cup BVS \cup LCVS$表示边界检测的四种语法描述。
+缓冲区溢出漏洞可以用一个三元组表示$(IC, BOSink, San)$，其中$IC = ICMCF \cup ICBLW$表示程序的外部输入，$BOSink = MCF \cup BLW$表示缓冲区溢出在源代码上的表示形式，$San = LS \cup LDS \cup BVS \cup LCVS$表示边界检测的四种语法描述。若在一个函数中，某个缓冲区满足$IC$以及$BOSink$，不满足$San$，则表示此函数存在一个缓冲区溢出漏洞。
 \end{definition}
 
-程序性质图中承载了所有的检测缓冲区溢出漏洞需要的信息，通过组合不同的traversal可以实现在性质图上检测缓冲区溢出漏洞。基于程序性质图检测由内存拷贝函数引起的缓冲区溢出漏洞的过程如算法\ref{内存拷贝函数缓冲区溢出漏洞检测算法}所示。在检测缓冲器溢出漏洞之前，源代码程序首先被解析并生成程序性质图。算法的输入是一个配置文件，用来记录所要检测的内存拷贝函数名字以及关键的参数次序，返回的是可疑的缓冲区溢出函数已经相应的缓冲区变量，用BOs表示。算法的具体执行过程如下：
+%\subsubsection{源代码缓冲区溢出漏洞挖掘算法研究}
+
+程序性质图中承载了所有的检测缓冲区溢出漏洞需要的信息，通过组合不同的traversal可以实现在性质图上检测缓冲区溢出漏洞。内存拷贝函数引起的缓冲区溢出漏洞检测过程如算法\ref{内存拷贝函数缓冲区溢出漏洞检测算法}所示。在检测缓冲器溢出漏洞之前，源代码程序首先被解析并生成程序性质图。算法的输入是一个配置文件，用来记录所要检测的内存拷贝函数名字以及关键的参数次序，返回的是可疑的缓冲区溢出函数已经相应的缓冲区变量，用BOs表示。算法的具体执行过程如下：
 
 %\begin{enumerate}[\textbf{步骤1}]
 \begin{enumerate}[(1)]
@@ -356,7 +366,7 @@ void foo(char *p, int length, int padding)
 	\end{algorithmic}
 \end{algorithm}
 
-算法\ref{缓冲区循环写缓冲区溢出漏洞检测算法}是检测因为缓冲区循环写引起的缓冲区溢出漏洞的过程。此类缓冲区溢出漏洞的检测没有输入，同样输出缓冲区溢出漏洞可疑函数及缓冲区变量，算法的具体执行过程如下：
+算法\ref{缓冲区循环写缓冲区溢出漏洞检测算法}是由缓冲区循环写引起的缓冲区溢出漏洞检测过程。此类缓冲区溢出漏洞的检测没有输入，同样输出缓冲区溢出漏洞可疑函数及缓冲区变量，算法的具体执行过程如下：
 \begin{enumerate}[(1)]
 \item 对于指针解引用造成的缓冲区循环写，首先获取所有的指针解引用AST节点（第2行）；
 \item 获取指针解引用节点对应的缓冲区变量bufferVar以及此节点对应的语句AST节点statement；
@@ -430,14 +440,15 @@ void foo(char *p, int length, int padding)
 	\end{algorithmic}
 \end{breakablealgorithm}
 
-\subsection{格式化字符串漏洞挖掘方法}
+\subsection{格式化字符串漏洞挖掘方法研究}
+%wb
+格式化函数是一系列标准库函数，比如 *printf 系列函数。这些函数接受可变数量的参数，其中一个参数作为其他参数的格式化描述，被称为格式化字符串参数。格式化函数执行时对格式化字符串参数进行解释，并根据其格式描述使用其它的参数填充对应的描述字符串，形成最终的输出。软件编写过程中一般会大量使用这类函数，用于输出、处理字符串等。但是，当格式化字符串与其他输入参数不相符时，就会出现意外情况，比如栈数据泄露，任意内存写等。格式化字符串漏洞一般是指：格式化字符串参数受外部输入影响，从而精心构造的输入可能窃取栈上数据或向内存任意位置写入数据。软件中一般会有很多位置使用格式化函数，如果将他们都直接标记出来，则误报率将会变得相当高，从而导致整个分析过程无效。因此，需要做进一步的分析，尽可能地提高分析精度。
+%wb
 
-格式化函数是一系列标准库函数,比如 *printf 系列函数。这些函数接受可变数量的参数,其中一个参数作为其他参数的格式化描述,被称为格式化字符串参数。格式化函数执行时对格式化字符串参数进行解释,并根据其格式描述使用其它的参数填充对应的描述字符串,形成最终的输出。软件编写过程中一般会大量使用这类函数,用于输出、处理字符串等。但是,当格式化字符串与其他输入参数不相符时,就会出现意外情况,比如栈数据泄露,任意内存写等。格式化字符串漏洞一般是指:格式化字符串参数受外部输入影响,从而精心构造的输入可能窃取栈上数据或向内存任意位置写入数据。软件中一般会有很多位置使用格式化函数,如果将他们都直接标记出来,则误报率将会变得相当高,从而导致整个分析过程无效。因此,需要做进一步的分析,尽可能地提高分析精度。
-
-当调用格式化函数时,格式化字符串参数的来源可分为两种类型:字符串常量类型、变量类型。通过分析漏洞的形成机理和已有的格式化字符串漏洞发现:参数为字符串常量的调用链一般不会出现问题,受输入控制的变量类型则都有可能导致格式化字符串漏洞。输入可控的定义和缓冲区溢出输入可控的定义相同，表示输入函数或者当前函数的参数和格式化函数的参数存在数据依赖关系。基于程序性质图的格式化字符串漏洞的挖掘如算法\ref{格式化字符串漏洞检测算法}所示，算法的输出是格式化字符串漏洞可疑函数及可疑区域。格式化字符串漏洞可疑区域是指危险函数中*printf函数调用的行号，此信息由节点的\textit{location}性质表示。算法\ref{格式化字符串漏洞检测算法}和算法\ref{内存拷贝函数缓冲区溢出漏洞检测算法}具有很大的相似性。不同的是算法\ref{格式化字符串漏洞检测算法}的输入配置文件是格式化函数和格式化参数的次序组成，例如对于printf函数，其第一个参数是格式化参数，可用一个二元组<printf,0>表示。算法\ref{格式化字符串漏洞检测算法}的具体执行过程如下：
+当调用格式化函数时，格式化字符串参数的来源可分为两种类型：字符串常量类型、变量类型。通过分析漏洞的形成机理和已有的格式化字符串漏洞发现：参数为字符串常量的调用链一般不会出现问题，受输入控制的变量类型则都有可能导致格式化字符串漏洞。输入可控的定义和缓冲区溢出输入可控的定义相同，表示输入函数或者当前函数的参数和格式化函数的参数存在数据依赖关系。基于程序性质图的格式化字符串漏洞的挖掘过程如算法\ref{格式化字符串漏洞检测算法}所示，算法的输出是格式化字符串漏洞可疑函数及可疑区域。格式化字符串漏洞可疑区域是指危险函数中*printf函数调用的行号，此信息由节点的location表示。算法\ref{格式化字符串漏洞检测算法}和算法\ref{内存拷贝函数缓冲区溢出漏洞检测算法}具有很大的相似性。不同的是算法\ref{格式化字符串漏洞检测算法}的输入配置文件是格式化函数和格式化参数的次序组成，例如对于printf函数，其第一个参数是格式化参数，可用一个二元组<printf,0>表示。算法\ref{格式化字符串漏洞检测算法}的具体执行过程如下：
 \begin{enumerate}[(1)]
 \item 从配置文件导出相应的格式化函数和格式化参数的次序（第2行）；
-\item 对于每一个格式化函数fmtFun，在性质图数据库中搜索所有的名为fmtFun的函数调用AST节点fmtcallExprs，针对每一个fmtcallExpr获取语句节点statement并获取参数节点arg（第3-7行）;
+\item 对于每一个格式化函数$fmtFun$，在性质图数据库中搜索所有的名为fmtFun的函数调用AST节点fmtcallExprs，针对每一个fmtcallExpr获取语句节点statement并获取参数节点arg（第3-7行）;
 \item 
 判断arg是否包含在从输入函数到当前语句的数据流上，如果判断成立则将当前函数的functionId和location加入到BOs；
 \end{enumerate}
@@ -466,15 +477,16 @@ void foo(char *p, int length, int padding)
 	\end{algorithmic}
 \end{algorithm}
 
-\subsection{UAF漏洞挖掘方法}
-UAF漏洞属于指针相关的漏洞,其主要表现形式是引用已经被释放的内存对象。UAF 漏洞可能导致程序行为异常,经过精心构造的攻击代码可以利用 UAF 漏洞实现任意代码执行。根据 UAF 漏洞的表现形式,可以分析在内存释放函数 (如free、delete 等等) 调用后,被释放的内存对象指针是否任然“存活”,即是否存在后续指令继续使用该指针的行为,如果发现被释放的内存对象指针任然“存活”,则报告一个可疑 UAF 漏洞。要实现上述过程需要分析每一个语句使用的符号和内存释放是否有控制依赖关系，而每个语句节点使用的符号可以由程序符号图PSG（Program Symbol Graph）表示。
+\subsection{UAF漏洞挖掘方法研究}
+%syf
+UAF漏洞属于指针相关的漏洞,其主要表现形式是引用已经被释放的内存对象。UAF 漏洞可能导致程序行为异常,经过精心构造的攻击代码可以利用 UAF 漏洞实现任意代码执行。根据 UAF 漏洞的表现形式,可以分析在内存释放函数 (如free、delete 等等) 调用后，被释放的内存对象指针是否任然“存活“，即是否存在后续指令继续使用该指针的行为，如果发现被释放的内存对象指针任然“存活”，则报告一个可疑 UAF 漏洞。要实现上述过程需要分析每一个语句使用的符号和内存释放是否有控制依赖关系，而每个语句节点使用的符号可以由程序符号图PSG（Program Symbol Graph）表示。
 
 \begin{definition}
  \label{符号图定义}
  程序符号图$G_{PS}=(V_{PS},E_{PS},\lambda_{PS} ,\mu_{PS}, s,d)$，$V_{PS}$是所有语句节点和标识符节点$(\mu(type) = identifier)$的集合，$E_{PS}$连接语句节点和语句使用的符号，$\lambda : E \rightarrow \sum_{PS}$是边标记函数，其中$\sum_{PS} = \{use\}$。
 \end{definition}
 
-通过程序符号图引入程序性质图，可以得出基于程序性质图的UAF检测算法，如算法\ref{UAF检测算法}所示。该算法返回的是free函数调用的位置、free的变量再次使用的语句以及当前函数具体的执行过程如下：
+通过将程序符号图引入程序性质图，可以得出基于程序性质图的UAF检测算法，如算法\ref{UAF检测算法}所示。该算法返回的是free函数调用的位置、free的变量再次使用的语句以及当前函数具体的执行过程如下：
 
 \begin{enumerate}[(1)]
 \item 初始化返回值以及内存释放函数的名称（第1行），在性质图库中查询所有的内存释放函数的调用语句（第2行）；
@@ -658,7 +670,8 @@ xzlib.c & xz\_head & N & N/A\tabularnewline
 
 \subsubsection{sink类型}
 
-缓冲区溢出漏洞包含三种sink类型：指针解引用（pointer dereference）、数组写dangerous function以及危险函数（dangerous function），如表\ref{Description_of_Three_Sink_Types}所示。如果函数中的一条语句符合三种sink类型的任意一条而又没有进行缓冲区边界检测，则程序就有可能发生缓冲区溢出。在C/C++中，数组的元素即可以通过指针解引用也可以用数组下标访问，但是对同一个缓冲区变量进行访问时很少混合使用，所以这里将二者分成两种类型。例如Listing \ref{CVE-2016-9537示例代码}中的第24、25行的变量src和dst就属于指针解引用这一类。危险函数是指像memcpy，strncpy等的内存函数拷贝或者字符串拼接函数，或者用户定义的具有相似功能的函数，例如程序Listing \ref{CVE-2016-9537示例代码}中第15、16、17行中的用户定义函数“\_TIFFmemcpy”，此函数和标准库函数memcpy的作用相同。如果一个用户定义的函数和标准库函数的参数个数相同、功能相近，则亦将此函数归为危险函数一类。另外某些格式化字符串函数也可能引起缓冲区溢出漏洞，但在本节中不予考虑。
+缓冲区溢出漏洞包含三种sink类型：指针解引用（Pointer Dereference）、数组写（Array Write）以及危险函数（Dangerous Function），如表\ref{Description_of_Three_Sink_Types}所示。如果函数中的一条语句符合三种sink类型的任意一条而又没有进行缓冲区边界检测，则程序就有可能发生缓冲区溢出。在C/C++中，数组的元素即可以通过指针解引用也可以用数组下标访问，但是对同一个缓冲区变量进行访问时很少混合使用，所以这里将二者分成两种类型。例如图\ref{CVE-2016-9537示例代码}中的第24、25行的变量src和dst就属于指针解引用这一类。危险函数是指像memcpy，strncpy等内存函数拷贝、字符串拼接函数，或者用户定义的具有相似功能的函数，例如程序图\ref{CVE-2016-9537示例代码}中第15、16、17行中的用户定义函数“\_TIFFmemcpy”，此函数和标准库函数memcpy的作用相同。如果一个用户定义的函数和标准库函数的参数个数相同、功能相近，则亦将此函数归为危险函数一类。
+%另外某些格式化字符串函数也可能引起缓冲区溢出漏洞，但在本节中不予考虑。
 
 \begin{table}[ht]
 \begin{center}
@@ -681,7 +694,8 @@ dangerous function & strcpy(dst, src), strncpy(dst, src, n)\\
 \end{center}
 \end{table}
 
-\begin{lstlisting}[language=C,caption=CVE-2016-9537示例代码,label=CVE-2016-9537示例代码]
+\begin{figure}[h]
+\begin{lstlisting}[language=C]
 static int reverseSamplesBytes (uint16 spp, uint16 bps, uint32 width, uint8 *src, uint8 *dst)
   {
    int i;
@@ -713,13 +727,17 @@ static int reverseSamplesBytes (uint16 spp, uint16 bps, uint32 width, uint8 *src
  ...}
 \end{lstlisting}
 
+\caption{CVE-2016-9537示例代码}
+\label{CVE-2016-9537示例代码}
+\end{figure}
+
 \subsubsection{缓冲区位置}
 
-缓冲区位置属性（memory location）描述的是缓冲区内存分布的位置，即栈、堆、数据段、BSS段与共享内存五种位置。从编程角度上，这五种内存位置的初始化方式是不相同的。局部非静态变量定义在栈上，通过malloc函数动态分配的缓冲区在堆上，数据段上存储的是全局初始化变量，BSS段上存储的是未初始化的全局或者静态变量，共享内存是特别分配的映射进或者映射出程序地址空间，并且通过特殊的操作系统函数（如Linux中的shmget,shmat,shmdt和shmctl）释放的内存区域。本节只考虑栈、堆和数据段三类缓冲区位置。三种内存位置被映射成一个三维向量表示为{(stack,heap,data segment)}，提取静态属性时，根据缓冲区的初始化方式进行判断，如果相应的内存位置出现则将其赋为1，否则赋为0。例如Listing \ref{CVE-2016-9537示例代码}中的指针变量\textit{swapbuff}，因为被声明为局部变量，所以对应的变量表示为$(1,0,0)$。
+缓冲区位置属性（Memory Location）描述的是缓冲区内存分布的位置，即栈、堆、数据段、BSS段与共享内存五种位置。从编程角度上，这五种内存位置的初始化方式是不相同的。局部非静态变量定义在栈上，通过malloc函数动态分配的缓冲区在堆上，数据段上存储的是全局初始化变量，BSS段上存储的是未初始化的全局或者静态变量，共享内存是特别分配的映射进或者映射出程序地址空间，并且通过特殊的操作系统函数（如Linux中的shmget,shmat,shmdt和shmctl）释放的内存区域。本节只考虑栈、堆和数据段三类缓冲区位置。三种内存位置被映射成一个三维向量表示为{(stack,heap,data segment)}，提取静态属性时，根据缓冲区的初始化方式进行判断，如果相应的内存位置出现则将其赋为1，否则赋为0。例如图\ref{CVE-2016-9537示例代码}中的指针变量swapbuff，因为被声明为局部变量，所以对应的变量表示为$(1,0,0)$。
 
 \subsubsection{容器}
 
-容器属性（container）描述的是缓冲区是否包含或者包含在一个什么样的容器当中。一般的，容器结构越复杂缓冲区的使用越容易出现错误。根据Zitser\upcite{zitser_testing_2004}统计，7\%的漏洞缓冲区包含在\textit{Union}结构中，而在本节的训练集中，近30\%的漏洞包含在不同的容器中，所以这里将容器也作为一个属性，容器属性的示例和映射规则规则如表\ref{Container_Attributes}所示。这里将\textit{Union}和\textit{Struct}二者都映射成2，是因为他们在编程上的相似性，\textit{others}表示更复杂的结构如多重\textit{Union}或者Struct等。
+容器属性（Container）描述的是缓冲区是否包含或者包含在一个什么样的容器当中。一般的，容器结构越复杂缓冲区的使用越容易出现错误。根据Zitser\upcite{zitser_testing_2004}统计，7\%的漏洞缓冲区包含在Union结构中，而在本节的训练集中，近30\%的漏洞包含在不同的容器中，所以这里将容器也作为一个属性，容器属性的示例和映射规则规则如表\ref{Container_Attributes}所示。这里将union和struct二者都映射成2，是因为他们在编程上的相似性，others表示更复杂的结构如多重union或者struct等。
 
 
 \begin{table}[ht]
@@ -743,9 +761,9 @@ ohters & others & 3 \\ \hline
 
 \subsubsection{索引/地址/长度复杂度}
 
-索引复杂度属性描述的是数组索引的复杂度，其引入是基于这样一个假设：对于索引值的操作越复杂，数组越容易发生溢出。索引复杂度可以分成六种：常量（constant）、加减法（addition）、乘除法（multiplication）、非线性（non-linear）、函数调用（function call）以及数组访问（array access），如表\ref{Index_Type}所示。加减法操作包括类似加法和减法的操作，自增和自减操作也归入此类。乘除法操作包含乘法、除法以及逐位左移和右移等操作。非线性操作包含取模以及标准库的其他非线性函数例如\textit{pow()}与\textit{sqrt()}等。函数调用操作描述的是数组索引操作是否包含函数的返回值（除标准库的非线性函数）。数组访问操作表示数组索引操作是否包含数组访问。尽管很难被利用，常量索引还是有造成缓冲区溢出，所以也被列为索引操作之一。除了常量类型，其他的索引操作类型都有两种不同的呈现方式：p[i-8]和(p-8)[i]。
+索引复杂度属性描述的是数组索引的复杂度，其引入是基于这样一个假设：对于索引值的操作越复杂，数组越容易发生溢出。索引复杂度可以分成六种：常量（constant）、加减法（addition）、乘除法（multiplication）、非线性（non-linear）、函数调用（function call）以及数组访问（array access），如表\ref{Index_Type}所示。加减法操作包括类似加法和减法的操作，自增和自减操作也归入此类。乘除法操作包含乘法、除法以及逐位左移和右移等操作。非线性操作包含取模以及标准库的其他非线性函数例如pow()与sqrt()等。函数调用操作描述的是数组索引操作是否包含函数的返回值（除标准库的非线性函数）。数组访问操作表示数组索引操作是否包含数组访问。尽管很难被利用，常量索引还是有造成缓冲区溢出，所以也被列为索引操作之一。除了常量类型，其他的索引操作类型都有两种不同的呈现方式：p[i-8]和(p-8)[i]。
 
-图\ref{accumulating_the_operations_of_i}是获取复杂度的一个简单的示例。\textit{i}是数组\textit{p}的索引变量，沿着数据流获取对\textit{i}的操作形成一个六维向量{(0,1,0,0,1,1)}。
+图\ref{accumulating_the_operations_of_i}是获取复杂度的一个简单的示例。i是数组p的索引变量，沿着数据流获取对i的操作形成一个六维向量{(0,1,0,0,1,1)}。
 
 \begin{table}[ht]
 \begin{center}
@@ -773,7 +791,7 @@ array access & p[buf[i]], (p+buf[n])[i], (buf[n])[i] \\ \hline
 \label{accumulating_the_operations_of_i}
 \end{figure}
 
-地址和长度复杂度属性和索引复杂度相似，其的示例和映射规则如表\ref{ADDRESS_TYPE}和表\ref{LENGTH_TYPE}所示。地址和长度复杂度也被映射成一个六维向量，相应的操作每出现一次对应的值就加1。对于Listing \ref{CVE-2016-9537示例代码}第24行、25行的缓冲区变量\textit{src}和\textit{dst}，地址复杂度属性对应的向量为{(0,1,0,0,0,0)}和{(0,3,0,0,0,0)}。对于危险函数sink类型的缓冲区变量\textit{swapbuff}，其长度复杂度向量为{(0,1,2,0,0,0)}。另外，索引/地址/长度复杂度属性都需要将缓冲区别名考虑在内，即对缓冲区别名的操作需要类累加到相应的向量中。
+地址/长度复杂度属性与索引复杂度相似，其示例和映射规则如表\ref{ADDRESS_TYPE}和表\ref{LENGTH_TYPE}所示。地址和长度复杂度也被映射成一个六维向量，相应的操作每出现一次对应的值就加1。对于图\ref{CVE-2016-9537示例代码}第24行、25行的缓冲区变量src和dst，地址复杂度属性对应的向量为{(0,1,0,0,0,0)}和{(0,3,0,0,0,0)}。对于危险函数sink类型的缓冲区变量swapbuff，其长度复杂度向量为{(0,1,2,0,0,0)}。另外，索引/地址/长度复杂度属性都需要将缓冲区别名考虑在内，即对缓冲区别名的操作需要类累加到相应的向量中。
 
 \begin{table}[ht]
 \begin{center}
@@ -818,14 +836,15 @@ array access & memcpy (dest, src, buf[255]) \\ \hline
 虽然静态分析不能精确的捕捉缓冲区的边界检测（Sanitization）信息，但依然可以通过边界检测的模式去近似的估计。如果一条语句符合以下的几种模式，就可以近似的认为编程人员已经考虑了边界检测，这些模式出现的次数越多则说明编程人员添加边界检测的概率要更高。边界检测可以分为以下三种类型。
 
 \begin{enumerate}[1]
-\item 直接边界检测：假设$P=<n_1, n_2,...,n_N>$是CFG上的一条路径，$0<i<N$。如果$n_j$是一个sink节点，$n_i$是一个条件语句节点，若程序满足以下任一条件，则$n_i$是一个直接边界检测节点。（1）$n_j$是一个数组写sink，$iv$是$n_j$的数组索引变量或表达式，如果$n_i$使用$iv$；（2）$n_j$是一个危险函数sink，$l$是$n_j$索要拷贝的长度变量或者表达式，如果$n_i$使用$l$；（3）$buf$是$n_j$的缓冲区变量且$n_i$使用了$buf$。像$n_i$这样的节点在函数中每出现一次，直接边界检测的值加1。例如Listing \ref{CVE-2016-9537示例代码}的补丁程序Listing \ref{CVE-2016-9537补丁程序}，第1行的条件语句就是一个直接边界检测。
-\item 间接边界检测：此类边界检测只适用于数组写sink和危险函数sink；假设$s$是一个语句节点，$Use(s)=\{v|\text{s是一个定义语句且使用v}\}$，$DDUse(v)$表示所有$v$数据依赖的变量，即$DDUse(v) = \bigcup_{v_c \in Use(v)} v_c \cup DDUse(v_c)$；对于Listing \ref{CVE-2016-9537示例代码}第15行的长度变量{bytes\_per\_pixel}，$DDUse(bytes_per_pixel) = {bps, spp}$；假设$P=<n_1, n_2,...,n_N>$是CFG上的一条路径，$0<i<N$。如果$n_j$是一个sink节点，$n_i$是一个条件语句节点，$iv$是一个长度变量或者数组索引变量，$n_i$使用$v$且$v \in DDUse(iv)$，在$n_i$是一个间接边界检测节点。例如Listing \ref{间接边界检测示例程序}的第1行就是一个间接边界检测节点。
-\item 过程间检测：如果函数的参数与长度变量、数组索引或者缓冲区变量有数据依赖关系，且参数出现在上级调用函数的条件语句中，则称此条件语句是一个过程间边界检测；Listing \ref{过程间边界检测示例程序}是一个过程间边界检测的示例。
+\item 直接边界检测：假设$P=<n_1, n_2,...,n_N>$是CFG上的一条路径，$0<i<N$。如果$n_j$是一个sink节点，$n_i$是一个条件语句节点，若程序满足以下任一条件，则$n_i$是一个直接边界检测节点。（1）$n_j$是一个数组写sink，$iv$是$n_j$的数组索引变量或表达式，如果$n_i$使用$iv$；（2）$n_j$是一个危险函数sink，$l$是$n_j$索要拷贝的长度变量或者表达式，如果$n_i$使用$l$；（3）$buf$是$n_j$的缓冲区变量且$n_i$使用了$buf$。像$n_i$这样的节点在函数中每出现一次，直接边界检测的值加1。图\ref{CVE-2016-9537补丁程序}第1行的条件语句就是一个直接边界检测。
+\item 间接边界检测：此类边界检测只适用于数组写sink和危险函数sink；假设$s$是一个语句节点，$Use(s)=\{v|\text{s是一个定义语句且使用v}\}$，$DDUse(v)$表示所有$v$数据依赖的变量，即$DDUse(v) = \bigcup_{v_c \in Use(v)} v_c \cup DDUse(v_c)$；对于图\ref{CVE-2016-9537示例代码}第15行的长度变量{bytes\_per\_pixel}，$DDUse(bytes_per_pixel) = {bps, spp}$；假设$P=<n_1, n_2,...,n_N>$是CFG上的一条路径，$0<i<N$。如果$n_j$是一个sink节点，$n_i$是一个条件语句节点，$iv$是一个长度变量或者数组索引变量，$n_i$使用$v$且$v \in DDUse(iv)$，在$n_i$是一个间接边界检测节点。例如图\ref{间接边界检测示例程序}的第1行就是一个间接边界检测节点。
+\item 过程间检测：如果函数的参数与长度变量、数组索引或者缓冲区变量有数据依赖关系，且参数出现在上级调用函数的条件语句中，则称此条件语句是一个过程间边界检测；图\ref{过程间边界检测示例程序}是一个过程间边界检测的示例。
 \end{enumerate}
 
 此外，一些条件语句虽然符合上面的描述，但不能算作为边界检测。例如第7行的条件语句不能被当做直接边界检测，因为将一个缓冲区变量和NULL做比较的作用是判断一个指针是否为NULL。边界检测属性被映射成一个三维向量，每一类边界检测出现一次则相应的数值加1。
 
-\begin{lstlisting}[language=C,caption=CVE-2016-9537补丁程序,label=CVE-2016-9537补丁程序]
+\begin{figure}[h]
+\begin{lstlisting}[language=C]
 if( bytes_per_pixel > sizeof(swapbuff) ){
   TIFFError("reverseSamplesBytes","bytes_per_pixel too large");
   return (1);
@@ -833,13 +852,25 @@ if( bytes_per_pixel > sizeof(swapbuff) ){
 
 \end{lstlisting}
 
-\begin{lstlisting}[language=C,caption=间接边界检测示例程序,label=间接边界检测示例程序]
+\caption{CVE-2016-9537补丁程序}
+\label{CVE-2016-9537补丁程序}
+\end{figure}
+
+
+\begin{figure}[h]
+\begin{lstlisting}[language=C]
 if(i<256)
 {
   buf[i+j] = 1;
 }
 \end{lstlisting}
 
+\caption{间接边界检测示例程序}
+\label{间接边界检测示例程序}
+\end{figure}
+
+
+\begin{figure}[h]
 \begin{lstlisting}[language=C,caption=过程间边界检测示例程序,label=过程间边界检测示例程序]
 void woo(int arg){
   if(arg<256)
@@ -851,12 +882,17 @@ void foo(int param)
 {
   buf[param]=1;
 }
-
 \end{lstlisting}
+
+\caption{过程间边界检测示例程序}
+\label{过程间边界检测示例程序}
+\end{figure}
+
+
 
 \subsubsection{循环/条件/函数调用深度}
 
-循环/条件/函数调用深度属性反映了程序的复杂度。其中，循环/条件深度表示包裹sink语句循环/条件层次，函数调用深度描述从入口函数到sink函数之间的函数调用数量，函数调用深度可以通过\ref{扩展的程序性质图}引入的函数调用性质图获取。循环/条件/函数调用深度属性被映射成一个三维向量。对于Listing \ref{CVE-2016-9537示例代码}的sink变量\textit{src}，其调用链为$main \rightarrow createCroppedImage \rightarrow mirrorImage \rightarrow reverseSanplesBytes$，switch语句在本节中也被当做条件语句，所以其向量为（2,1,4）。
+循环/条件/函数调用深度属性反映了程序的复杂度。其中，循环/条件深度表示包裹sink语句循环/条件层次，函数调用深度描述从入口函数到sink函数之间的函数调用数量，函数调用深度可以通过\ref{扩展的程序性质图}引入的函数调用性质图获取。循环/条件/函数调用深度属性被映射成一个三维向量。对于图\ref{CVE-2016-9537示例代码}的sink变量src，其调用链为$main \rightarrow createCroppedImage \rightarrow mirrorImage \rightarrow reverseSanplesBytes$，switch语句在本节中也被当做条件语句，所以其向量为（2,1,4）。
 
 \subsubsection{输入可控}
 
@@ -874,16 +910,17 @@ void foo(int param)
  过程间边界检测性质图$G=(V_A,E_{IP},\lambda_{IP} ,\mu_IP, s, d)$，$V_{A}$是抽象语法树节点，$E_{IP}$连接条件语句节点和被调用函数的sink语句节点，$\lambda_{IP}$，$\lambda_{IP}:E_{IP} \rightarrow \sum_{IP}$，其中$\sum_{IP}=\{IC, ID\}$， $IC$表示过程间控制依赖，$ID$表示过程间数据依赖，过程间数据依赖边被赋予一个$symbol$属性。
 \end{definition}
 
-Listing \ref{过程间边界检测和函数调用性质图解释程序}是过程间边界检测和函数调用性质图解释程序。图\ref{简化程序性质图}Listing \ref{过程间边界检测和函数调用性质图解释程序}的简化程序性质图，删除了部分抽象语法树节点和边，图\ref{过程间边界检测性质图和函数调用性质图}(a)是Listing \ref{过程间边界检测和函数调用性质图解释程序}的过程间边界检测性质图示意图。通过对比图\ref{简化程序性质图}和图\ref{过程间边界检测性质图和函数调用性质图}，可以看出为了产生$E_{IP}$，条件语句\textit{if(size<100)}必须和函数具有数据和控制依赖关系且\textit{memcpy}函数的参数\textit{src}，\textit{count}必须和\textit{foo}函数的参数有数据依赖关系。
+图\ref{过程间边界检测和函数调用性质图解释程序}为过程间边界检测和函数调用性质图解释程序。图\ref{简化程序性质图}为其简化的程序性质图（删除了部分抽象语法树节点和边），图\ref{过程间边界检测性质图和函数调用性质图}(a)是的过程间边界检测性质图示意图。通过对比图\ref{简化程序性质图}和图\ref{过程间边界检测性质图和函数调用性质图}，可以看出为了产生$E_{IP}$，条件语句if(size<100)必须和函数具有数据和控制依赖关系且memcpy函数的参数src，count必须和foo函数的参数有数据依赖关系。
 
 \begin{definition}
  \label{函数调用性质图}
  过程间边界检测性质图$G=(V_{A},E_{CC},\lambda_{CC} ,\mu_CC, s, d)$，$V_{A}$是抽象语法树节点，如果函数$f_1$调用$f_2$，则$E_{IP}$连接两个函数定义节点，$\lambda_{IP}:E_{CC} \rightarrow \sum_{CC}$，其中$\sum_{IP}=\{CC\}$，每条边被赋予一个$symbol$属性，用于表示函数之间传递的符号。
 \end{definition}
 
-图\ref{过程间边界检测性质图和函数调用性质图}(b)是Listing \ref{过程间边界检测和函数调用性质图解释程序}的函数调用性质图示意图。函数调用性质图能获取函数调用深度，而且能获取影响sink语句的输入源。
+图\ref{过程间边界检测性质图和函数调用性质图}(b)图 \ref{过程间边界检测和函数调用性质图解释程序}的函数调用性质图示意图。函数调用性质图能获取函数调用深度，而且能获取影响sink语句的输入源。
 
-\begin{lstlisting}[language=C,caption=过程间边界检测和函数调用性质图解释程序,label=过程间边界检测和函数调用性质图解释程序]
+\begin{figure}[h]
+\begin{lstlisting}[language=C]
 int main(int argc, char **argv){
     int i = atoi(argv[1]);
     char *p = argv[2];
@@ -901,17 +938,21 @@ void foo(char* src, int n){
 }
 \end{lstlisting}
 
+\caption{过程间边界检测和函数调用性质图解释程序}
+\label{过程间边界检测和函数调用性质图解释程序}
+\end{figure}
+
 \begin{figure}[htp]
 \centering
 \includegraphics{Simplified_CPG_of_code_for_Fig7}
-\caption{Listing \ref{过程间边界检测和函数调用性质图解释程序}的简化程序性质图}
+\caption{图\ref{过程间边界检测和函数调用性质图解释程序}的简化程序性质图}
 \label{简化程序性质图}
 \end{figure}
 
 \begin{figure}[htp]
 \centering
 \includegraphics{IPSG_and_DSSG}
-\caption{Listing \ref{过程间边界检测和函数调用性质图解释程序}过程间边界检测性质图和函数调用性质图}
+\caption{图\ref{过程间边界检测和函数调用性质图解释程序}过程间边界检测性质图和函数调用性质图}
 \label{过程间边界检测性质图和函数调用性质图}
 \end{figure}
 

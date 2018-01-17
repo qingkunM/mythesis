@@ -518,88 +518,11 @@ In Proceedings of the 2013 {ACM} workshop on {Artificial} intelligence and
   security.
 2013:  45--54.
 
-\bibitem{sutton_fuzzing:_2007}
-Sutton~M, Greene~A, Amini~P.
-Fuzzing: brute force vulnerability discovery~[M].
-Pearson Education, 2007.
-
-\bibitem{robertson_run-time_2003}
-Robertson~W~K, Kruegel~C, Mutz~D, et~al.
-Run-time {Detection} of {Heap}-based {Overflows}.~[C].
-In {LISA}.
-2003:  51--60.
-
-\bibitem{wu_new_2009}
-Wu~Z, Atwood~J~W, Zhu~X.
-A new fuzzing technique for software vulnerability mining~[C].
-In International {Conference} on {Software} {Engineering}.
-2009.
-
-\bibitem{lanzi_smart_2007}
-Lanzi~A, Martignoni~L, Monga~M, et~al.
-A smart fuzzer for x86 executables~[C].
-In Software {Engineering} for {Secure} {Systems}, 2007. {SESS}'07: {ICSE}
-  {Workshops} 2007. {Third} {International} {Workshop} on.
-2007:  7--7.
-
-\bibitem{rawat_offset-aware_2011}
-Rawat~S, Mounier~L.
-Offset-aware mutation based fuzzing for buffer overflow vulnerabilities: {Few}
-  preliminary results~[C].
-In Software {Testing}, {Verification} and {Validation} {Workshops} ({ICSTW}),
-  2011 {IEEE} {Fourth} {International} {Conference} on.
-2011:  531--533.
-
-\bibitem{ganesh_taint-based_2009}
-Ganesh~V, Leek~T, Rinard~M.
-Taint-based directed whitebox fuzzing~[C].
-In Proceedings of the 31st {International} {Conference} on {Software}
-  {Engineering}.
-2009:  474--484.
-
-\bibitem{bekrar_finding_2011}
-Bekrar~S, Bekrar~C, Groz~R, et~al.
-Finding software vulnerabilities by smart fuzzing~[C].
-In Software {Testing}, {Verification} and {Validation} ({ICST}), 2011 {IEEE}
-  {Fourth} {International} {Conference} on.
-2011:  427--430.
-
-\bibitem{rawat_evolutionary_2010}
-Rawat~S, Mounier~L.
-An evolutionary computing approach for hunting buffer overflow vulnerabilities:
-  {A} case of aiming in dim light~[C].
-In Computer {Network} {Defense} ({EC}2ND), 2010 {European} {Conference} on.
-2010:  37--45.
-
-\bibitem{liu_vulnerability_2008}
-Liu~G-H, Wu~G, Tao~Z, et~al.
-Vulnerability analysis for x86 executables using genetic algorithm and
-  fuzzing~[C].
-In Convergence and {Hybrid} {Information} {Technology}, 2008. {ICCIT}'08.
-  {Third} {International} {Conference} on.
-2008:  491--497.
-
-\bibitem{cordon_ten_2004}
-Cordón~O, Gomide~F, Herrera~F, et~al.
-Ten years of genetic fuzzy systems: current framework and new trends~[J].
-Fuzzy sets and systems.
-2004, 141~(1):  5--31.
-
-\bibitem{liubiao__2014}
-{刘彪}.
-基于模糊测试的软件安全漏洞发掘技术研究~[J].
-网络安全技术与应用.
-2014~(3):  37--37.
-
-\bibitem{noauthor_antiparser_nodate}
-antiparser.
-\url{http://antiparser.sourceforge.net/}.
-
-\bibitem{noauthor_sulley:_2017}
-sulley: {A} pure-python fully automated and unattended fuzzing framework.
-December 2017.
-\url{https://github.com/OpenRCE/sulley}.
-original-date: 2012-04-03T15:28:57Z.
+\bibitem{yamaguchi_modeling_2014}
+Yamaguchi~F, Golde~N, Arp~D, et~al.
+Modeling and discovering vulnerabilities with code property graphs~[C].
+In Security and {Privacy} ({SP}), 2014 {IEEE} {Symposium} on.
+2014:  590--604.
 
 \bibitem{rice_classes_1953}
 Rice~H~G.
@@ -618,6 +541,12 @@ DeKok~A.
 {PScan}: {A} limited problem scanner for {C} source files~[M].
 2000.
 
+\bibitem{rodriguez_graph_2010}
+Rodriguez~M~A, Neubauer~P.
+The graph traversal pattern~[J].
+arXiv preprint arXiv:1004.1001.
+2010.
+
 \bibitem{parr_definitive_2013}
 Parr~T.
 The definitive {ANTLR} 4 reference~[M].
@@ -630,11 +559,17 @@ In Reverse {Engineering}, 2001. {Proceedings}. {Eighth} {Working} {Conference}
   on.
 2001:  13--22.
 
-\bibitem{yamaguchi_modeling_2014}
-Yamaguchi~F, Golde~N, Arp~D, et~al.
-Modeling and discovering vulnerabilities with code property graphs~[C].
-In Security and {Privacy} ({SP}), 2014 {IEEE} {Symposium} on.
-2014:  590--604.
+\bibitem{noauthor_neo4j_nodate}
+The {Neo}4j {Graph} {Platform} – {The} \#1 {Platform} for {Connected} {Data}.
+\url{https://neo4j.com/}.
+
+\bibitem{noauthor_titan:_nodate}
+Titan: {Distributed} {Graph} {Database}.
+\url{http://titan.thinkaurelius.com/}.
+
+\bibitem{noauthor_newsletter_nodate}
+Newsletter signup.
+\url{https://forms.zohopublic.com/OrientDB/form/Newslettersignup/formperma/HKbGjh2333Ae53AC84bFdeCDg}.
 
 \bibitem{gremlin}
 gremlin.
@@ -643,10 +578,6 @@ gremlin.
 \bibitem{noauthor_cve_nodate}
 {CVE}-2016-9537.
 \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-953}.
-
-\bibitem{noauthor_neo4j_nodate}
-The {Neo}4j {Graph} {Platform} – {The} \#1 {Platform} for {Connected} {Data}.
-\url{https://neo4j.com/}.
 
 \bibitem{rodriguez_gremlin_2015}
 Rodriguez~M~A.
@@ -675,30 +606,6 @@ Stehman~S~V.
 Selecting and interpreting measures of thematic classification accuracy~[J].
 Remote sensing of Environment.
 1997, 62~(1):  77--89.
-
-\bibitem{chen_interval_2009}
-Chen~L, Miné~A, Wang~J, et~al.
-Interval polyhedra: {An} abstract domain to infer interval linear
-  relationships~[J].
-Static Analysis.
-2009:  309--325.
-
-\bibitem{logozzo_pentagons:_2008}
-Logozzo~F, Fähndrich~M.
-Pentagons: a weakly relational abstract domain for the efficient validation of
-  array accesses~[C].
-In Proceedings of the 2008 {ACM} symposium on {Applied} computing.
-2008:  184--188.
-
-\bibitem{mine_octagon_2006}
-Miné~A.
-The octagon abstract domain~[J].
-Higher-order and symbolic computation.
-2006, 19~(1):  31--100.
-
-\bibitem{noauthor_clang_nodate}
-"clang" {C} {Language} {Family} {Frontend} for {LLVM}.
-\url{https://clang.llvm.org/}.
 
 \bibitem{santelices_test-suite_2008}
 Santelices~R, Chittimalli~P~K, Apiwattanapong~T, et~al.
@@ -775,5 +682,29 @@ Kingma~D, Ba~J.
 Adam: {A} method for stochastic optimization~[J].
 arXiv preprint arXiv:1412.6980.
 2014.
+
+\bibitem{chen_interval_2009}
+Chen~L, Miné~A, Wang~J, et~al.
+Interval polyhedra: {An} abstract domain to infer interval linear
+  relationships~[J].
+Static Analysis.
+2009:  309--325.
+
+\bibitem{logozzo_pentagons:_2008}
+Logozzo~F, Fähndrich~M.
+Pentagons: a weakly relational abstract domain for the efficient validation of
+  array accesses~[C].
+In Proceedings of the 2008 {ACM} symposium on {Applied} computing.
+2008:  184--188.
+
+\bibitem{mine_octagon_2006}
+Miné~A.
+The octagon abstract domain~[J].
+Higher-order and symbolic computation.
+2006, 19~(1):  31--100.
+
+\bibitem{noauthor_clang_nodate}
+"clang" {C} {Language} {Family} {Frontend} for {LLVM}.
+\url{https://clang.llvm.org/}.
 
 \end{thebibliography}

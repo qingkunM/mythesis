@@ -172,6 +172,7 @@
 \citation{wnoauthor_cern_nodate}
 \citation{dekok_pscan:_2000}
 \citation{noauthor_splint_nodate}
+\citation{rodriguez_graph_2010}
 \@writefile{toc}{\contentsline {chapter}{\numberline {3}基于程序性质图的源代码软件漏洞挖掘方法研究}{28}{chapter.3}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.1}程序性质图生成}{28}{section.3.1}}
 \newlabel{程序性质图生成}{{3.1}{28}{程序性质图生成}{section.3.1}{}}
@@ -193,6 +194,9 @@
 \newlabel{函数解析器的岛屿语法片段}{{3.4}{31}{函数解析器的岛屿语法片段\relax }{figure.caption.23}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces 语句解析器的岛屿语法片段\relax }}{31}{figure.caption.24}}
 \newlabel{语句解析器的岛屿语法片段}{{3.5}{31}{语句解析器的岛屿语法片段\relax }{figure.caption.24}{}}
+\citation{noauthor_neo4j_nodate}
+\citation{noauthor_titan:_nodate}
+\citation{noauthor_newsletter_nodate}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.3}程序性质图}{32}{subsection.3.1.3}}
 \newlabel{程序性质图}{{3.1.3}{32}{程序性质图}{subsection.3.1.3}{}}
 \@writefile{thm}{\contentsline {definition}{{定义}{3.{2}}{}}{32}{definition.3.2}}
@@ -201,11 +205,11 @@
 \@writefile{thm}{\contentsline {definition}{{定义}{3.{3}}{}}{32}{definition.3.3}}
 \newlabel{控制流性质图定义}{{3.{3}}{32}{程序性质图}{definition.3.3}{}}
 \global\def\markixdefinition{\ensuremath {\blacksquare }}
+\@writefile{thm}{\contentsline {definition}{{定义}{3.{4}}{}}{32}{definition.3.4}}
+\newlabel{数据依赖性质图定义}{{3.{4}}{32}{程序性质图}{definition.3.4}{}}
 \citation{gremlin}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces 抽象语法树实例\relax }}{33}{figure.caption.25}}
-\newlabel{抽象语法树实例}{{3.6}{33}{抽象语法树实例\relax }{figure.caption.25}{}}
-\@writefile{thm}{\contentsline {definition}{{定义}{3.{4}}{}}{33}{definition.3.4}}
-\newlabel{数据依赖性质图定义}{{3.{4}}{33}{程序性质图}{definition.3.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces 抽象语法树性质图实例\relax }}{33}{figure.caption.25}}
+\newlabel{抽象语法树性质图实例}{{3.6}{33}{抽象语法树性质图实例\relax }{figure.caption.25}{}}
 \global\def\markxdefinition{\ensuremath {\blacksquare }}
 \@writefile{thm}{\contentsline {definition}{{定义}{3.{5}}{}}{33}{definition.3.5}}
 \newlabel{程序性质图定义}{{3.{5}}{33}{程序性质图}{definition.3.5}{}}
@@ -221,267 +225,269 @@
 \citation{noauthor_cve_nodate}
 \@writefile{toc}{\contentsline {section}{\numberline {3.2}基于程序性质图的源代码漏洞挖掘方法研究}{36}{section.3.2}}
 \newlabel{基于程序性质图的源代码漏洞粗定位方法研究}{{3.2}{36}{基于程序性质图的源代码漏洞挖掘方法研究}{section.3.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}缓冲区溢出漏洞挖掘方法}{36}{subsection.3.2.1}}
-\newlabel{缓冲区溢出漏洞检测}{{3.2.1}{36}{缓冲区溢出漏洞挖掘方法}{subsection.3.2.1}{}}
-\newlabel{缓冲区溢出边界检测示例代码}{{3.1}{37}{缓冲区溢出边界检测示例代码}{lstlisting.3.1}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.1}缓冲区溢出边界检测示例代码}{37}{lstlisting.3.1}}
-\@writefile{thm}{\contentsline {definition}{{定义}{3.{7}}{}}{38}{definition.3.7}}
-\newlabel{缓冲区溢出定义}{{3.{7}}{38}{缓冲区溢出漏洞挖掘方法}{definition.3.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}缓冲区溢出漏洞挖掘方法研究}{36}{subsection.3.2.1}}
+\newlabel{缓冲区溢出漏洞检测}{{3.2.1}{36}{缓冲区溢出漏洞挖掘方法研究}{subsection.3.2.1}{}}
+\@writefile{thm}{\contentsline {definition}{{定义}{3.{7}}{}}{37}{definition.3.7}}
+\newlabel{缓冲区溢出定义}{{3.{7}}{37}{缓冲区溢出漏洞挖掘方法研究}{definition.3.7}{}}
 \global\def\markxiiidefinition{\ensuremath {\blacksquare }}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {3.1}{\ignorespaces 内存拷贝函数缓冲区溢出漏洞检测算法\relax }}{40}{algorithm.3.1}}
-\newlabel{内存拷贝函数缓冲区溢出漏洞检测算法}{{3.1}{40}{内存拷贝函数缓冲区溢出漏洞检测算法\relax }{algorithm.3.1}{}}
-\newlabel{缓冲区循环写缓冲区溢出漏洞检测算法}{{3.2}{41}{缓冲区溢出漏洞挖掘方法}{algorithm.3.2}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {3.2}缓冲区循环写缓冲区溢出漏洞检测算法}{41}{algorithm.3.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}格式化字符串漏洞挖掘方法}{42}{subsection.3.2.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}UAF漏洞挖掘方法}{43}{subsection.3.2.3}}
-\@writefile{thm}{\contentsline {definition}{{定义}{3.{8}}{}}{43}{definition.3.8}}
-\newlabel{符号图定义}{{3.{8}}{43}{UAF漏洞挖掘方法}{definition.3.8}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {3.3}{\ignorespaces 格式化字符串漏洞检测算法\relax }}{44}{algorithm.3.3}}
-\newlabel{格式化字符串漏洞检测算法}{{3.3}{44}{格式化字符串漏洞检测算法\relax }{algorithm.3.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.4}实验与分析}{44}{subsection.3.2.4}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.4.1}实验设计}{44}{subsubsection.3.2.4.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.9}{\ignorespaces 缓冲区溢出边界检测示例代码\relax }}{38}{figure.caption.28}}
+\newlabel{缓冲区溢出边界检测示例代码}{{3.9}{38}{缓冲区溢出边界检测示例代码\relax }{figure.caption.28}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3.1}{\ignorespaces 内存拷贝函数缓冲区溢出漏洞检测算法\relax }}{39}{algorithm.3.1}}
+\newlabel{内存拷贝函数缓冲区溢出漏洞检测算法}{{3.1}{39}{内存拷贝函数缓冲区溢出漏洞检测算法\relax }{algorithm.3.1}{}}
+\newlabel{缓冲区循环写缓冲区溢出漏洞检测算法}{{3.2}{40}{缓冲区溢出漏洞挖掘方法研究}{algorithm.3.2}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3.2}缓冲区循环写缓冲区溢出漏洞检测算法}{40}{algorithm.3.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}格式化字符串漏洞挖掘方法研究}{42}{subsection.3.2.2}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3.3}{\ignorespaces 格式化字符串漏洞检测算法\relax }}{43}{algorithm.3.3}}
+\newlabel{格式化字符串漏洞检测算法}{{3.3}{43}{格式化字符串漏洞检测算法\relax }{algorithm.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}UAF漏洞挖掘方法研究}{43}{subsection.3.2.3}}
 \citation{parr_definitive_2013}
 \citation{noauthor_neo4j_nodate}
 \citation{rodriguez_gremlin_2015}
+\@writefile{thm}{\contentsline {definition}{{定义}{3.{8}}{}}{44}{definition.3.8}}
+\newlabel{符号图定义}{{3.{8}}{44}{UAF漏洞挖掘方法研究}{definition.3.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.4}实验与分析}{44}{subsection.3.2.4}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.4.1}实验设计}{44}{subsubsection.3.2.4.1}}
+\citation{noauthor_a2ps_nodate}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {3.4}{\ignorespaces UAF检测算法\relax }}{45}{algorithm.3.4}}
 \newlabel{UAF检测算法}{{3.4}{45}{UAF检测算法\relax }{algorithm.3.4}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.4.2}结果分析}{45}{subsubsection.3.2.4.2}}
-\citation{noauthor_a2ps_nodate}
-\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces 缓冲区溢出漏洞实验\relax }}{46}{table.caption.28}}
-\newlabel{缓冲区溢出漏洞实验}{{3.1}{46}{缓冲区溢出漏洞实验\relax }{table.caption.28}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces 格式化字符串漏洞实验\relax }}{46}{table.caption.29}}
-\newlabel{格式化字符串漏洞实验}{{3.2}{46}{格式化字符串漏洞实验\relax }{table.caption.29}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces 缓冲区溢出漏洞实验\relax }}{46}{table.caption.29}}
+\newlabel{缓冲区溢出漏洞实验}{{3.1}{46}{缓冲区溢出漏洞实验\relax }{table.caption.29}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces 格式化字符串漏洞实验\relax }}{46}{table.caption.30}}
+\newlabel{格式化字符串漏洞实验}{{3.2}{46}{格式化字符串漏洞实验\relax }{table.caption.30}{}}
 \citation{kratkiewicz_evaluating_2005}
-\@writefile{lot}{\contentsline {table}{\numberline {3.3}{\ignorespaces Use After Free漏洞挖掘实验\relax }}{47}{table.caption.30}}
-\newlabel{use after free漏洞挖掘实验}{{3.3}{47}{Use After Free漏洞挖掘实验\relax }{table.caption.30}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.3}{\ignorespaces Use After Free漏洞挖掘实验\relax }}{47}{table.caption.31}}
+\newlabel{use after free漏洞挖掘实验}{{3.3}{47}{Use After Free漏洞挖掘实验\relax }{table.caption.31}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.3}基于机器学习的缓冲区溢出漏洞挖掘方法研究}{47}{section.3.3}}
 \newlabel{基于机器学习的缓冲区溢出漏洞挖掘方法研究}{{3.3}{47}{基于机器学习的缓冲区溢出漏洞挖掘方法研究}{section.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}基本框架}{47}{subsection.3.3.1}}
 \citation{kratkiewicz_evaluating_2005}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}基本框架}{48}{subsection.3.3.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}程序静态属性与映射规则}{48}{subsection.3.3.2}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.1}sink类型}{48}{subsubsection.3.3.2.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.9}{\ignorespaces 基于机器学习的缓冲区溢出漏洞挖掘框架\relax }}{49}{figure.caption.31}}
-\newlabel{fig:基于机器学习的缓冲区溢出漏洞挖掘框架}{{3.9}{49}{基于机器学习的缓冲区溢出漏洞挖掘框架\relax }{figure.caption.31}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.4}{\ignorespaces 缓冲区溢出漏洞三种sink类型\relax }}{49}{table.caption.32}}
-\newlabel{Description_of_Three_Sink_Types}{{3.4}{49}{缓冲区溢出漏洞三种sink类型\relax }{table.caption.32}{}}
-\newlabel{CVE-2016-9537示例代码}{{3.2}{49}{CVE-2016-9537示例代码}{lstlisting.3.2}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.2}CVE-2016-9537示例代码}{49}{lstlisting.3.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.10}{\ignorespaces 基于机器学习的缓冲区溢出漏洞挖掘框架\relax }}{48}{figure.caption.32}}
+\newlabel{fig:基于机器学习的缓冲区溢出漏洞挖掘框架}{{3.10}{48}{基于机器学习的缓冲区溢出漏洞挖掘框架\relax }{figure.caption.32}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}程序静态属性与映射规则}{49}{subsection.3.3.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.1}sink类型}{49}{subsubsection.3.3.2.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.4}{\ignorespaces 缓冲区溢出漏洞三种sink类型\relax }}{49}{table.caption.33}}
+\newlabel{Description_of_Three_Sink_Types}{{3.4}{49}{缓冲区溢出漏洞三种sink类型\relax }{table.caption.33}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.2}缓冲区位置}{49}{subsubsection.3.3.2.2}}
 \citation{zitser_testing_2004}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.2}缓冲区位置}{50}{subsubsection.3.3.2.2}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.3}容器}{51}{subsubsection.3.3.2.3}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.5}{\ignorespaces 容器属性\relax }}{51}{table.caption.33}}
-\newlabel{Container_Attributes}{{3.5}{51}{容器属性\relax }{table.caption.33}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.11}{\ignorespaces CVE-2016-9537示例代码\relax }}{50}{figure.caption.34}}
+\newlabel{CVE-2016-9537示例代码}{{3.11}{50}{CVE-2016-9537示例代码\relax }{figure.caption.34}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.3}容器}{50}{subsubsection.3.3.2.3}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.5}{\ignorespaces 容器属性\relax }}{51}{table.caption.35}}
+\newlabel{Container_Attributes}{{3.5}{51}{容器属性\relax }{table.caption.35}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.4}索引/地址/长度复杂度}{51}{subsubsection.3.3.2.4}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.6}{\ignorespaces 索引操作类型\relax }}{52}{table.caption.34}}
-\newlabel{Index_Type}{{3.6}{52}{索引操作类型\relax }{table.caption.34}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.10}{\ignorespaces 变量i复杂度的获取\relax }}{52}{figure.caption.35}}
-\newlabel{accumulating_the_operations_of_i}{{3.10}{52}{变量i复杂度的获取\relax }{figure.caption.35}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.7}{\ignorespaces 地址操作类型\relax }}{52}{table.caption.36}}
-\newlabel{ADDRESS_TYPE}{{3.7}{52}{地址操作类型\relax }{table.caption.36}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.6}{\ignorespaces 索引操作类型\relax }}{51}{table.caption.36}}
+\newlabel{Index_Type}{{3.6}{51}{索引操作类型\relax }{table.caption.36}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.12}{\ignorespaces 变量i复杂度的获取\relax }}{52}{figure.caption.37}}
+\newlabel{accumulating_the_operations_of_i}{{3.12}{52}{变量i复杂度的获取\relax }{figure.caption.37}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.7}{\ignorespaces 地址操作类型\relax }}{52}{table.caption.38}}
+\newlabel{ADDRESS_TYPE}{{3.7}{52}{地址操作类型\relax }{table.caption.38}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.5}边界检测}{52}{subsubsection.3.3.2.5}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.8}{\ignorespaces 长度操作类型\relax }}{53}{table.caption.37}}
-\newlabel{LENGTH_TYPE}{{3.8}{53}{长度操作类型\relax }{table.caption.37}{}}
-\newlabel{CVE-2016-9537补丁程序}{{3.3}{54}{CVE-2016-9537补丁程序}{lstlisting.3.3}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.3}CVE-2016-9537补丁程序}{54}{lstlisting.3.3}}
-\newlabel{间接边界检测示例程序}{{3.4}{54}{间接边界检测示例程序}{lstlisting.3.4}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.4}间接边界检测示例程序}{54}{lstlisting.3.4}}
-\newlabel{过程间边界检测示例程序}{{3.5}{54}{过程间边界检测示例程序}{lstlisting.3.5}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.5}过程间边界检测示例程序}{54}{lstlisting.3.5}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.8}{\ignorespaces 长度操作类型\relax }}{53}{table.caption.39}}
+\newlabel{LENGTH_TYPE}{{3.8}{53}{长度操作类型\relax }{table.caption.39}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.13}{\ignorespaces CVE-2016-9537补丁程序\relax }}{53}{figure.caption.40}}
+\newlabel{CVE-2016-9537补丁程序}{{3.13}{53}{CVE-2016-9537补丁程序\relax }{figure.caption.40}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.14}{\ignorespaces 间接边界检测示例程序\relax }}{54}{figure.caption.41}}
+\newlabel{间接边界检测示例程序}{{3.14}{54}{间接边界检测示例程序\relax }{figure.caption.41}{}}
+\newlabel{过程间边界检测示例程序}{{3.1}{54}{过程间边界检测示例程序}{lstlisting.3.1}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.1}过程间边界检测示例程序}{54}{lstlisting.3.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.15}{\ignorespaces 过程间边界检测示例程序\relax }}{54}{figure.caption.42}}
+\newlabel{过程间边界检测示例程序}{{3.15}{54}{过程间边界检测示例程序\relax }{figure.caption.42}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.6}循环/条件/函数调用深度}{54}{subsubsection.3.3.2.6}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2.7}输入可控}{54}{subsubsection.3.3.2.7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}扩展的程序性质图}{55}{subsection.3.3.3}}
-\newlabel{扩展的程序性质图}{{3.3.3}{55}{扩展的程序性质图}{subsection.3.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}扩展的程序性质图}{54}{subsection.3.3.3}}
+\newlabel{扩展的程序性质图}{{3.3.3}{54}{扩展的程序性质图}{subsection.3.3.3}{}}
 \@writefile{thm}{\contentsline {definition}{{定义}{3.{9}}{}}{55}{definition.3.9}}
 \newlabel{过程间边界检测程序性质图}{{3.{9}}{55}{扩展的程序性质图}{definition.3.9}{}}
 \global\def\markxvdefinition{\ensuremath {\blacksquare }}
 \@writefile{thm}{\contentsline {definition}{{定义}{3.{10}}{}}{55}{definition.3.10}}
 \newlabel{函数调用性质图}{{3.{10}}{55}{扩展的程序性质图}{definition.3.10}{}}
 \global\def\markxvidefinition{\ensuremath {\blacksquare }}
-\newlabel{过程间边界检测和函数调用性质图解释程序}{{3.6}{55}{过程间边界检测和函数调用性质图解释程序}{lstlisting.3.6}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.6}过程间边界检测和函数调用性质图解释程序}{55}{lstlisting.3.6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.16}{\ignorespaces 过程间边界检测和函数调用性质图解释程序\relax }}{55}{figure.caption.43}}
+\newlabel{过程间边界检测和函数调用性质图解释程序}{{3.16}{55}{过程间边界检测和函数调用性质图解释程序\relax }{figure.caption.43}{}}
 \citation{stehman_selecting_1997}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.11}{\ignorespaces Listing \ref  {过程间边界检测和函数调用性质图解释程序}的简化程序性质图\relax }}{56}{figure.caption.38}}
-\newlabel{简化程序性质图}{{3.11}{56}{Listing \ref {过程间边界检测和函数调用性质图解释程序}的简化程序性质图\relax }{figure.caption.38}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.12}{\ignorespaces Listing \ref  {过程间边界检测和函数调用性质图解释程序}过程间边界检测性质图和函数调用性质图\relax }}{56}{figure.caption.39}}
-\newlabel{过程间边界检测性质图和函数调用性质图}{{3.12}{56}{Listing \ref {过程间边界检测和函数调用性质图解释程序}过程间边界检测性质图和函数调用性质图\relax }{figure.caption.39}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.17}{\ignorespaces 图\ref  {过程间边界检测和函数调用性质图解释程序}的简化程序性质图\relax }}{56}{figure.caption.44}}
+\newlabel{简化程序性质图}{{3.17}{56}{图\ref {过程间边界检测和函数调用性质图解释程序}的简化程序性质图\relax }{figure.caption.44}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.18}{\ignorespaces 图\ref  {过程间边界检测和函数调用性质图解释程序}过程间边界检测性质图和函数调用性质图\relax }}{56}{figure.caption.45}}
+\newlabel{过程间边界检测性质图和函数调用性质图}{{3.18}{56}{图\ref {过程间边界检测和函数调用性质图解释程序}过程间边界检测性质图和函数调用性质图\relax }{figure.caption.45}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3.4}实验与分析}{56}{subsection.3.3.4}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.4.1}实验设计}{56}{subsubsection.3.3.4.1}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.9}{\ignorespaces 混淆矩阵\relax }}{57}{table.caption.40}}
-\newlabel{confusion_matrix}{{3.9}{57}{混淆矩阵\relax }{table.caption.40}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.9}{\ignorespaces 混淆矩阵\relax }}{57}{table.caption.46}}
+\newlabel{confusion_matrix}{{3.9}{57}{混淆矩阵\relax }{table.caption.46}{}}
 \newlabel{衍生标准}{{3.1}{57}{实验设计}{equation.3.3.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.10}{\ignorespaces 实验数据列表\relax }}{58}{table.caption.41}}
-\newlabel{CVE_List_For_Attribute_Extraction}{{3.10}{58}{实验数据列表\relax }{table.caption.41}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.10}{\ignorespaces 实验数据列表\relax }}{58}{table.caption.47}}
+\newlabel{CVE_List_For_Attribute_Extraction}{{3.10}{58}{实验数据列表\relax }{table.caption.47}{}}
 \citation{padmanabhuni_predicting_2014}
 \citation{yamaguchi_modeling_2014}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.4.2}结果分析}{59}{subsubsection.3.3.4.2}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.11}{\ignorespaces 五个分类器的性能\relax }}{59}{table.caption.42}}
-\newlabel{PERFORMANCES_OF_OUR_FIVE_CLASSIFIER_ALGORITHMS}{{3.11}{59}{五个分类器的性能\relax }{table.caption.42}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.12}{\ignorespaces BOMiner性能\relax }}{60}{table.caption.43}}
-\newlabel{PERFORMANCE_OF_BOMINER_FOR_OUR_TEST_SUITE}{{3.12}{60}{BOMiner性能\relax }{table.caption.43}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.13}{\ignorespaces (a) 和BOMiner在混淆矩阵平均值的比较, (b) 和BOMiner在衍生评估参数上的比较\relax }}{60}{figure.caption.44}}
-\newlabel{compareToBOMiner}{{3.13}{60}{(a) 和BOMiner在混淆矩阵平均值的比较, (b) 和BOMiner在衍生评估参数上的比较\relax }{figure.caption.44}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.13}{\ignorespaces 与Joern性能比较\relax }}{60}{table.caption.45}}
-\newlabel{和Joern的混淆矩阵比较}{{3.13}{60}{与Joern性能比较\relax }{table.caption.45}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.11}{\ignorespaces 五个分类器的性能\relax }}{59}{table.caption.48}}
+\newlabel{PERFORMANCES_OF_OUR_FIVE_CLASSIFIER_ALGORITHMS}{{3.11}{59}{五个分类器的性能\relax }{table.caption.48}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.12}{\ignorespaces BOMiner性能\relax }}{59}{table.caption.49}}
+\newlabel{PERFORMANCE_OF_BOMINER_FOR_OUR_TEST_SUITE}{{3.12}{59}{BOMiner性能\relax }{table.caption.49}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.19}{\ignorespaces (a) 和BOMiner在混淆矩阵平均值的比较, (b) 和BOMiner在衍生评估参数上的比较\relax }}{60}{figure.caption.50}}
+\newlabel{compareToBOMiner}{{3.19}{60}{(a) 和BOMiner在混淆矩阵平均值的比较, (b) 和BOMiner在衍生评估参数上的比较\relax }{figure.caption.50}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.13}{\ignorespaces 与Joern性能比较\relax }}{60}{table.caption.51}}
+\newlabel{和Joern的混淆矩阵比较}{{3.13}{60}{与Joern性能比较\relax }{table.caption.51}{}}
 \citation{flawfinder_nodate}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.14}{\ignorespaces (a) 和Joern在混淆矩阵平均值的比较, (b) 和Joern在衍生评估参数上的比较\relax }}{61}{figure.caption.46}}
-\newlabel{compareToJoern}{{3.14}{61}{(a) 和Joern在混淆矩阵平均值的比较, (b) 和Joern在衍生评估参数上的比较\relax }{figure.caption.46}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.14}{\ignorespaces 五个分类器在Poppler0.10.6上的性能测试\relax }}{61}{table.caption.47}}
-\newlabel{PERFORMANCES_OF_OUR_FIVE_CLASSIFIERS_ON_POPPLER0.10.6}{{3.14}{61}{五个分类器在Poppler0.10.6上的性能测试\relax }{table.caption.47}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.20}{\ignorespaces (a) 和Joern在混淆矩阵平均值的比较, (b) 和Joern在衍生评估参数上的比较\relax }}{61}{figure.caption.52}}
+\newlabel{compareToJoern}{{3.20}{61}{(a) 和Joern在混淆矩阵平均值的比较, (b) 和Joern在衍生评估参数上的比较\relax }{figure.caption.52}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.14}{\ignorespaces 五个分类器在Poppler0.10.6上的性能测试\relax }}{61}{table.caption.53}}
+\newlabel{PERFORMANCES_OF_OUR_FIVE_CLASSIFIERS_ON_POPPLER0.10.6}{{3.14}{61}{五个分类器在Poppler0.10.6上的性能测试\relax }{table.caption.53}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.4}本章小结}{61}{section.3.4}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}结合静态程序分析的高效符号执行技术研究}{63}{chapter.4}}
-\newlabel{chap-4}{{4}{63}{本章小结}{chapter.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}问题描述}{63}{section.4.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces 示例程序1\relax }}{64}{figure.caption.49}}
-\newlabel{fig-example1}{{4.1}{64}{示例程序1\relax }{figure.caption.49}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces 示例程序１符号执行树及其计算过程\relax }}{65}{figure.caption.50}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces 示例循环程序\relax }}{65}{figure.caption.51}}
-\newlabel{fig-example2}{{4.3}{65}{示例循环程序\relax }{figure.caption.51}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}技术方案研究}{66}{section.4.2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces 基于抽象解释的符号执行技术框架\relax }}{66}{figure.caption.52}}
-\newlabel{fig-framework}{{4.4}{66}{基于抽象解释的符号执行技术框架\relax }{figure.caption.52}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}基于抽象解释的静态程序分析技术研究}{67}{section.4.3}}
-\newlabel{sec-absint}{{4.3}{67}{基于抽象解释的静态程序分析技术研究}{section.4.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}抽象解释理论框架}{67}{subsection.4.3.1}}
-\@writefile{thm}{\contentsline {definition}{{定义}{4.{1}}{}}{67}{definition.4.1}}
-\global\def\markxviidefinitioni{\ensuremath {\blacksquare }}
-\@writefile{thm}{\contentsline {definition}{{定义}{4.{2}}{}}{68}{definition.4.2}}
-\@writefile{thm}{\contentsline {definition}{{定义}{4.{3}}{}}{68}{definition.4.3}}
-\global\def\markxixdefinition{\ensuremath {\blacksquare }}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Galois连接示意图\relax }}{68}{figure.caption.53}}
-\newlabel{fig-galois}{{4.5}{68}{Galois连接示意图\relax }{figure.caption.53}{}}
-\@writefile{thm}{\contentsline {lemma}{{引理}{4.{1}}{}}{68}{lemma.4.1}}
-\@writefile{thm}{\contentsline {proof}{{证明}{4.{1}}{}}{68}{proof.4.1}}
-\global\def\markiiproof{\ensuremath {\blacksquare }}
-\@writefile{thm}{\contentsline {definition}{{定义}{4.{4}}{Widening算子}}{69}{definition.4.4}}
-\global\def\markxxdefinitioni{\ensuremath {\blacksquare }}
-\@writefile{thm}{\contentsline {definition}{{定义}{4.{5}}{Narrowing算子}}{69}{definition.4.5}}
-\global\def\markxxidefinitioni{\ensuremath {\blacksquare }}
-\@writefile{thm}{\contentsline {example}{{例}{4.3.{1}}{}}{70}{example.4.3.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}基于抽象解释的静态程序分析}{70}{subsection.4.3.2}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {4.1}{\ignorespaces 基于抽象解释的静态程序分析算法(AbstractStaticAnalysis)\relax }}{71}{algorithm.4.1}}
-\newlabel{algo-absint-analysis}{{4.1}{71}{基于抽象解释的静态程序分析算法(AbstractStaticAnalysis)\relax }{algorithm.4.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.4}结合静态程序分析的高效符号执行算法}{72}{section.4.4}}
-\newlabel{sec-absint-symexe}{{4.4}{72}{结合静态程序分析的高效符号执行算法}{section.4.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.1}核心技术思想}{72}{subsection.4.4.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.6}{\ignorespaces 示例程序2符号执行树\relax }}{73}{figure.caption.54}}
-\newlabel{fig-tree2}{{4.6}{73}{示例程序2符号执行树\relax }{figure.caption.54}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.7}{\ignorespaces 示例程序2符号执行计算过程\relax }}{74}{figure.caption.55}}
-\newlabel{fig-compute2}{{4.7}{74}{示例程序2符号执行计算过程\relax }{figure.caption.55}{}}
-\citation{chen_interval_2009}
-\citation{chen_interval_2009}
-\citation{logozzo_pentagons:_2008}
-\citation{mine_octagon_2006}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}高效符号执行算法}{75}{subsection.4.4.2}}
-\citation{noauthor_clang_nodate}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.8}{\ignorespaces 注释后的循环实例程序\relax }}{76}{figure.caption.56}}
-\newlabel{fig-example3}{{4.8}{76}{注释后的循环实例程序\relax }{figure.caption.56}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.5}实验与分析}{76}{section.4.5}}
-\newlabel{sec-experiment}{{4.5}{76}{实验与分析}{section.4.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1}实验设计}{76}{subsection.4.5.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.9}{\ignorespaces 符号执行变换后的程序\relax }}{77}{figure.caption.57}}
-\newlabel{符号执行变换后的程序}{{4.9}{77}{符号执行变换后的程序\relax }{figure.caption.57}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {4.2}{\ignorespaces 基于静态程序分析的高效符号执行算法\relax }}{78}{algorithm.4.2}}
-\newlabel{algo-absint-symexe}{{4.2}{78}{基于静态程序分析的高效符号执行算法\relax }{algorithm.4.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.10}{\ignorespaces 结合静态程序分析的高效符号执行技术实验过程\relax }}{78}{figure.caption.58}}
-\newlabel{experiment_procedure}{{4.10}{78}{结合静态程序分析的高效符号执行技术实验过程\relax }{figure.caption.58}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2}结果分析}{79}{subsection.4.5.2}}
-\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces FastSE、KLEE-Fix与KLEE的错误发现数量以及总时间耗费对比\relax }}{79}{table.caption.59}}
-\newlabel{FastSE_KLEE-Fix与KLEE的发现错误数量以及总时间耗费对比}{{4.1}{79}{FastSE、KLEE-Fix与KLEE的错误发现数量以及总时间耗费对比\relax }{table.caption.59}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4.2}{\ignorespaces FastSE、KLEE-Fix与KLEE发现错误数量交叉对比\relax }}{79}{table.caption.60}}
-\newlabel{FastSE_KLEE-Fix与KLEE发现错误数量交叉对比}{{4.2}{79}{FastSE、KLEE-Fix与KLEE发现错误数量交叉对比\relax }{table.caption.60}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.6}本章小结}{80}{section.4.6}}
-\newlabel{sec-conclusion}{{4.6}{80}{本章小结}{section.4.6}{}}
 \citation{sparks_automated_2007,santelices_test-suite_2008,person_directed_2011,marinescu_katch:_2013,ma_directed_2011,haller_dowsing_2013,christakis_guiding_2016,bohme_regression_2013}
 \citation{baldoni_survey_2016}
 \citation{bohme_directed_2017}
 \citation{noauthor_american_nodate}
 \citation{noauthor_american_nodate}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}基于细粒度变异的导向模糊测试技术研究}{81}{chapter.5}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}反馈式模糊测试技术介绍}{81}{section.5.1}}
-\newlabel{模糊测试介绍}{{5.1}{81}{反馈式模糊测试技术介绍}{section.5.1}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}基于细粒度变异的导向模糊测试技术研究}{63}{chapter.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}反馈式模糊测试技术介绍}{63}{section.4.1}}
+\newlabel{模糊测试介绍}{{4.1}{63}{反馈式模糊测试技术介绍}{section.4.1}{}}
 \citation{baldoni_survey_2016}
 \citation{noauthor_american_nodate}
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}基本框架研究}{82}{section.5.2}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {5.1}{\ignorespaces AFL模糊测试算法\relax }}{83}{algorithm.5.1}}
-\newlabel{AFL模糊测试}{{5.1}{83}{AFL模糊测试算法\relax }{algorithm.5.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces 关键字段解释\relax }}{83}{figure.caption.62}}
-\newlabel{关键字段}{{5.1}{83}{关键字段解释\relax }{figure.caption.62}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}基本框架研究}{64}{section.4.2}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {4.1}{\ignorespaces AFL模糊测试算法\relax }}{65}{algorithm.4.1}}
+\newlabel{AFL模糊测试}{{4.1}{65}{AFL模糊测试算法\relax }{algorithm.4.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces 关键字段解释\relax }}{65}{figure.caption.55}}
+\newlabel{关键字段}{{4.1}{65}{关键字段解释\relax }{figure.caption.55}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces 细粒度导向模糊测试基本框架\relax }}{66}{figure.caption.56}}
+\newlabel{细粒度导向fuzzing基本框架}{{4.2}{66}{细粒度导向模糊测试基本框架\relax }{figure.caption.56}{}}
 \citation{bohme_directed_2017}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces 细粒度导向模糊测试基本框架\relax }}{84}{figure.caption.63}}
-\newlabel{细粒度导向fuzzing基本框架}{{5.2}{84}{细粒度导向模糊测试基本框架\relax }{figure.caption.63}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}基于LSTM的关键字段获取与权重计算}{84}{section.5.3}}
-\newlabel{基于LSTM的关键字段获取}{{5.3}{84}{基于LSTM的关键字段获取与权重计算}{section.5.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.1}距离测度}{85}{subsection.5.3.1}}
-\newlabel{距离测度}{{5.3.1}{85}{距离测度}{subsection.5.3.1}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.1.1}函数距离}{85}{subsubsection.5.3.1.1}}
-\newlabel{函数到目标函数集的距离}{{5.1}{85}{函数距离}{equation.5.3.1}{}}
-\newlabel{调和平均数}{{5.2}{85}{函数距离}{equation.5.3.2}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.1.2}基本块距离}{85}{subsubsection.5.3.1.2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces 调和平均数和算术平均值区别\relax }}{86}{figure.caption.64}}
-\newlabel{调和平均数和算术平均值区别}{{5.3}{86}{调和平均数和算术平均值区别\relax }{figure.caption.64}{}}
-\newlabel{基本块到目标基本集的距离}{{5.3}{86}{基本块距离}{equation.5.3.3}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.1.3}测试用例与目标区域之间的距离}{86}{subsubsection.5.3.1.3}}
-\newlabel{测试用例与目标区域之间的距离}{{5.4}{86}{测试用例与目标区域之间的距离}{equation.5.3.4}{}}
-\newlabel{归一化后的测试用例与目标区域之间的距离}{{5.5}{86}{测试用例与目标区域之间的距离}{equation.5.3.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}基于LSTM的关键字段获取与权重计算}{67}{section.4.3}}
+\newlabel{基于LSTM的关键字段获取}{{4.3}{67}{基于LSTM的关键字段获取与权重计算}{section.4.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}距离测度}{67}{subsection.4.3.1}}
+\newlabel{距离测度}{{4.3.1}{67}{距离测度}{subsection.4.3.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1.1}函数距离}{67}{subsubsection.4.3.1.1}}
+\newlabel{函数到目标函数集的距离}{{4.1}{67}{函数距离}{equation.4.3.1}{}}
+\newlabel{调和平均数}{{4.2}{67}{函数距离}{equation.4.3.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces 调和平均数和算术平均值区别\relax }}{68}{figure.caption.57}}
+\newlabel{调和平均数和算术平均值区别}{{4.3}{68}{调和平均数和算术平均值区别\relax }{figure.caption.57}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1.2}基本块距离}{68}{subsubsection.4.3.1.2}}
+\newlabel{基本块到目标基本集的距离}{{4.3}{68}{基本块距离}{equation.4.3.3}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1.3}测试用例与目标区域之间的距离}{68}{subsubsection.4.3.1.3}}
+\newlabel{测试用例与目标区域之间的距离}{{4.4}{68}{测试用例与目标区域之间的距离}{equation.4.3.4}{}}
 \citation{bohme_directed_2017}
-\newlabel{minD和maxD的定义}{{5.6}{87}{测试用例与目标区域之间的距离}{equation.5.3.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.2}距离的获取方式}{87}{subsection.5.3.2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces 用于距离测量的的静态插桩\relax }}{87}{figure.caption.65}}
-\newlabel{用于距离测量的的静态插桩}{{5.4}{87}{用于距离测量的的静态插桩\relax }{figure.caption.65}{}}
+\newlabel{归一化后的测试用例与目标区域之间的距离}{{4.5}{69}{测试用例与目标区域之间的距离}{equation.4.3.5}{}}
+\newlabel{minD和maxD的定义}{{4.6}{69}{测试用例与目标区域之间的距离}{equation.4.3.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}距离的获取方式}{69}{subsection.4.3.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces 用于距离测量的的静态插桩\relax }}{69}{figure.caption.58}}
+\newlabel{用于距离测量的的静态插桩}{{4.4}{69}{用于距离测量的的静态插桩\relax }{figure.caption.58}{}}
 \citation{rodriguez_recurrent_1999}
 \citation{cho_learning_2014,bahdanau_neural_2014}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.3}训练过程}{88}{subsection.5.3.3}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.3.1}目标函数}{88}{subsubsection.5.3.3.1}}
-\newlabel{byte目标模型}{{5.7}{88}{目标函数}{equation.5.3.7}{}}
-\newlabel{bit目标模型}{{5.8}{88}{目标函数}{equation.5.3.8}{}}
-\newlabel{决策函数}{{5.9}{88}{目标函数}{equation.5.3.9}{}}
-\newlabel{训练集}{{5.10}{88}{目标函数}{equation.5.3.10}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.3.2}训练模型选择}{88}{subsubsection.5.3.3.2}}
-\newlabel{循环单元}{{5.11}{89}{训练模型选择}{equation.5.3.11}{}}
-\newlabel{LSTM分解}{{5.12}{89}{训练模型选择}{equation.5.3.12}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.3.3}关键字段权重计算}{89}{subsubsection.5.3.3.3}}
-\newlabel{关键字段权重计算}{{5.3.3.3}{89}{关键字段权重计算}{subsubsection.5.3.3.3}{}}
-\newlabel{bit权重计算}{{5.13}{89}{关键字段权重计算}{equation.5.3.13}{}}
-\newlabel{bit权重累积}{{5.14}{89}{关键字段权重计算}{equation.5.3.14}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.3.4}关键字段权重与程序执行路径的关系}{90}{subsubsection.5.3.3.4}}
-\newlabel{权重与程序执行路径的关系实例程序}{{5.1}{90}{权重与程序执行路径的关系实例程序}{lstlisting.5.1}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.1}权重与程序执行路径的关系实例程序}{90}{lstlisting.5.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Listing \ref  {权重与程序执行路径的关系实例程序}的执行树\relax }}{91}{figure.caption.66}}
-\newlabel{字段权重和程序执行路径的关系}{{5.5}{91}{Listing \ref {权重与程序执行路径的关系实例程序}的执行树\relax }{figure.caption.66}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.4}动态测试}{91}{section.5.4}}
-\newlabel{基于字段权重的模糊测试能量调度策略}{{5.4}{91}{动态测试}{section.5.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.1}细粒度变异的测试用例生成过程}{91}{subsection.5.4.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.2}细粒度变异能量分配策略}{91}{subsection.5.4.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.3}训练过程}{70}{subsection.4.3.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.3.1}目标函数}{70}{subsubsection.4.3.3.1}}
+\newlabel{byte目标模型}{{4.7}{70}{目标函数}{equation.4.3.7}{}}
+\newlabel{bit目标模型}{{4.8}{70}{目标函数}{equation.4.3.8}{}}
+\newlabel{决策函数}{{4.9}{70}{目标函数}{equation.4.3.9}{}}
+\newlabel{训练集}{{4.10}{70}{目标函数}{equation.4.3.10}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.3.2}训练模型选择}{70}{subsubsection.4.3.3.2}}
+\newlabel{循环单元}{{4.11}{71}{训练模型选择}{equation.4.3.11}{}}
+\newlabel{LSTM分解}{{4.12}{71}{训练模型选择}{equation.4.3.12}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.3.3}关键字段权重计算}{71}{subsubsection.4.3.3.3}}
+\newlabel{关键字段权重计算}{{4.3.3.3}{71}{关键字段权重计算}{subsubsection.4.3.3.3}{}}
+\newlabel{bit权重计算}{{4.13}{71}{关键字段权重计算}{equation.4.3.13}{}}
+\newlabel{bit权重累积}{{4.14}{71}{关键字段权重计算}{equation.4.3.14}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.3.4}关键字段权重与程序执行路径的关系}{72}{subsubsection.4.3.3.4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces 权重与程序执行路径的关系实例程序\relax }}{72}{figure.caption.59}}
+\newlabel{权重与程序执行路径的关系实例程序}{{4.5}{72}{权重与程序执行路径的关系实例程序\relax }{figure.caption.59}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.6}{\ignorespaces 图\ref  {权重与程序执行路径的关系实例程序}的执行树\relax }}{73}{figure.caption.60}}
+\newlabel{字段权重和程序执行路径的关系}{{4.6}{73}{图\ref {权重与程序执行路径的关系实例程序}的执行树\relax }{figure.caption.60}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}基于细粒度变异的动态测试}{73}{section.4.4}}
+\newlabel{基于字段权重的模糊测试能量调度策略}{{4.4}{73}{基于细粒度变异的动态测试}{section.4.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.1}细粒度变异的测试用例生成过程}{73}{subsection.4.4.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}细粒度变异能量分配策略}{73}{subsection.4.4.2}}
 \citation{kirkpatrick_optimization_1983}
 \citation{kirkpatrick_optimization_1983}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces 细粒度变异的测试用例生成过程\relax }}{92}{figure.caption.67}}
-\newlabel{细粒度变异的测试用例生成过程}{{5.6}{92}{细粒度变异的测试用例生成过程\relax }{figure.caption.67}{}}
-\newlabel{模拟退火算法}{{5.15}{92}{细粒度变异能量分配策略}{equation.5.4.15}{}}
-\newlabel{t时间温度的计算}{{5.16}{93}{细粒度变异能量分配策略}{equation.5.4.16}{}}
-\newlabel{基于模拟退火的能量分配}{{5.17}{93}{细粒度变异能量分配策略}{equation.5.4.17}{}}
-\newlabel{关键字段能量}{{5.18}{93}{细粒度变异能量分配策略}{equation.5.4.18}{}}
-\newlabel{最终能量分配}{{5.19}{93}{细粒度变异能量分配策略}{equation.5.4.19}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.5}实验与分析}{93}{section.5.5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.1}实验设计}{93}{subsection.5.5.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.7}{\ignorespaces 细粒度变异的测试用例生成过程\relax }}{74}{figure.caption.61}}
+\newlabel{细粒度变异的测试用例生成过程}{{4.7}{74}{细粒度变异的测试用例生成过程\relax }{figure.caption.61}{}}
+\newlabel{模拟退火算法}{{4.15}{74}{细粒度变异能量分配策略}{equation.4.4.15}{}}
+\newlabel{t时间温度的计算}{{4.16}{75}{细粒度变异能量分配策略}{equation.4.4.16}{}}
+\newlabel{基于模拟退火的能量分配}{{4.17}{75}{细粒度变异能量分配策略}{equation.4.4.17}{}}
+\newlabel{关键字段能量}{{4.18}{75}{细粒度变异能量分配策略}{equation.4.4.18}{}}
+\newlabel{最终能量分配}{{4.19}{75}{细粒度变异能量分配策略}{equation.4.4.19}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}实验与分析}{75}{section.4.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1}实验设计}{75}{subsection.4.5.1}}
 \citation{noauthor_gnu.org_nodate}
 \citation{chollet_keras:_2017}
 \citation{abadi_tensorflow:_2016}
 \citation{kingma_adam:_2014}
-\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces 测试软件基本信息\relax }}{94}{table.caption.68}}
-\newlabel{测试软件基本信息}{{5.1}{94}{测试软件基本信息\relax }{table.caption.68}{}}
-\newlabel{构造训练集}{{5.20}{95}{实验设计}{equation.5.5.20}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces 测试软件基本信息\relax }}{76}{table.caption.62}}
+\newlabel{测试软件基本信息}{{4.1}{76}{测试软件基本信息\relax }{table.caption.62}{}}
+\newlabel{构造训练集}{{4.20}{77}{实验设计}{equation.4.5.20}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2}结果分析}{77}{subsection.4.5.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.8}{\ignorespaces 非重复击中目标区域测试用例数量对比\relax }}{78}{figure.caption.63}}
+\newlabel{非重复击中目标区域测试用例数量对比}{{4.8}{78}{非重复击中目标区域测试用例数量对比\relax }{figure.caption.63}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.6}本章小节}{78}{section.4.6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.9}{\ignorespaces 目标区域覆盖数量对比\relax }}{79}{figure.caption.64}}
+\newlabel{目标区域覆盖数量对比}{{4.9}{79}{目标区域覆盖数量对比\relax }{figure.caption.64}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.10}{\ignorespaces 发现漏洞数量对比\relax }}{79}{figure.caption.65}}
+\newlabel{发现漏洞数量对比}{{4.10}{79}{发现漏洞数量对比\relax }{figure.caption.65}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}结合静态程序分析的高效符号执行技术研究}{80}{chapter.5}}
+\newlabel{chap-4}{{5}{80}{本章小节}{chapter.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}问题描述}{80}{section.5.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces 示例程序1\relax }}{81}{figure.caption.67}}
+\newlabel{fig-example1}{{5.1}{81}{示例程序1\relax }{figure.caption.67}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces 示例程序１符号执行树及其计算过程\relax }}{82}{figure.caption.68}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces 示例循环程序\relax }}{82}{figure.caption.69}}
+\newlabel{fig-example2}{{5.3}{82}{示例循环程序\relax }{figure.caption.69}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}技术方案研究}{83}{section.5.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces 基于抽象解释的符号执行技术框架\relax }}{83}{figure.caption.70}}
+\newlabel{fig-framework}{{5.4}{83}{基于抽象解释的符号执行技术框架\relax }{figure.caption.70}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}基于抽象解释的静态程序分析技术研究}{84}{section.5.3}}
+\newlabel{sec-absint}{{5.3}{84}{基于抽象解释的静态程序分析技术研究}{section.5.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.1}抽象解释理论框架}{84}{subsection.5.3.1}}
+\@writefile{thm}{\contentsline {definition}{{定义}{5.{1}}{}}{84}{definition.5.1}}
+\global\def\markxviidefinitioni{\ensuremath {\blacksquare }}
+\@writefile{thm}{\contentsline {definition}{{定义}{5.{2}}{}}{85}{definition.5.2}}
+\@writefile{thm}{\contentsline {definition}{{定义}{5.{3}}{}}{85}{definition.5.3}}
+\global\def\markxixdefinition{\ensuremath {\blacksquare }}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Galois连接示意图\relax }}{85}{figure.caption.71}}
+\newlabel{fig-galois}{{5.5}{85}{Galois连接示意图\relax }{figure.caption.71}{}}
+\@writefile{thm}{\contentsline {lemma}{{引理}{5.{1}}{}}{85}{lemma.5.1}}
+\@writefile{thm}{\contentsline {proof}{{证明}{5.{1}}{}}{85}{proof.5.1}}
+\global\def\markiiproof{\ensuremath {\blacksquare }}
+\@writefile{thm}{\contentsline {definition}{{定义}{5.{4}}{Widening算子}}{86}{definition.5.4}}
+\global\def\markxxdefinitioni{\ensuremath {\blacksquare }}
+\@writefile{thm}{\contentsline {definition}{{定义}{5.{5}}{Narrowing算子}}{86}{definition.5.5}}
+\global\def\markxxidefinitioni{\ensuremath {\blacksquare }}
+\@writefile{thm}{\contentsline {example}{{例}{5.3.{1}}{}}{87}{example.5.3.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.2}基于抽象解释的静态程序分析}{87}{subsection.5.3.2}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {5.1}{\ignorespaces 基于抽象解释的静态程序分析算法(AbstractStaticAnalysis)\relax }}{88}{algorithm.5.1}}
+\newlabel{algo-absint-analysis}{{5.1}{88}{基于抽象解释的静态程序分析算法(AbstractStaticAnalysis)\relax }{algorithm.5.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}结合静态程序分析的高效符号执行算法}{89}{section.5.4}}
+\newlabel{sec-absint-symexe}{{5.4}{89}{结合静态程序分析的高效符号执行算法}{section.5.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.1}核心技术思想}{89}{subsection.5.4.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces 示例程序2符号执行树\relax }}{90}{figure.caption.72}}
+\newlabel{fig-tree2}{{5.6}{90}{示例程序2符号执行树\relax }{figure.caption.72}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces 示例程序2符号执行计算过程\relax }}{90}{figure.caption.73}}
+\newlabel{fig-compute2}{{5.7}{90}{示例程序2符号执行计算过程\relax }{figure.caption.73}{}}
+\citation{chen_interval_2009}
+\citation{chen_interval_2009}
+\citation{logozzo_pentagons:_2008}
+\citation{mine_octagon_2006}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.2}高效符号执行算法}{91}{subsection.5.4.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.8}{\ignorespaces 注释后的循环实例程序\relax }}{92}{figure.caption.74}}
+\newlabel{fig-example3}{{5.8}{92}{注释后的循环实例程序\relax }{figure.caption.74}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.9}{\ignorespaces 符号执行变换后的程序\relax }}{93}{figure.caption.75}}
+\newlabel{符号执行变换后的程序}{{5.9}{93}{符号执行变换后的程序\relax }{figure.caption.75}{}}
+\citation{noauthor_clang_nodate}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {5.2}{\ignorespaces 基于静态程序分析的高效符号执行算法\relax }}{94}{algorithm.5.2}}
+\newlabel{algo-absint-symexe}{{5.2}{94}{基于静态程序分析的高效符号执行算法\relax }{algorithm.5.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.5}实验与分析}{94}{section.5.5}}
+\newlabel{sec-experiment}{{5.5}{94}{实验与分析}{section.5.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.1}实验设计}{94}{subsection.5.5.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.10}{\ignorespaces 结合静态程序分析的高效符号执行技术实验过程\relax }}{95}{figure.caption.76}}
+\newlabel{experiment_procedure}{{5.10}{95}{结合静态程序分析的高效符号执行技术实验过程\relax }{figure.caption.76}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.5.2}结果分析}{95}{subsection.5.5.2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces 非重复击中目标区域测试用例数量对比\relax }}{96}{figure.caption.69}}
-\newlabel{非重复击中目标区域测试用例数量对比}{{5.7}{96}{非重复击中目标区域测试用例数量对比\relax }{figure.caption.69}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.6}本章小节}{96}{section.5.6}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.8}{\ignorespaces 目标区域覆盖数量对比\relax }}{97}{figure.caption.70}}
-\newlabel{目标区域覆盖数量对比}{{5.8}{97}{目标区域覆盖数量对比\relax }{figure.caption.70}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.9}{\ignorespaces 发现漏洞数量对比\relax }}{97}{figure.caption.71}}
-\newlabel{发现漏洞数量对比}{{5.9}{97}{发现漏洞数量对比\relax }{figure.caption.71}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces FastSE、KLEE-Fix与KLEE的错误发现数量以及总时间耗费对比\relax }}{96}{table.caption.77}}
+\newlabel{FastSE_KLEE-Fix与KLEE的发现错误数量以及总时间耗费对比}{{5.1}{96}{FastSE、KLEE-Fix与KLEE的错误发现数量以及总时间耗费对比\relax }{table.caption.77}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.2}{\ignorespaces FastSE、KLEE-Fix与KLEE发现错误数量交叉对比\relax }}{96}{table.caption.78}}
+\newlabel{FastSE_KLEE-Fix与KLEE发现错误数量交叉对比}{{5.2}{96}{FastSE、KLEE-Fix与KLEE发现错误数量交叉对比\relax }{table.caption.78}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.6}本章小结}{96}{section.5.6}}
+\newlabel{sec-conclusion}{{5.6}{96}{本章小结}{section.5.6}{}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {6}总结与展望}{98}{chapter.6}}
 \@writefile{toc}{\contentsline {section}{\numberline {6.1}论文主要工作总结}{98}{section.6.1}}
 \@writefile{toc}{\contentsline {section}{\numberline {6.2}下一步工作展望}{99}{section.6.2}}
-\@writefile{toc}{\contentsline {chapter}{致谢}{100}{chapter*.73}}
+\@writefile{toc}{\contentsline {chapter}{致谢}{100}{chapter*.80}}
 \bibstyle{bstutf8}
 \bibdata{ref/refs}
 \bibcite{noauthor_autodafe_nodate}{{1}{}{{}}{{}}}
@@ -501,7 +507,7 @@
 \bibcite{chen_mops:_2002}{{15}{}{{}}{{}}}
 \bibcite{holzmann_static_2002}{{16}{}{{}}{{}}}
 \bibcite{noauthor_slam_nodate}{{17}{}{{}}{{}}}
-\@writefile{toc}{\contentsline {chapter}{参考文献}{101}{section*.74}}
+\@writefile{toc}{\contentsline {chapter}{参考文献}{101}{section*.81}}
 \bibcite{noauthor_spin_nodate}{{18}{}{{}}{{}}}
 \bibcite{noauthor_cbmc_nodate}{{19}{}{{}}{{}}}
 \bibcite{beyer_software_2007}{{20}{}{{}}{{}}}
@@ -569,49 +575,39 @@
 \bibcite{baxter_clone_1998}{{82}{}{{}}{{}}}
 \bibcite{yamaguchi_generalized_2012}{{83}{}{{}}{{}}}
 \bibcite{gascon_structural_2013}{{84}{}{{}}{{}}}
-\bibcite{sutton_fuzzing:_2007}{{85}{}{{}}{{}}}
-\bibcite{robertson_run-time_2003}{{86}{}{{}}{{}}}
-\bibcite{wu_new_2009}{{87}{}{{}}{{}}}
-\bibcite{lanzi_smart_2007}{{88}{}{{}}{{}}}
-\bibcite{rawat_offset-aware_2011}{{89}{}{{}}{{}}}
-\bibcite{ganesh_taint-based_2009}{{90}{}{{}}{{}}}
-\bibcite{bekrar_finding_2011}{{91}{}{{}}{{}}}
-\bibcite{rawat_evolutionary_2010}{{92}{}{{}}{{}}}
-\bibcite{liu_vulnerability_2008}{{93}{}{{}}{{}}}
-\bibcite{cordon_ten_2004}{{94}{}{{}}{{}}}
-\bibcite{liubiao__2014}{{95}{}{{}}{{}}}
-\bibcite{noauthor_antiparser_nodate}{{96}{}{{}}{{}}}
-\bibcite{noauthor_sulley:_2017}{{97}{}{{}}{{}}}
-\bibcite{rice_classes_1953}{{98}{}{{}}{{}}}
-\bibcite{heelan_vulnerability_2011}{{99}{}{{}}{{}}}
-\bibcite{dekok_pscan:_2000}{{100}{}{{}}{{}}}
-\bibcite{parr_definitive_2013}{{101}{}{{}}{{}}}
-\bibcite{moonen_generating_2001}{{102}{}{{}}{{}}}
-\bibcite{yamaguchi_modeling_2014}{{103}{}{{}}{{}}}
-\bibcite{gremlin}{{104}{}{{}}{{}}}
-\bibcite{noauthor_cve_nodate}{{105}{}{{}}{{}}}
-\bibcite{noauthor_neo4j_nodate}{{106}{}{{}}{{}}}
-\bibcite{rodriguez_gremlin_2015}{{107}{}{{}}{{}}}
-\bibcite{noauthor_a2ps_nodate}{{108}{}{{}}{{}}}
-\bibcite{kratkiewicz_evaluating_2005}{{109}{}{{}}{{}}}
-\bibcite{zitser_testing_2004}{{110}{}{{}}{{}}}
-\bibcite{stehman_selecting_1997}{{111}{}{{}}{{}}}
-\bibcite{chen_interval_2009}{{112}{}{{}}{{}}}
-\bibcite{logozzo_pentagons:_2008}{{113}{}{{}}{{}}}
-\bibcite{mine_octagon_2006}{{114}{}{{}}{{}}}
-\bibcite{noauthor_clang_nodate}{{115}{}{{}}{{}}}
-\bibcite{santelices_test-suite_2008}{{116}{}{{}}{{}}}
-\bibcite{person_directed_2011}{{117}{}{{}}{{}}}
-\bibcite{bohme_regression_2013}{{118}{}{{}}{{}}}
-\bibcite{baldoni_survey_2016}{{119}{}{{}}{{}}}
-\bibcite{rodriguez_recurrent_1999}{{120}{}{{}}{{}}}
-\bibcite{cho_learning_2014}{{121}{}{{}}{{}}}
-\bibcite{bahdanau_neural_2014}{{122}{}{{}}{{}}}
-\bibcite{kirkpatrick_optimization_1983}{{123}{}{{}}{{}}}
-\bibcite{noauthor_gnu.org_nodate}{{124}{}{{}}{{}}}
-\bibcite{chollet_keras:_2017}{{125}{}{{}}{{}}}
-\bibcite{abadi_tensorflow:_2016}{{126}{}{{}}{{}}}
-\bibcite{kingma_adam:_2014}{{127}{}{{}}{{}}}
-\@writefile{toc}{\contentsline {chapter}{作者在学期间取得的学术成果}{111}{chapter*.76}}
+\bibcite{yamaguchi_modeling_2014}{{85}{}{{}}{{}}}
+\bibcite{rice_classes_1953}{{86}{}{{}}{{}}}
+\bibcite{heelan_vulnerability_2011}{{87}{}{{}}{{}}}
+\bibcite{dekok_pscan:_2000}{{88}{}{{}}{{}}}
+\bibcite{rodriguez_graph_2010}{{89}{}{{}}{{}}}
+\bibcite{parr_definitive_2013}{{90}{}{{}}{{}}}
+\bibcite{moonen_generating_2001}{{91}{}{{}}{{}}}
+\bibcite{noauthor_neo4j_nodate}{{92}{}{{}}{{}}}
+\bibcite{noauthor_titan:_nodate}{{93}{}{{}}{{}}}
+\bibcite{noauthor_newsletter_nodate}{{94}{}{{}}{{}}}
+\bibcite{gremlin}{{95}{}{{}}{{}}}
+\bibcite{noauthor_cve_nodate}{{96}{}{{}}{{}}}
+\bibcite{rodriguez_gremlin_2015}{{97}{}{{}}{{}}}
+\bibcite{noauthor_a2ps_nodate}{{98}{}{{}}{{}}}
+\bibcite{kratkiewicz_evaluating_2005}{{99}{}{{}}{{}}}
+\bibcite{zitser_testing_2004}{{100}{}{{}}{{}}}
+\bibcite{stehman_selecting_1997}{{101}{}{{}}{{}}}
+\bibcite{santelices_test-suite_2008}{{102}{}{{}}{{}}}
+\bibcite{person_directed_2011}{{103}{}{{}}{{}}}
+\bibcite{bohme_regression_2013}{{104}{}{{}}{{}}}
+\bibcite{baldoni_survey_2016}{{105}{}{{}}{{}}}
+\bibcite{rodriguez_recurrent_1999}{{106}{}{{}}{{}}}
+\bibcite{cho_learning_2014}{{107}{}{{}}{{}}}
+\bibcite{bahdanau_neural_2014}{{108}{}{{}}{{}}}
+\bibcite{kirkpatrick_optimization_1983}{{109}{}{{}}{{}}}
+\bibcite{noauthor_gnu.org_nodate}{{110}{}{{}}{{}}}
+\bibcite{chollet_keras:_2017}{{111}{}{{}}{{}}}
+\bibcite{abadi_tensorflow:_2016}{{112}{}{{}}{{}}}
+\bibcite{kingma_adam:_2014}{{113}{}{{}}{{}}}
+\bibcite{chen_interval_2009}{{114}{}{{}}{{}}}
+\bibcite{logozzo_pentagons:_2008}{{115}{}{{}}{{}}}
+\bibcite{mine_octagon_2006}{{116}{}{{}}{{}}}
+\bibcite{noauthor_clang_nodate}{{117}{}{{}}{{}}}
+\@writefile{toc}{\contentsline {chapter}{作者在学期间取得的学术成果}{110}{chapter*.83}}
 \providecommand\NAT@force@numbers{}\NAT@force@numbers
 \ttl@finishall

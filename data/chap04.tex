@@ -1,832 +1,454 @@
+\chapter{基于细粒度变异的导向模糊测试技术研究}
 
-\chapter{结合静态程序分析的高效符号执行技术研究}
-\label{chap-4}
-%wb
-符号执行作为一种典型的动态测试方法，在理论上能够有效遍历目标软件的
-状态空间，从而深度挖掘软件中存在的漏洞。但对复杂
-的源代码软件进行完整的符号执行测试是一个NP完全问题。因此，现有的测试方
-法必须在完备性和有效性之间做权衡。%wb
-导致符号执行路径空间爆炸的一个非常关键的因素是程序中的循环语句。在分析循环程序时，符号执行每一次进入循环体内部，都需要构造两条分支路径，分别对应了循环条件为真或假的情况。
-总共的分支路径数目随着循环次数的增加呈指数级增加。
-特别的，如果循环控制变量与输入相关，且没有对循环展开次数进行人为的限定，则循环将进行无限展开，甚至一个简单的循环将直接导致符号执行的路径爆炸问题。
-目前试图缓解路径空间爆炸问题的方式是，
-在符号执行的具体实现中，设计出好的路径遍历策略或者路径调度算法来提高符号执行的分析性能，
-以便在有限的时间和内存消耗范围内达到最大的代码检测覆盖率。
-在给定的遍历策略下，
-通过限定每个循环的遍历次数来缓解该问题所产生的影响，
-或者通过设置时间上限或者内存空间上限来缓解路径爆炸引起的分析工具崩溃的问题。
-但是这些路径遍历策略或者调度算法都只是局部改进，很难从根本上解决这一问题。
+模糊测试已被证明是一种非常强大的软件漏洞测试方法，是工业界和学术界研究的热点。但是模糊测试的变异具有随机性，从而导致测试不可控且很难测试特定目标。
+%在安全性重要性比较高的软件中，模糊测试发现了绝大多数远程程序执行漏洞和权限提升漏洞。
+%但是模糊测试一样有它的局限性，盲目的随机的变异测试用例很难到达测试程序的特定路径，导致一些漏洞很难被触发。
+在源代码软件的漏洞挖掘中，一些可疑的漏洞触发点可以通过静态分析获取。所以，如何动态的产生测试用例到达可疑漏洞触发点是一项重要的研究内容。现有的主要的导向测试研究都是基于符号执行的\upcite{sparks_automated_2007, santelices_test-suite_2008, person_directed_2011, marinescu_katch:_2013, ma_directed_2011, haller_dowsing_2013, christakis_guiding_2016, bohme_regression_2013}，又可称为导向白盒模糊测试。但是导向符号执行在程序分析和约束求解上耗费了大量的时间。在每一轮的测试中，为了到达目标区域，动态符号执行需要利用程序判断哪些分支需要反转，并沿着路径收集约束信息，最后调用约束求解器生成新的测试用例。而模糊测试不需要进行约束求解，仅仅通过变异生成测试用例。在相同的时间内，模糊测试产生的测试用例要比动态符号执行高几个数量级。此外，符号执行还有其他的问题如环境交互问题和循环问题\upcite{baldoni_survey_2016}。Macel Bohme\upcite{bohme_directed_2017}提出了一种基于AFL（American fuzzy lop）\upcite{noauthor_american_nodate}的导向模糊测试工具AFL-go。此方法设计了一种用于衡量测试用例到目标区域的距离测度以及一种能量分配策略；随着测试时间的增加，AFL-go通过增加距离近的测试用例的变异次数，减少距离远的测试用例的变异次数，从而完成目标区域导向。但是AFL-go的变异还是具有很大的盲目性。
+%不能规划测试用例的变异方向的缺点。
+%从而导致导向效率不高。
 
-本章提出了一种基于抽象解释静态分析的高效符号执行技术。给定待分析的源程序，首先解析出程序的控制流图。区别于其他符号执行技术，新技术通过静态程序分析方法，从程序的控制流图中计算出循环程序的不变式，然后对程序进行插桩用循环不变式代替循环，形成新的控制流图。在新的控制流图上进行符号执行，符号执行的路径将大大减少。
-
-\section{问题描述}
-
-考虑图\ref{fig-example1}中所示C程序片段，希望检测程序执行至第九行时，
-是否存在输入$a$和$b$使得断言$assert(x \neq y)$不被满足。
-由于变量$a$和$b$各自均有$2^{32}$个可能的取值，通过随机测试的方式检测程序是否存在错误是不可行的。
-符号执行将输入变量的取值符号化，并在符号值上模拟程序的执行，遍历所有可能的程序路径。
-
-\begin{figure}[h]
-\begin{lstlisting}
-void foobar(int a, int b){
-  int x = 1, y = 0;
-  if (a != 0) {
-    y = 3+x;
-	if (b == 0) {
-	  x = 2 * (a+b);
-	}
-  }
-  assert(x != y);
-}
-\end{lstlisting}
-\caption{示例程序1}
-\label{fig-example1}
-\end{figure}
-
-程序路径是程序的一个语句序列，包括一系列程序中顺序执行的代码片段，
-代码片段之间的连接代表了分支语句导致的控制转移。
-一个路径是可行的，是指至少存在一组具体的程序输入变量取值，
-使得程序以该组取值作为输入，将沿着这条路径执行。反之，路径就是不可行的。
-对于一条程序路径，路径条件是一个关于程序输入变量的符号值的约束。
-一组输入值使得程序沿着这条路径执行当且仅当这组输入值满足这条路径的路径条件。
-
-具体地，符号执行的计算过程通常可表示为三元组的形式：$(stmt, \sigma, \pi)$，其中，
-$stmt$表示当前被分析的程序指令，例如赋值语句，条件语句或者函数调用；
-$\sigma$表示程序路径中不同位置处变量的值，（可以是符号值，也可以是常量，或二者形成的函数），$\sigma$通常用函数映射表示;
-$\pi$称为路径约束，是路径在各个分支执行点（位置）的分支条件(通常是一阶谓词及其布尔合成)的合取，
-$\pi$的初始值为布尔常量$true$。
-
-依据$stmt$的不同，符号执行采用不同的计算方式更新$\sigma$和$\pi$的取值：
-\begin{enumerate}
-\item 如果$stmt$是赋值语句$x = e$，其中表达式$e$可能是常数，变量或者函数应用，
-	符号执行将更新$\sigma$中变量$x$的取值为$e$的符号值；
-\item 如果$stmt$是条件语句$\text{if } e \text{ then } s_1 \text{ else } s_2$，
-	符号执行将构造两条分支路径，分别对应了条件语句取值为真和假的两个情况，
-	并更新两条分支路径的路径约束为： $\pi_{true} = \pi \wedge e$， 
-	$\pi_{false} = \pi \wedge  \neg e$。
-\end{enumerate}
+针对C/C++源代码软件，本章提出了一种细粒度变异的导向模糊测试方法。该方法首先使用AFL-go收集测试用例；然后利用时间递归神经网络（Long Short-Term Memory，LSTM）训练出一个模型，用于判断哪些字段对靠近目标区域其关键作用，同时收集每个字段的权重；在动态运行测试用例之前，利用上述模型判断当前测试用例的关键字段并根据字段权重进行更精细的变异。本方法能够更细粒度的变异指定字段，很大程度上消除AFL变异的盲目性，从而能够提高导向模糊测试的效率。
 
 
-\begin{figure}[h]
-\centering
-\begin{minipage}{0.3\textwidth}
-%\begin{figure}
-	\begin{tikzpicture}[sibling distance=4em,
-	every node/.style = {shape=rectangle, rounded corners, draw,
-		top color=white, bottom color=blue!20}]]
-	\node {A}
-	child { node {B } 
-		child { node { C }
-			child { node { E }
-				child {node {F}
-					child {node {H}
-						child {node {$true$}}
-					}
-				}
-				child {node {G}
-					child {node {$false$}}
-				}
-			}
-		}
-		child { node { D }
-			child {node {$false$}
-			}
-		}
-	};
-	\end{tikzpicture}
-%\end{figure}
-\end{minipage}%
-\begin{minipage}{0.7\textwidth}
-\begin{tabular}{| c | c | c | c | }
-	\hline
-	节点　& $\sigma$ & $\pi$ & $stmt$ \\ 
-	\hline		
-	A & $ \{a = m, b = n\}$ & $ true$ & $x =1, y=0$ \\
-	B & $\{a = m, b = n, x=1, y=0\}$ & $ true$ & $if(a\neq 0)$ \\
-	C & $\{a = m, b = n, x=1, y=0\}$ &  $ m\neq 0$ & $y=3+x$ \\
-	D & $\{a = m, b = n, x=1, y=0\}$ & $ m = 0$ & $assert(x\neq y)$ \\
-	E & $\{a = m, b = n, x=1, y=4\}$ &  $ m\neq 0$ &  $if(b=0)$ \\
-	F & $\{a = m, b = n, x=1, y=4\}$ & $ m \neq 0 \wedge n =0 $ & $x = 2*(a+b)$ \\
-	G & $\{a = m, b = n, x=1, y=4\}$ & $ m \neq 0 \wedge n \neq 0 $ & $assert(x\neq y)$ \\
-	H & $\{a = m, b = n, x=2(m+n), y=4\}$ & $ m \neq 0 \wedge n =0 $ & $assert(x\neq y)$ \\
-	\hline  
-\end{tabular}
-\end{minipage}
-\caption{示例程序１符号执行树及其计算过程}
-\end{figure}
+\section{反馈式模糊测试技术介绍}\label{模糊测试介绍}
 
+模糊测试是现在最流行的软件测试技术，在很多复杂的程序中发现了很多安全漏洞。模糊测试的主要思想是不间断的产生新的畸形输入让程序执行，以期发现程序的未知行为、崩溃或者异常等行为。通常fuzzer（模糊测试工具）接受一组初始种子输入，通过随机变异或者其他的人为定义的变异策略产生大量的畸形输入反馈给程序执行，直到满足设定的停机条件。但是若遇到输入的格式特别复杂的情况，有时会需要产生数百万次的畸形输入的输入才能触发程序异常。
 
-图\ref{fig-example1}中Ｃ程序代码的符号执行过程如下图所示，
-左边部分表示了符号执行的执行树，右边的表格列出了执行树的每个节点中的数据信息。
+AFL（American fuzzy lop）\upcite{noauthor_american_nodate}是目前为止最先进的反馈式fuzzer，由Michał Zalewski于2015年开发完成并开源授予大众使用。相对于其他的fuzzer，AFL采用了多种数据变异策略和减少资源耗费的设置，并且不需要复杂的配置，能无缝的处理复杂真实软件，例如图像处理软件和文件压缩库软件。
 
-从执行树中，可以看出路径$ABDEFH$表示了一条从程序初始入口到目标断言的执行，
-该路径由指令序列$x=1,y=0;if(a\neq 0);y=3+x;if(b==0);x=2*(a+b);assert(x\neq y)$构成。
-在断言位置，程序变量的符号取值为$\sigma = \{a = m, b = n, x=2(m+n), y=4\}$，
-路径约束为$m \neq 0 \wedge n =0$, 其中，$m,n$为符号值。
-那么，检测断言是否满足可以转化为检测逻辑公式
-$x=2(m+n)　\wedge y=4 \wedge m \neq 0 \wedge n =0 \wedge x　＝＝ y$是否可满足。
-一阶逻辑的可满足性可以通过约束求解器SMT求解。
-通过约简，可以容易得到当$m = 2, n = 0$时，断言$assert(x\neq y)$不被满足。
+AFL的优势主要在于其利用遗传算法对测试用例进行优化选择。
+AFL维护一个种子测试用例队列，凡是能够提升代码覆盖率的测试用例都将作为种子测试用例，并且增加其新一轮的变异次数；反之，则丢弃。同时，该队列会通过一系列的筛选策略进行优化，以保证优先测试最优测试用例。AFL已经成功的在很多开源软件中发现了很多安全漏洞\upcite{baldoni_survey_2016}，例如：Mozilla Firefox，ffmpeg，OpenSSL\upcite{noauthor_american_nodate}等。
 
-从图\ref{fig-example1}中也可以看出，符号执行中，
-每一个分支条件语句都可能会使当前的路径再分支出一条新的路径。
-执行树的分支数(即程序路径数)，随条件语句的数目的增加而增长，且增长关系是指数级的。
-当分支数目变得巨大时，程序路径数目也将变得庞大而使得计算不可行，该问题称为路径爆炸问题。
-%相对于上述符号执行技术，即所有变量都使用符号值约束，
-%动态符号执行在分支语句时使用具体值的约束。
-%因此，动态符号执行的在当前路径执行过程中不会产生新路径，
-%只在执行结束后再去产生新路径，且一次只产生一条。
-%但是，无论静态符号执行还是动态符号执行，都没法从根本上避免路径状态空间爆炸所造成的影响。
+AFL进行模糊测试测试的过程如算法\ref{AFL模糊测试}所示。算法输入为待测程序P、初始种子测试用例集以及每个样本的变异次数limit，第4到12行描述的是输入文件变异的详细过程，这里只描述了以字节为单位的变异。除了字节变异，AFL还包含如比特反转、随机替换/插入、已知字典、边界值等变异方式。另外，还采用了组合变异方法，将简单变异随机串联成为复杂变异，从而提高了变异样本覆盖新路径的能力。通过执行变异后的输入文件获取程序的结果result以及路径覆盖信息coverage（第13行）；如果result是崩溃信息，则将其加入到MaliciousInputs中（第14-16行）；如果路径覆盖coverage增加，则将对应输入input加入到种子序列中（第17-19行）。循环执行上述过程，直到时间耗尽（第21-23行）。
 
-导致符号执行路径空间爆炸的另一个关键因素是程序中的循环语句，例如图\ref{fig-example2}中所示的while循环。
-在分析这类循环程序时，符号执行每一次进入循环体内部，都需要构造两条分支路径，分别对应了循环条件为真或假的情况。总共的分支路径数目随着循环次数的增加呈指数级增加。特别的，如果循环控制变量输入相关，且没有对循环展开次数进行人为的限定，则循环将进行无限展开，一个简单的循环将直接导致符号执行的路径爆炸问题。因此本章提出了一种基于抽象解释静态分析的高效符号执行技术用于缓解由循环引起的路径爆炸问题。
-
-
-\begin{figure}[h]
-\begin{lstlisting}
-void LoopExample(int x) {
-  int i = 3, p = x;
-  while(p > 0) {
-    i = i + 4;
-    p = p - 1;
-	if (i >= 80)
-	  assert(0); //target1
-  }
-  if(i>78)
-  	assert(0);//target2
-}
-\end{lstlisting}
-\caption{示例循环程序}
-\label{fig-example2}
-\end{figure}
-
-\section{技术方案研究}
-针对程序中循环语句可能导致的路径空间爆炸问题，
-本章提出了一种基于抽象解释的高效符号执行技术。
-该技术方案的框示意图如图\ref{fig-framework}所示。
-给定待分析的源程序，首先解析出程序的控制流图。区别于其他符号执行技术，
-新技术通过静态程序分析方法，从程序的控制流图中计算出循环程序的不变式，然后对程序进行插桩用循环不变式代替循环，形成新的控制流图。在新的控制流图上进行符号执行，符号执行的路径将大大减少。图\ref{fig-framework}的左下部分为原始程序的符号执行路径，假设循环$b \rightarrow c \rightarrow d \rightarrow b$的循环次数是$n$，则在符号执行时此循环将生成$2^{n}$条路径。经过静态分析后，$b \rightarrow c \rightarrow d \rightarrow b$代表的循环由$b^{'}$代替。在对修改之后的控制流图进行符号执行时，原本的$2^{n}$用一条路径代替。简言之，新技术旨在通过基于抽象解释的静态程序分析技术合成循环的约束，
-并将该约束提供给符号执行引擎，减少符号执行路径。
-
-\begin{figure}[h]
-	\centering
-	\includegraphics{figures/chap04/framework.pdf}
-	\caption{基于抽象解释的符号执行技术框架}
-	\label{fig-framework}
-\end{figure}
-
-
-%小节\ref{sec-absint}回顾了基于抽象解释的静态程序分析技术；
-%小节\ref{sec-absint-symexe}详细论述本章提出的高效符号执行技术；
-%小节\ref{sec-experiment}介绍了本章的实验设计与分析；
-%小节\ref{sec-conclusion}对本章节进行总结。
-
-
-\section{基于抽象解释的静态程序分析技术研究}
-\label{sec-absint}
-
-由于一般情况下，程序具体对象域上的不动点语义计算是不终止的，
-基于抽象的静态程序分析技术通过构造一个抽象的对象域，将程序语义映射到抽象对象域上，
-并构造程序的抽象不动点语义，作为对程序具体语义的逼近。
-有效的抽象方法需要确保：(1)抽象域上的不动点语义计算是可行的；
-(2)抽象语义是对具体语义的正确逼近。
-抽象解释理论解决了如何快速计算程序不动点语义的问题，
-在程序不动点语义计算的精确度和效率之间取得均衡，以低精确度的抽象计算换取较高的计算效率。
-抽象解释为设计实用抽象技术，以及证明其的可靠性和正确性提供了理论工具。
-
-%wq
-抽象解释理论是Patrick Cousot及其夫人于1977年提出的静态程序分析理论。
-基于抽象解释理论的静态程序分析技术的基本思想是，在保证抽象逼近可靠性的前提下，
-对程序不动点语义计算过程的各个层次进行抽象逼近， 使得计算过程收敛或加速其收敛，
-然后依据逼近计算的不动点语义验证程序需要满足的性质，
-若验证过程中出现虚假反例， 则对抽象过程进行精化。
-基于抽象解释理论的形式化验证的特点是可靠但不完备的。
-如果分析结果表明抽象系统满足验证性质， 则抽象解释理论保证原程序也满足验证性质;
-若验证结果表明抽象系统不满足验证性质，
-则原系统可能满足验证性质(表明抽象过程中出现了不满足验证性质的虚假反例)，
-可能不满足验证性质(原系统存在不满足验证性质的真实反例)， 需要更精细的抽象分析。
-%wq copy
-
-
-
-\subsection{抽象解释理论框架}
-
-首先介绍抽象解释理论的数学基础。
-直观上，程序语义的对象域是是程序运算的对象，包括了程序变量所有可能的取值集合。
-数学上，通过一个偏序集合来刻画。
-
-\begin{definition}
-集合$<L, \subseteq>$称为偏序集合，
-当且仅当，二元序关系$\subseteq$满足以下条件：
-\begin{enumerate}
-\item $\forall l \in L. (l,l)\in \subseteq$;
-\item 如果 $(l,l_1)\in \subseteq \wedge (l_1, l')\in \subseteq$,
-	那么$(l,l')\in \subseteq$；
-\item 如果$(l,l')\in \subseteq$，$(l',l)\in \subseteq$，
-	那么$l = l'$;
-\end{enumerate}
-\end{definition}
-
-
-\begin{definition}
-假设$<L, \subseteq>$是一个偏序集合，
-$<L, \subseteq>$是一个完备格当且仅当：
-$L$的任何一个子集均在$L$中存在最小上界和最大下界。
-特别地，用$\sqcup$表示最小上界算子，用$\sqcap$表示最大下界算子，
-用$\bot$表示最小元素，用$\top$表示最大元素。
-完备格通常表示为$<L, \subseteq, \sqcup, \sqcap, \bot, \top>$.
-\end{definition}
-
-
-具体对象域与抽象对象域之间的映射的关系可以通过一对算子来刻画。
-数学上，这对算子构成了一个Galois连接。
-
-
-\begin{definition}
-设$<P, \leq>$和$<Q, \subseteq>$是两个偏序集合，$\alpha:P \rightarrow Q$,
-$\gamma: Q \rightarrow P$是两个映射，序偶$<\alpha, \gamma>$称为一个Galois连接当且仅当：
-$\forall x\in P, \forall y\in Q. \alpha(x) \subseteq y$当且仅当$x\leq \gamma(y)$，
-其中，映射$\alpha$称为抽象算子，$\gamma$称为具体算子。
-\end{definition}
-
-\begin{figure}[h]
-\centering
-\includegraphics{figures/chap04/galois.pdf}
-\caption{Galois连接示意图}
-\label{fig-galois}
-\end{figure}
-
-由Galois连接的定义，容易得到如下关于抽象算子和具体算子的引理。
-
-\begin{lemma}
-序偶$<\alpha, \gamma>$是偏序集$<P, \leq>$和$<Q, \subseteq>$上的一个Galois连接， 则
-\begin{enumerate}
-\item $\forall x\in P. x \leq \gamma(\alpha(x))$;
-\item $\forall y\in Q. \alpha(\gamma(y)) \subseteq y$;
-\item $\alpha$和$\gamma$单调递增函数。
-\end{enumerate}
-\end{lemma}
-	
-\begin{proof}
-$\forall x\in P. \alpha(x) \in Q$. 
-由于$<Q, \subseteq>$是一个偏序集合，则$\alpha(x) \subseteq \alpha(x)$.
-依据Galois连接的定义，得到$ x \leq \gamma(\alpha(x))$(将右边的$\alpha(x)$视为$y$)。
-同理，$\forall y \in Q. \gamma(y) \in P$.
-由于$<P, \leq>$是一个偏序集合，则$\gamma(y) \leq \gamma(y)$.
-依据Galois连接的定义，得到$\alpha(\gamma(y)) \subseteq y$(将右边的$\gamma(y)$视为$x$)。\\
-由于$\forall x\in P. x\leq \gamma(\alpha(x))$，以及偏序关系的传递性，
-容易得知$ x\leq \gamma(\alpha(\gamma(\alpha(x))))$，
-依据Galois连接的定义，进一步得到$\alpha(x)\subseteq \alpha(\gamma(\alpha(x)))$，
-故$\alpha$算子是单调递增的。
-同理可证$\gamma$的单调递增性。
-\end{proof}
-
-
-由于在程序具体对象域上计算语义最小不动点是不可行的，
-基于抽象解释理论，可以通过抽象算子，将不动点计算映射到抽象对象域上，
-并通过具体算子将抽象的计算结果映射到程序具体对象域上逼近实际的语义不动点。
-假设程序$Prog$的最小不动点语义(即可达状态空间)为$LFP(Post_{Prog})$，
-通过Galois连接$<\alpha, \gamma>$，定义程序的抽象后继算子
-$AbsPost_{Prog} = \alpha \bullet Post \bullet \gamma$,
-其中，符号$\bullet$表示函数合成,
-那么程序的最小不动点语义可以用抽象$LFP(AbsPost_{Prog})$逼近。
-Galois连接的性质保证了抽象不动点是对实际语义不动点的正确逼近。
-
-在实际应用中，抽象域上的不动点计算也不一定终止。
-程序不动点语义的计算过程不收敛是引起程序验证过程中状态空间爆炸的另一个原因。
-假设$<L,\subseteq, \sqcup, \sqcap, \bot,\top>$是一个完备格，
-程序的操作语义可以由完备格上的单调语义泛函$Post$来刻画，
-理想情况下，$Post$算子是完备格$L$上的单调连续函数，
-并且不动点计算$\bigcup_{i=0}\{Post^{i}\}$能够在有限次迭代计算后收敛。
-然而，在实际情况下，不动点计算不一定在有限次迭代过程中收敛，
-即便收敛，也不一定收敛到最小不动点。
-在抽象解释的理论框架中，Widening算子可以给出一个不动点计算的上界逼近，
-而Narrowing算子给出更加精细的上界逼近。
-
-\begin{definition}[Widening算子]
-假设$<L,\subseteq, \sqcup, \sqcap, \bot,\top>$是一个完备格，
-算子$\nabla: L \rightarrow L$是一个Widening算子，当且仅当，
-\begin{enumerate}
-\item $\nabla$是一个上界算子;
-\item 对于任意的递增链$(l_n)_n$，
-递增链$(l_{n}^{\nabla})_n$收敛，其中，
-$l_{n}^{\nabla} = l_0$，当$n=0$;
- $l_{n}^{\nabla} = l_{n-1}^{\nabla} \nabla l_n$，当$n>0$。
-\end{enumerate}
-\end{definition}
-
-假设程序$Prog$的单调语义泛函$Post$定义在完备格
-$<L,\subseteq, \sqcup, \sqcap, \bot,\top>$上，
-并且算子$\nabla$是完备格上的一个Widening算子，
-定义序列$Post_{n}^{\nabla}$为：
-
-\begin{enumerate}
-\item 若$n=0$，则$Post_{n}^{\nabla} = \bot$；
-\item 若$n > 0$，并且
-$Post(Post_{n-1}^{\nabla}) \subseteq Post_{n}^{\nabla}$，
-则$Post_{n}^{\nabla} = Post_{n-1}^{\nabla}$;
-\item 若$n > 0$，并且
-$Post_{n}^{\nabla} \subseteq Post(Post_{n-1}^{\nabla})$，
-则$Post_{n}^{\nabla} = Post(Post_{n-1}^{\nabla}) \nabla  Post_{n-1}^{\nabla}$。
-\end{enumerate}
-
-可以证明序列$Post_{n}^{\nabla}$是收敛的，
-并且存在$m > 0$，使得$Post(Post_{m}^{\nabla}) \subseteq Post_{m}^{\nabla}$，
-且$Post_{m}^{\nabla}$是最小不动点$LFP(Post)$的一个上界逼近。
-
-\begin{definition}[Narrowing算子]
-假设$<L,\subseteq, \sqcup, \sqcap, \bot,\top>$是一个完备格，
-算子$\triangle: L \rightarrow L$是一个Narrowing算子，当且仅当，
-\begin{enumerate}
-\item $\forall l_1,l_2 \in L$，如果$l_2 \subseteq l_1$，
-	则$l_2 (l_2\triangle l_1) \subseteq l_1$;
-\item 对于任意的递降链$(l_n)_n$，
-	递降链$(l_{n}^{\triangle})_n$收敛，其中，
-	$l_{n}^{\triangle} = l_0$，当$n=0$;
-	$l_{n}^{\triangle} = l_{n-1}^{\triangle} \triangle l_n$，当$n>0$。
-\end{enumerate}
-\end{definition}
-
-假设算子$\triangle$是完备格上的一个Narrowing算子，
-定义序列$Post_{n}^{\triangle}$为：
-
-\begin{enumerate}
-	\item 若$n=0$，则$Post_{n}^{\triangle} = Post_{n}^{\nabla}$；
-	\item 若$n > 0$，
-	则$Post_{n}^{\triangle} = Post_{n-1}^{\triangle} \triangle Post(Post_{n-1}^{\triangle})$。
-\end{enumerate}
-
-可以证明$LFP(Post) \subseteq Post(Post_{m}^{\nabla}) 
-\subseteq  Post_{n}^{\triangle} \subseteq Post_{m}^{\nabla}$。
-$Post_{m}^{\triangle}$同样是$LFP(Post)$的一个上界逼近，
-并且是一个较$Post_{m}^{\nabla}$更加精确的上界逼近。
-
-
-\begin{example}
-	区间抽象域的思想是通过一个区间去逼近变量的取值集合。
-	设$Z$是一个整数集合，如果$a=min(Z), b=max(Z)$，
-	那么区间$[a,b]$是对$Z$的逼近。
-	区间域的序关系$\subseteq$定义如下： $[a,b] \subseteq [c,d]$,
-	当且仅当$a \geq c$，并且$b \leq d$，
-	既是区间$[a,b]$包含在区间$[c,d]$中。
-	域中的最大元素是$(-\infty, +\infty)$,最小元素是空集$\emptyset$。
-	
-	区间抽象域含有无穷多个元素，且含有无穷递增序列，
-	因此需要扩展算子($widening$)进行近似计算。
-	区间域的扩展算子定义如下：
-	
-	\begin{enumerate}
-	\item 如果$m_2 < m_1$，并且$n_2 < n_1$,		
-	则$[m_1, n_1] \nabla [m_2, n_2] = [\bot, n1]$；
-	\item 如果$m_1 < m_2$，并且$n_1 < n_2$,
-	则$[m_1, n_1] \nabla [m_2, n_2] = [m_1, \top]$；
-	\item 如果$m_2 < m_1$，并且$n_1 < n_2$,
-	则$[m_1, n_1] \nabla [m_2, n_2] = [\bot, \top]$；
-	\item  如果$m_1 < m_2$，并且$n_2 < n_1$,
-	则$[m_1, n_1] \nabla [m_2, n_2] = [m_1, n1]$。
-	\end{enumerate}
-\end{example}
-
-除区间域外，常用的抽象域还包括了八边形域、多项式域。
-区间域的表达能力较弱，只能够刻画单个程序变量的取值约束，但是计算复杂度最低。
-多项式域的表达能力最强，可以刻画程序变量的相互关系，但是计算复杂度高。
-
-\subsection{基于抽象解释的静态程序分析}
-
-基于抽象解释理论的程序语义不动点计算过程的基本思想在算法\ref{algo-absint-analysis}所示。
-算法以待分析的程序$Prog$作为输入，并计算程序变量在各个程序位置的不动点语义。
-形式化地，用函数$\Sigma$表示程序的语义不动点，
-该函数是一个从程序控制节点集合到一阶逻辑公式的映射，给定程序控制节点$l\in L$,
-$\Sigma(l)$表示了在该节点位置，程序变量所有可能取值的约束条件。
-该约束条件可能是一个取值区间，或者是一个线性不等式，具体形式取决于不动点计算采用的抽象域。
-
-
-\begin{algorithm}[h]
-\renewcommand{\algorithmicrequire}{\textbf{Input:}}
-\renewcommand{\algorithmicensure}{\textbf{Output:}}
-\caption{基于抽象解释的静态程序分析算法(AbstractStaticAnalysis)}
-\label{algo-absint-analysis}
-\begin{algorithmic}[1]
-\REQUIRE 待分析程序源码$Prog$
-\ENSURE 程序变量在各个位置的约束映射$\Sigma$
-\STATE 创建程序$Prog$的控制流图$CFG=(L, E, l_0)$
-\STATE 创建初始约束映射$\Sigma : L/\{l_0\} \rightarrow \{false\} \bigcup \{l_0\} \rightarrow \{true\}$
-\STATE 创建工作列表$worklist$
-\STATE $worklist \gets \{l_{0}\}$
-\WHILE{$worklist \neq \emptyset$}
-	\STATE $l \gets $ pop($worklist$)
-	\STATE $\sigma \gets \Sigma(l)$
-	\IF{$l \neq l_0$}
-		\STATE $\Gamma_I \gets $ InEdges($l$)
-		\STATE $\sigma_{new} \gets \sigma$
-		\FOR{$\gamma \in \Gamma_I$}
-			\STATE $\gamma \gets (l',stmt,l)$
-			\STATE $\sigma' \gets \Sigma(l')$
-			\STATE $\sigma'' \gets post(\sigma', stmt)$
-			\STATE $\sigma_{new} \gets \sqcup(\sigma, \sigma'')$
+\begin{algorithm}
+	\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+	\renewcommand{\algorithmicensure}{\textbf{Output:}}
+	\caption{AFL模糊测试算法}
+	\label{AFL模糊测试}
+	\begin{algorithmic}[1]
+		\REQUIRE seeds，待测程序 P，每个样本变异次数 limit
+		\ENSURE 畸形测试用例 MaliciousInputs
+		\STATE c1 = 0
+		\FOR{seed in seeds}
+			\WHILE{c1 < limit }
+				\STATE input = seed
+				\STATE length = len(seed)
+				\STATE mutations = RandInt(length)
+				\STATE mut = 0
+				\WHILE{mut < mutations}
+					\STATE byte = RandInt(length)
+					\STATE mutate(input,byte)
+					\STATE mut = mut+1
+				\ENDWHILE
+				\STATE result，coverage = execute(P,input)
+				\IF{result is crash}
+					\STATE MaliciousInputs.add(result)
+				\ENDIF
+				\IF{isIncreased(coverage)}
+					\STATE seeds.add(input)
+				\ENDIF
+			\ENDWHILE
+			\IF{timeout()}
+				\STATE break
+			\ENDIF
 		\ENDFOR
-		\IF{$\sigma_{new} \neq \sigma$}
-			\STATE $\Sigma(l) \gets \sigma_{new}$
-			\STATE $\Gamma \gets $ OutEdges($l$)
-			\FOR{$\gamma \in \Gamma$}
-				\STATE $\gamma \gets (l, stmt, l')$
-				\STATE push($l'$, $worklist$)
-			\ENDFOR
-		\ENDIF
-	\ELSE
-		\STATE $\Gamma \gets $ OutEdges($l$)
-		\FOR{$\gamma \in \Gamma$}
-			\STATE $\gamma \gets (l, stmt, l')$
-			\STATE push($l'$, $worklist$)
-		\ENDFOR
-	\ENDIF
-\ENDWHILE
-\end{algorithmic}
+	\end{algorithmic}
 \end{algorithm}
 
-算法首先构建程序的控制流图$CFG=(L, E, l_0)$，并对函数$\Sigma$进行初始化。
-初始条件下，程序入口位置的约束为布尔常量$true$，其他位置的约束为常量$false$。
-算法采用典型的工作列表设计模式，工作列表中存放待分析的程序节点。
-算法每一次从工作列表中取出一个节点进行分析，并依据分析结果将该节点的后继节点放入列表中，
-直至所有节点的分析完成，即工作列表为空。
-初始条件下，工作列表仅含有程序的初始入口节点$l_0$。
-
-对于程序的每个控制节点$l$，如果是初始节点，那么算法直接将其后继节点加入工作列表；
-如果不是初始节点，算法将进行进一步的分析。
-具体地，算法首先获取该节点$l$的所有前继语句$\Gamma_{I}$，
-对每个语句$(l',stmt,l)\in \Gamma_{I}$，及其前继节点$l'$的约束$\sigma'$，
-算法应用Post后继算子计算相对于语句$stmt$的后继约束条件$\sigma''$，
-并应用抽象域中的上界算子$\sqcup$，得到当前节点$l$处的新的约束值$\sigma_{new}　＝　
-\sqcup(\sigma,\sigma'')$。
-上述计算$post(\sigma', stmt)$，$\sqcup(\sigma,\sigma'')$均在给定的抽象域上完成，
-具体计算规则由抽象解释理论的抽象域给出。
-
-随后，算法判断位置$l$的新约束$\sigma_{new}$是否与当前约束$\sigma$等价。
-如果不等价，则更新该位置的约束为$\sigma_{new}$，
-并将位置$l$的所有后继节点加入工作列表；
-如果相同，说明该位置的约束已经包括了程序变量的所有可能取值。
-当在每个位置的约束均覆盖了程序变量在该位置的所有可能取值时，算法终止。
-抽象解释理论确保了算法的终止性。
+AFL利用fork server机制增加执行效率。linux程序在执行到main函数之前会经过三个步骤：内核加载程序文件、调用libc\_start\_main以及初始化必要的数据结构和线程环境。一般的fuzzer在每次执行测试用例时都会完整的执行此三个步骤，造成模糊测试速度缓慢。而AFL在程序执行到main函数时，封存此时的状态，当程序再次执行测试用例时，利用linux的fork机制复制一个完全相同的进程，从而省略了上述的三个步骤。以执行binutils程序为例，AFL一秒钟能执行2000次个测试用例而一般的fuzzer只能执行不到100次。
 
 
-本方法采用基于抽象解释理论的静态程序分析技术计算程序变量的约束关系，
-例约束$x-p = (i-3)/4$，并使用该约束辅助符号执行。
-基于多边形抽象域的静态分析技术可以计算上述形式的约束。
 
-\section{结合静态程序分析的高效符号执行算法}
-\label{sec-absint-symexe}
+\section{基本框架研究}
 
-程序中的循环语句是导致符号执行路径爆炸问题的主要因素之一。
-缓解该问题的解决方法主要包括了：
-1:对循环体做有限次展开，以损失分析的完备性换取计算的可行性；
-2:采用特殊的导向策略引导符号执行的路径遍历，
- 避免对循环体做无限次展开；
-3:基于循环摘要对循环语句进行抽象，该抽象是对循环体行为的刻画。
- 对循环程序的分析可以转换为对循环摘要的分析。
-本章提出了一种基于抽象解释的循环程序符号执行技术。
-为提高对循环程序的分析效率，提出采用抽象解释技术计算出循环程序的语义逼近，
-并用该抽象语义辅助符号执行技术。
+本方法的目的是使用细粒度的变异方法尽快的生成能够到达目标区域的测试用例，以挖掘漏洞或者验证程序的安全性。方法的前提条件有两个：（1）指定目标区域，在源代码中以危险操作语句的行数和文件名称表示（例如valid.c:6410）；（2）LLVM bitcode插桩，用于编译时计算每个基本块到目标区域的距离，距离的定义见\ref{距离测度}节。
 
-
-\subsection{核心技术思想}
-
-首先通过实例来解释本方法的技术方案。
-考虑图\ref{fig-example2}所示循环程序片段， 为了检测程序是否能够执行至第七行，
-符号执行进行路径搜索的同时，需要对while循环进行展开，展开次数与函数的输入参数$x$以及变量$i$相关。
-理论上，对于该程序片段，符号执行需要对循环进行20次展开，那么就需要遍历$2^{20}$个程序路径。
-图\ref{fig-tree2}和图\ref{fig-compute2}展示了对循环进行２次展开的符号执行过程。
-
-\begin{figure}[h]
-	\centering
-		\begin{tikzpicture}[sibling distance=5em,
-		every node/.style = {shape=rectangle, rounded corners, draw,
-			top color=white, bottom color=blue!20}]]
-		\node {A}
-		child { node {B } 
-			child { node { C }
-				child { node { E }
-					child {node {F}
-						child {node {H}
-							child {node {J}
-								child {node {K}}
-								child {node {L}
-									child {node {$false$}}
-								}
-							}
-						}
-						child {node {I}}
-					}
-					child {node {G}
-						child {node {$false$}}
-					}
-				}
-			}
-			child { node { D }}
-		};
-		\end{tikzpicture}
-		\caption{示例程序2符号执行树}
-		\label{fig-tree2}
-\end{figure}
-
-\begin{figure}[h]
-		\begin{tabular}{| c | c | c | c | }
-			\hline
-			节点　& $\sigma$ & $\pi$ & $stmt$ \\ 
-			\hline		
-			A & $ \{x = m\}$ & $ true$ & $i=3, p=x$ \\
-			B & $\{x = m, i=3, p=m\}$ & $ true$ & $while(p > 0)$ \\
-			C & $\{x = m, i=3, p=m\}$ &  $ m > 0$ & $i=i+4;p=p-1$ \\
-			D & $\{x = m, i=3, p=m\}$ & $ m \leq 0$ & $skip$ \\
-			E & $\{x = m, i=7, p=m-1\}$ &  $ m> 0$ &  $if(i\geq 80)$ \\
-			F & $\{x = m, i=7, p=m-1\}$ & $ m > 0 \wedge i < 80 $ & $while(p > 0)$ \\
-			G & $\{x = m, i=7, p=m-1\}$ & $ m > 0 \wedge i \geq 80 $ & $abort()$ \\
-			H & $\{x = m, i=7, p=m-1\}$ & $ m > 0 \wedge i < 80 \wedge m-1>0$ & $i=i+4;p=p-1$ \\
-			I & $\{x = m, i=7, p=m-1\}$ & $ m > 0 \wedge i < 80 \wedge m-1 \leq 0$ & $skip$ \\
-			J & $\{x = m, i=11, p=m-2\}$ & $ m > 0 \wedge i < 80 \wedge m-1>0$ & $if(i\geq 80)$ \\
-			K & $\{x = m, i=11, p=m-2\}$ & $ m > 0 \wedge i < 80 \wedge m-1>0$ & $while(p>0)$ \\
-			L & $\{x = m, i=11, p=m-2\}$ & $ m > 0 \wedge i \geq 80 \wedge m-1>0$ & $abort()$ \\
-			\hline  
-		\end{tabular}
-	\caption{示例程序2符号执行计算过程}
-	\label{fig-compute2}
-\end{figure}
-
-\begin{enumerate}
-\item 符号执行树中，程序路径$ABCEG$表示了一条从初始入口到目标指令的执行路径。
-该路径通过对循环进行一次展开得到，其对应的指令序列为
-$i=3,p=x;while(p>0);i=i+4;p=p-1;if(i\geq 80);abort();$，
-在目标指令位置，程序变量的符号取值为$x=m;i=7;p=m-1$，路径约束为$m>0\wedge i\geq 80$。
-显然，当前变量$i$的取值不满足路径约束，所以该执行路径是不可行的。
-\item 类似地，通过对循环进行两次展开，得到程序路径$ABCEFHJL$，其对应的指令序列为
-$i=3,p=x;while(p>0);i=i+4;p=p-1;if(i < 80);while(p>0);i=i+4;p=p-1;if(i\geq 80);abort()$，
-在目标指令位置，程序变量的符号取值为$x=m;i=11;p=m-2$，路径约束为$m>0\wedge i\geq 80 \wedge m-1>0$。
-当前变量$i$的取值同样不满足路径约束，所以该执行路径是不可行的。
-\item 以此类推，对循环进行第20次展示后，得到的程序变量符号约束为$x=m;i=83;p=m-20$，
-路径约束为$i\geq 80 \wedge m-19>0$。
-此时，变量$i$的取值满足路径约束，该执行路径是可行的，相应的输入变量的约束条件为$x>19$。
-当目标指令所在的分支条件，即$i\geq 80$,发生改变，如$i\geq 100$，
-那么循环的展开次数则变为$100$，此时符号执行树的分支数目增长为$2^{100}$。
-由此可知，符号执行在分析此类循环程序时，即便程序规模很小，也难以在合适的时间内给出分析结果。
-\end{enumerate}
-
-进一步分析可知，为了快速高效地找到触发程序第一个目标$assert$指令的输入值，
-关键是需要找到变量$p$和$i$的关系：$x-p = (i-3)/4$。
-假设我们通过特定的程序分析技术得到了上述关系，那么在运行符号执行时，
-例如当符号执行遍历路径$ABCEG$时，我们不使用当前路径的变量取值$x=m;i=7;p=m-1$，
-而使用约束$x-p = (i-3)/4$去判定是否存在输入使得路径约束被满足。
-由于约束$x-p = (i-3)/4 \wedge i\geq 80 \wedge p \geq 0$是可满足的，
-得到输入变量的约束为$x>19$。
-
-本质上，约束$x-p = (i-3)/4$刻画了程序变量在目标指令位置的所有可能取值。
-例如，当程序通过路径$ABCEG$到达目标指令位置时，变量的取值为$x=m;i=7;p=m-1$，
-显然，$x-p = (i-3)/4$。
-当程序通过路径$ABCEFHJL$到达目标指令位置时，变量的取值为$x=m;i=11;p=m-2$，
-同样满足上述约束。
-在程序分析领域，约束$x-p = (i-3)/4$通常称为程序的循环不变式。
-
-
-\subsection{高效符号执行算法}
-
-该技术的核心思想如算法\ref{algo-absint-symexe}所示。大体上，算法分为两部分：静态分析部分和动态符号执行部分。算法接收待验证程序源码$Prog$作为输入，并初始化抽象执行树tree、工作列表以及程序语义不动点。抽象执行树的节点代表了程序的抽象状态，树的边表示程序的执行路径。
-每个节点$\eta$包括了三部分信息：程序的指令位置$loc$，程序变量的符号取值$\sigma$和程序路径在当前位置的路径约束$\pi$。算法维护一个工作列表，里面的元素是待遍历的树节点，即程序状态。算法在进行符号执行式，逐次从工作列表中取出一个节点$\eta$进行分析，直至工作列表为空。
-%依据节点的不同类型，算法进行相应的计算。程序的语义不动点是一个$<loc,constraints>$的二元组，$loc$表示的是程序指令位置，$constraints$表示$loc$位置上的约束。
-结合静态程序分析的高效符号执行算法算法\ref{algo-absint-symexe}可分为以下过程。
-
-%（1）对于程序$Prog$中的每个循环运行基于抽象解释的静态程序分析算法生成程序在各个位置的不动点（第6行），然后将不动点以注释的形式写入程序中。
-
-%\begin{enumerate}
-%\item 调用前向分析算法$ForwardAnalysis$对程序进行静态分析，生成程序语义不动点；
-%
-%\item 判断程序$Prog$中是否包含循环，若包含循环则获取循环的位置$locs$；
-%
-%\item 对于每一个循环的位置获取由静态分析的出来的约束集$constraints$；
-%
-%\item 对程序进行插桩，将循环替换为上一步的出来的约束；
-%
-%\item 对插桩后的程序进行符号执行。首先判断该节点是否代表了一个错误状态。
-%如果是错误状态，那么就构造程序变量的符号取值$\sigma$和当前位置的路径约束$\pi$的合取$\sigma \wedge \pi$，
-%并判断该合取是否可满足。如果可满足，说明该错误状态是可达的，并且公式$\sigma \wedge \pi$的可满足模型给出了
-%导致程序执行至该错误状态的输入变量的取值。算法调用函数$BuildCEX$构造反例，该函数从当前节点$\eta$回溯至执行树的根节点。
-%\item 如果该节点表示了一个程序的循环，即存在一个前继节点$\eta' = (loc', \sigma', \pi')$，使得$loc' = loc$，
-%那么算法调用前向分析算法$ForwardAnalysis$对程序进行静态分析。
-%\end{enumerate}
-
-%程序的预处理，循环内部的所有的函数调用都进行内联，因为抽象解释工具不能处理函数调用的情况。
-
-（1）对于程序$Prog$中的每个循环运行基于抽象解释的静态程序分析算法生成程序在各个位置的不动点（第3行），然后将不动点以注释的形式写入程序中（第4行），其中不动点是由各个变量的不变式组成。下面以图\ref{fig-example2}中的循环程序为例，阐述生成不变式的过程。首先在循环中加入一个初始值为0的计数变量counter，用于记录循环的展开次数。加入$counter$的目的是表达程序变量和循环展开次数的关系。为了在每个程序点产生不变式，本章在多面体抽象域\upcite{chen_interval_2009}中运行前向抽象解释算法进行静态分析。多面体抽象域是一个完全的数值关系域，可以用来表达任意的线性等式和不等式。多面体抽象域比数值域\upcite{chen_interval_2009}、五边形域\upcite{logozzo_pentagons:_2008}以及八边形域\upcite{mine_octagon_2006}表达能力更强，同时耗费的资源也更多。
-如图\ref{fig-example3}第4行所示；此不变式表示要到达当前程序点变量$x$需要满足的约束条件。插入不动点的位置有三类：循环的入口处，分支语句处以及循环结束处，分别对应图\ref{fig-example3}的第4-5行、第9行以及第12-13行。
-
-（2）在进行符号执行之前，需要通过插桩的方式插入特殊指令（第6行），使得在符号执行时能够辨别需要处理的循环对象。在每个循环的开始处插入"LSEntry"表示循环处理开始，如图\ref{fig-example3}的第3行；在循环的结束处插入“LSEnd”表示循环处理结束，如图\ref{fig-example3}的第15行。
-
-\begin{figure}[h]
-\begin{lstlisting}
-void LoopExample(int x) {
-  int i = 3, p = x;
-  LSEntry;
-  while(p > 0) {
-  /* i = 4 * counter + 3, counter >= 0, counter <= 19,
-   x = counter + p, p > 0 */
-    i = i + 4;
-    p = p - 1;
-	if (i >= 80)
-	/* i = 4 * counter + 3, counter = 20, x = counter + p, p > 0*/
-	  assert(0); //target1
-  }
-  /* i = 4 * counter + 3, x = counter + p, counter >= 0, 
-   counter <= 19, p < 0*/
-   LSEnd;
-   if(i>78)
-     assert(0);//target2
-}
-\end{lstlisting}
-\caption{注释后的循环实例程序}
-\label{fig-example3}
-\end{figure}
-
-（3）动态符号执行的过程中会逐条读取指令，根据指令类型的不同执行不同的操作（第8-21行）。其中第9-15行为正常的符号执行过程。从$worklist$中取出一个$\eta$，判断当前位置是否存在错误（第10行），如果存在则调用约束求解器求解测试用例（第13行），然后返回测试用例。本章对符号执行的修改体现在对新添指令“LSEntry”和“LSEnd”的处理上（第17行）。动态符号执行最主要的三个操作是约束累积、更新内存（包括符号内存和具体内存）以及约束求解。图\ref{符号执行变换后的程序}是符号执行变换后程序的示意过程。以图\ref{fig-example3}中的程序为例，符号执行时将x符号化。当符号执行读取本章自定义的标识指令“LSEntry”时，则会根据抽象解释产生的注释做相应的操作。首先，新建表示循环展开次数的变量counter。然后，若目标区域包含在循环内部，则从注释/* i = 4 * counter + 3, counter = 20, x = counter + p, p > 0*/提取等式进行具体和符号内存更新，具体内存的更新为i=83，counter=20，符号内存的更新为x=20+p；提取不等式p>0更新符号约束
-，进而约束求解求得满足约束的测试用例，此例中只要x>=20都能满足约束条件。若目标区域在循环外部，例如图\ref{fig-example3}的第17行，则从注释/* i = 4 * counter + 3, x = counter + p, counter >= 0, 
-   counter <= 19, p < 0*/提取等式counter=x-p，i=4*counter+3更新内存，提取不等式counter>=0累积约束，返回到自定义标识指令“LSEnd”继续后面程序的符号执行。例如，在符号执行到图\ref{符号执行变换后的程序}第16行时，将i>78加入到约束并对约束求解，解得x=19就是到达第17行assert语句的输入。利用抽象解释产生的不变式，将图\ref{符号执行变换后的程序}的while循环变换成一个分支语句，一个指向循环中的目标区域，一个指向循环后的程序点；若目标区域不在循环内部，则将while循环变换成一个顺序语句。如此则能大大减少符号执行中因循环引起的执行状态。
-%扩展的符号执行语义
+程序执行的路径由输入确定，所以若要控制程序执行到特定区域，相应的输入满足一定条件。图\ref{关键字段}是一个简单的示意图，右半部分是程序的执行路径，左半部分是程序的输入，若想要控制程序执行到关键区域$t$，则需要$x_1$和$x_3$满足一定条件；在本章方法中，$x_1$和$x_3$被称为关键字段。这里的字段是指测试用例中每个输入的位置。
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[scale=1.4]{chap04/符号执行变换后的程序}
+\includegraphics[scale=1.4]{关键字段}
 \end{center}
-\caption{符号执行变换后的程序}
-\label{符号执行变换后的程序}
+\caption{关键字段解释}
+\label{关键字段}
 \end{figure}
 
-%\begin{table}[ht]
-%\begin{center}
-%\caption{符号执行扩展语义} \label{符号执行扩展语义}
-%\begin{small}
-%\begin{tabular}{|c|c|c|}
-%\hline 
-%指令类型 & 指令示例 & 符号执行动作\tabularnewline
-%\hline 
-%Assign & x=y & Assign(x=y)\tabularnewline
-%\hline 
-%Exit & assert(0);abort();exit(); & solve();terminate();\tabularnewline
-%\hline 
-%Branch & if(x==5)\{\} & fork();addConstraints(x==5);\tabularnewline
-%\hline 
-%... &  & \tabularnewline
-%\hline 
-%LS & /{*} x = counter + p, counter >= 0, & Assign(x = counter + p);Assign(counter = (i-3)/4);\\ 
-%   & counter <= 19, counter = (i-3)/4
-%{*}/ & addConstraints(counter>= 0);counter <= 19
-%\tabularnewline
-%\hline 
-%\end{tabular}
-%\end{small}
-%\end{center}
-%\end{table}
 
-\begin{algorithm}[h]
-\renewcommand{\algorithmicrequire}{\textbf{Input:}}
-\renewcommand{\algorithmicensure}{\textbf{Output:}}
-\caption{基于静态程序分析的高效符号执行算法}
-\label{algo-absint-symexe}
-\begin{algorithmic}[1]
-\REQUIRE 待分析程序$prog$
-\ENSURE 程序bug，或者运行超时
-%\STATE 初始化抽象执行树$tree$
-%及其根节点$\eta_{root}$
-%\STATE 初始化工作列表$worklist$
-\STATE 初始化程序语义不动点 $fixpoint$
-%\STATE $worklist \gets \{\eta_{root}\}$
-\FOR{$loop$ in $prog$}
-	\STATE $fixpoint$ = forwardAnalysis($loop$)
-	\STATE annotate($fixpoint$)
-\ENDFOR
-\STATE $prog^{'}$ = instrument(prog)
-\STATE $worklist$ = initilize($prog^{'}$)
-%\STATE $fixpoint$ = forwardAnalysis(prog)
-%\IF{ContainsLoop($prog$)}
-%\STATE $locs$ = obtainLoopLoc($prog$)
+细粒度导向模糊测试基本框架主要包括训练和测试两部分，如图\ref{细粒度导向fuzzing基本框架}所示。
 
-%\ENDFOR
-%\ENDIF
-\WHILE{$worklist \neq \emptyset$}
-	\STATE $\eta \gets $ pop($worklist$)
-	\IF{IsError($\eta$)}
-		\STATE $\eta = (loc, \sigma, \pi)$
-		\IF{$\sigma \wedge \pi$ is SAT}
-			\STATE $\mathit{cex}$ $\gets$ BuildCEX($\eta$)
-			\RETURN $\mathit{cex}$
-		\ENDIF
-	
-	\ELSE
-		\STATE $\Gamma \gets $ ExtActions($\eta$)
-		\STATE Successors($\eta$, $\Gamma$)
-		\STATE add successors of $\eta$ into $worklist$
-	\ENDIF
-\ENDWHILE
-\end{algorithmic}
-\end{algorithm}
+训练的目的是产生一个模型；给定一个原始的测试用例，此模型能够输出哪些关键字段能够使测试用例与目标区域的距离减小；同时计算每个关键字段的权重。初始测试用例经过变异生成新的测试用例（此处变异为AFL的原始变异）；测试用例通过执行引擎生成执行迹，计算每个执行迹到目标区域的距离，并与原始测试用例做比较；如果距离改变，则将变异后的测试用例$x^{'}$相对于测试用例$x$改变的位置$x \oplus x^{'}$，与距离的改变作为自变量和因变量输入到LSTM网络（Long Short Term）以训练模型，同时累积各个位置距离的变化值以计算权重，并将权重值放入一个全局的权重表中。
+
+测试的目的是基于训练的模型和字段权重引导模糊测试快速执行到目标区域，测试阶段的测试用例是随机挑选的。对于每一个测试用例，使用LSTM模型计算关键字段；根据每个字段的权重，对关键字段进行细粒度变异，生成测试用例；经过执行引擎生成执行迹并测量距离，若距离减小则保留测试用例以待再次变异，反之丢弃；重复测试过程直到满足设定的停机条件。
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[scale=1.4]{chap05/细粒度导向fuzzing基本框架}
+\end{center}
+\caption{细粒度导向模糊测试基本框架}
+\label{细粒度导向fuzzing基本框架}
+\end{figure}
+
+\section{基于LSTM的关键字段获取与权重计算}
+\label{基于LSTM的关键字段获取}
+
+本节对应图\ref{细粒度导向fuzzing基本框架}的训练部分，目的是获取对于距离减少起作用的关键字节区域，以及每个bit的权重，主要包括三个部分：衡量测试用例执行迹与目标区域距离的测度、基于LSTM的关键字段获取架构以及字段的权重计算。
+
+\subsection{距离测度}
+\label{距离测度}
+
+本节采用AFL-go\upcite{bohme_directed_2017}的距离测度作为产生测试用例的工具。AFL-go是一个用于补丁测试和崩溃重现的工具，在静态分析的基础上能有效的调度AFL逼近目标区域，本章方法采用了其距离测度表示测试用例到目标区域的距离。其中，每一个目标区域在源代码中表示为一行代码，在软件的自动测试中，程序执行到某行代码和执行到对应的基本块意义相同，所以到某行代码的距离和到代码所在基本块的距离相同。
+
+\subsubsection{函数距离}
+
+函数距离指的是在函数调用图中两个函数的距离。函数$n$和$n^{'}$的距离记为$d_{f}(n,n^{'})$，表示在函数调用图中两函数之间边的数量。则函数$n$到目标函数集$T_f$之间的距离$d_f (n,T_f)$可以定义为$n$到$T_f$中所有函数距离的调和平均数，如式~(\ref{函数到目标函数集的距离})所示。
+
+\begin{equation}\label{函数到目标函数集的距离}
+s(X)=\left\{
+\begin{aligned}
+& undefined, & \text{如果} R(n, T_{f}) = \emptyset \\
+& \lbrack \sum_{t_f \in R(n, T_{f})}d_{f}(n,t_{f})^{-1}\rbrack ^{-1} & \text{其他}
+\end{aligned}
+\right.
+\end{equation} 
+
+其中，$R(n,T_{f})$表示在$T_f$中和$n$具有可达关系的函数。调和平均数是总体各统计变量倒数的算术平均数的倒数。主要是用来解决在无法掌握总体单位数（频数）的情况下，只有每组的变量值和相应的标志总量，而需要求得平均数的情况下使用的一种数据方法。调和平均值的计算公式如式~(\ref{调和平均数})所示。相对于算术平均数，在多个目标情况下，调和平均能够区分距离一个目标较近离另外一个目标较远的点与多个目标中间点。如图\ref{调和平均数和算术平均值区别}所示，假设每个线段代表距离1，则中间三个点到$t_1$和$t_2$的算术平均值距离都是2；以调和平均数计算距离，如果一个点有一端比较靠近的某个目标，其距离比中间点的距离要小。本方法的目标是要尽可能的到达目标区域，所以调和平均数较为合适。
+
+\begin{equation}\label{调和平均数}
+H_{n} = \frac{n}{\sum_{i=1}^{n}}
+\end{equation}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=10cm]{调和平均数和算术平均值区别}
+\end{center}
+\caption{调和平均数和算术平均值区别}
+\label{调和平均数和算术平均值区别}
+\end{figure}
+
+\subsubsection{基本块距离}
+
+虽然在程序的全局控制流图计算基本块的距离非常精确，但是全局的控制流图非常复杂，路径搜索和距离求解较为复杂，所以过程间、全局的基本块距离在这里使用过程内的基本块距离和函数距离去近似。如果函数距离越小，则函数之间的基本块的距离也越小。在一个函数$i$的控制流图$G_i$中，设定$d(m_1,m_2)$为$m_1$和$m_2$之间边的数量；$N(m)$为在基本块$m$中调用的函数中，与$T_f$函数具有可达关系的集合，即$N(m) = \{n | R(n, T_f) \neq \emptyset \}$；$T$表示在$G_i$中所有包含函数调用且此函数和$T_f$中函数具有可达关系，即$\forall m \in T.N(m) \neq \emptyset$。基于以上设定，每个基本块$m$与目标基本块集$T_b$的距离定义如式 ~(\ref{基本块到目标基本集的距离})所示。式中$c=10$是一个常量，用于放大函数之间的距离以近似基本块之间的距离，$d_{b}(m,Tb)$中的$m$表示所有的$G_i$中的任意的基本块，$G_i$函数调用图$CG$中任意函数的控制流图。
+
+\begin{equation}\label{基本块到目标基本集的距离}
+d_{b}(m,Tb)=\left\{
+\begin{aligned}
+& 0, & \text{如果} m \in T_{b} \\
+& c \cdot \min\limits_{n \in N(m)}(d_{f}(n,T_{f})), & \text{如果} m \in T \\
+& \lbrack \sum_{t \in T}(d_{b}(m,t) + d_{b}(t,T_{b}) ^{-1}\rbrack^{-1} & \text{其他}
+\end{aligned}
+\right.
+\end{equation} 
+
+\subsubsection{测试用例与目标区域之间的距离}
+
+测试用例与目标区域之间的距离可以用程序执行测试用例产生的执行迹与目标基本块集的距离表示，距离越小越可能击中目标基本块。$\varphi(s)={b_1,b_2...b_n}$表示测试用例$s$的执行迹，$b_i$为程序执行的基本块。测试用例与目标区域之间的距离如式~(\ref{测试用例与目标区域之间的距离})所示。
+
+\begin{equation}\label{测试用例与目标区域之间的距离}
+d(s,T_b) = \frac{\sum_{m \in \varphi(s)} d_{b}(m,T_b) }{|\varphi(s)|}
+\end{equation}
+
+归一化后的测试用例与目标基本块集的距离如式~(\ref{归一化后的测试用例与目标区域之间的距离})所示。
+
+\begin{equation}\label{归一化后的测试用例与目标区域之间的距离}
+\hat{d}(s,T_b) = \frac{d_{b}(s,T_b)-minD }{maxD-minD}
+\end{equation}
+其中
+\begin{equation}\label{minD和maxD的定义}
+\begin{aligned}
+& minD = \min\limits_{s_{i} \in S}\lbrack d(s_{i}, T_b) \rbrack \\
+& maxD = \max\limits_{s_{i} \in S}\lbrack d(s_{i}, T_b) \rbrack
+\end{aligned}
+\end{equation}
+
+归一化后，测试用例与目标区域之间的距离$\hat{d} \in [0,1]$。
+
+\subsection{距离的获取方式}
+AFL是运行非常快速的模糊测试器，如果在运行时动态测量测试用例到目标区域之间的距离会大大降低模糊测试的效率，所以本方法采用在编译时将基本块之间的距离插桩到代码的方式来减少AFL动态运行负荷\upcite{bohme_directed_2017}。本方法采用LLVM编译器对源码进行编译和插桩，用于距离测量的的静态插桩如图\ref{用于距离测量的的静态插桩}所示。
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[scale=1.2]{用于距离测量的的静态插桩}
+\end{center}
+\caption{用于距离测量的的静态插桩}
+\label{用于距离测量的的静态插桩}
+\end{figure}
+
+静态插桩的具体过程如下：
+
+（1）产生程序的函数调用图和相应的过程内控制流图。函数调用图用函数声明表示；过程内控制流图用进入函数的第一个语句表示。二者通过编写相应的LLVM Pass生成。
+
+（2）基本块之间的距离通过函数之间的距离以及过程内基本块的距离一起计算，详细的计算方式见\ref{距离测度}节。基本块之间距离的计算是通过调用Djikstra算法计算最短距离完成的。
+
+（3）在每个基本块的跳转语句之后插入代码片段用于记录覆盖的控制流边。AFL使用64kb的共享内存存储边在执行过程中的遍历情况，每一条边对应一个字节。在64位的架构中，额外增加了另外16kb内存：8kb用于记录距离值另外8kb用于记录经过的基本块距离。静态插桩主要实现了两种功能：记录基本块到目标区域的距离以及将遍历的基本块记录到共享内存。
+
+\subsection{训练过程}
+
+\subsubsection{目标函数}
+
+训练的目的是建立一个模型，给定一个测试用例，此模型能够输出一个位图用于表示哪些关键字段的改变能够使测试用例和目标区域的距离减少。因为测试用例是变长的，所以此模型可以被描述为一个函数簇，如式~(\ref{byte目标模型})所示。此函数簇的输入是任意数量的输入位置，输出的是各个位置的变异引起测试用例和目标区域距离减少的概率。
+
+\begin{equation}\label{byte目标模型}
+\{f_{k}: \{0x00, 0x01, ...,0xFF \}^{k} \rightarrow [0,1]^{k} | k \in N \}
+\end{equation}
+
+式~(\ref{bit目标模型})是以字节为单位判断是否有距离改变，但程序经常会用一个bit进行分支判断，所以进一步设定了bit级的目标函数，如式~(\ref{bit目标模型})所示。
+
+\begin{equation}\label{bit目标模型}
+\{f^{'}_{k}: \{0,1 \}^{8k} \rightarrow [0,1]^{8k} | k \in N \}
+\end{equation}
+
+在测试阶段，训练出的模型会首先根据当前测试用例相对于变异前的测试用例所改变的位置，去判断是否会引起距离的减少；若减少距离减少则执行此测试用例，反之丢弃，决策函数如式~(\ref{决策函数})所示。式中$x$表示测试用例，$x^{'}$表示变异后的测试用例，$\oplus$表示逐位异或运算，$(x \oplus x^{'})$表示测试用例变异的位置，$\alpha$是一个阈值，控制改变bit的最小数量。式~(\ref{决策函数})的主要思想是判断哪些关键bit上的改变才能够减小到目标区域的距离。
+
+\begin{equation}\label{决策函数}
+\sum_{k}(f^{'}(x \oplus x^{'})) > \alpha
+\end{equation}
+
+为了训练目标函数$f^{'}$,需要测试用例$x$，变异后的测试用例$x^{'}$，$x$到目标的距离$d(x)$以及$x^{'}$到目标之间的距离$d(x^{'})$；结合这四个参数可以设定一个生成一个有监督的数据集，如式~(\ref{训练集})所示。
+
+\begin{equation}\label{训练集}
+xy = \{(x, x \oplus x^{'}) | \bigtriangleup (d(x),d(x^{'})) > 0 \}
+\end{equation}
+
+\subsubsection{训练模型选择}
+
+因为测试用例的长度是可变的，且bit之间存在关联，本方法使用循环神经网络（Recurrent Neural Network，RNN）训练决策函数。RNN非常适用于处理像程序测试用例这样的序列数据\upcite{rodriguez_recurrent_1999}。因为RNN的记忆功能，所以RNN在处理有格式的文件输入时非常有用。RNN已经成功的应用于统计机器翻译当中\upcite{cho_learning_2014,bahdanau_neural_2014}，本章要处理的问题和此相似，因为测试用例也可以当做是一种语言。
+
+但是RNN很难处理较长的序列，所以本方法采用时间递归神经网络（Long Short-Term Memory，LSTM）。相对于RNN，LSTM在最顶层增加了一条名为”cell state“的信息传送带同时，所以能够处理更长的序列。同时，LSTM丢弃超过生命周期的序列记忆，以增加处理更长序列的能力。LSTM的一个循环单元（recurrent unit）的状态更新和输出如式~(\ref{循环单元})所示。
+
+\begin{equation}\label{循环单元}
+h_{t}, o_{t} = f(x_{t},h_{t-1})
+\end{equation}
+
+将式~(\ref{循环单元})分解，如下式~(\ref{LSTM分解})所示。其中，$\sigma$是Sigmoid函数，$W_{*}$为学习的权重向量，$b_{*}$是学习的误差向量。$f_t$是忘记门层，$i_t$是输入门层二者决定是否保留或者丢弃当前输入。通过三种门交织处理使得LSTM能够处理更长的序列。
+
+\begin{equation}\label{LSTM分解}
+\begin{aligned}
+& f_{t} = \sigma(W_{f} \centerdot [x_{t}, h_{t-1}] + b_f) \\
+& i_t = \sigma (W_{i} \centerdot [x_{t}, h_{t-1}] + b_{i}) \\
+& C_{t} = f_{t} \times C_{t-1} + i_{t} \times tanh(W_C \centerdot [x_{t}, h_{t-1}] + b_{C}) \\
+& o_t = \sigma(W_{o} \centerdot [x_{t}, h_{t-1}] + b_{o}) \\
+& h_{t} = o_{t} \times tanh(C_{t})
+\end{aligned}
+\end{equation}
+
+\subsubsection{关键字段权重计算}
+\label{关键字段权重计算}
+
+本方法用一个哈希表存储所有bit改变引起的距离的改变，每个bit的权重计算如~(\ref{bit权重计算})所示。其中，$x$和$x^{'}$表示变异前测试用例和变异后的测试用例，$sum(x \oplus x^{'})$表示$x^{'}$相对于$x$变化的字节数量，$\bigtriangleup (d(x),d(x^{'})$表示$x^{'}$相对于$x$减少的距离。式~(\ref{bit权重计算})表示将$\bigtriangleup (d(x),d(x^{'})$平均的分配在改变的每个bit上。训练结束后将权重累积到所有bit位置上，对权重进行归一化，得到bit权重的最终结果。
+
+\begin{equation}\label{bit权重计算}
+\omega^{k}_{i}=\left\{
+\begin{aligned}
+& \omega_{i} = \bigtriangleup (d(x),d(x^{'}))/sum(x \oplus x^{'}), & \text{如果 } i \in \{ x \oplus x^{'} \}\\
+& 0 & \text{其他}
+\end{aligned}
+\right.
+\end{equation} 
+
+\begin{equation}\label{bit权重累积}
+\omega_{i} = \sum_{k=1} \omega^{k}_{i}
+\end{equation}
+
+在实际训练的过程中，并不是所有的bit的权重都不相同，本方法将具有相同bit权重的bit集合称之为bit集。
+
+\subsubsection{关键字段权重与程序执行路径的关系}
+
+%\upcite{meng_assisting_2017}发给超哥的自己文章的参考文献格式
+本节利用程序图\ref{权重与程序执行路径的关系实例程序}描述关键字段权重与程序执行路径之间的关系。图\ref{字段权重和程序执行路径的关系}是图\ref{权重与程序执行路径的关系实例程序}的执行树，每个节点代表一个基本块，第6行的代码和图中红色节点相对应，这里将此基本块表示为$t$；叶子节点下面的字符（$a,b,c,d,e,f,g,h$）代表的是执行到相应节点的路径。若要执行$h$，需要的条件是$x1>0 \wedge x3>10 \wedge x7>100$。
+
+假设当前的测试用例$s=(-1,-2,1,-200,1,1,1)$，执行的路径是$a$，按照\ref{距离测度}节的距离计算方式，$d(s,a) = 3$。任意修改$x2,x4,x5$所生成新测试用例$s^{'}$，其与h的距离$d(s,s^{'})$都不会减少。若要减少到h的距离，$x1$必须要大于0，如此$x1$的权重则会增加，$x1$的权重一定大于$x2,x4,x5$。$s$经过变异后生成$s^{'}=(1,-2,1,-200,1,1,1)$，执行的路径是e。对于$s^{'}$，若要减少到h的距离就必须要变异$x3$，从而导致$x3$的权重增加。
+
+在对大量样本进行训练的情况下，关键字段权重能够反应测试用例和输入的关系，即权重大的字段能够控制执行树的节点。对于每一个测试用例，根据其关键字段的权重能够更容易的到达目标区域。
+
+\begin{figure}[h]
+\begin{lstlisting}[language=C]
+void f(int x1, int x2, int x3, int x4, int x5, int x6, int x7)
+{
+	if(x1 > 0){
+		if(x3 > 10){
+			if(x7 > 100)
+				target();
+		}else{
+			if(x6 > 15){
+				normal();
+			}else
+				normal();
+		}
+			
+	}else{
+		if(x2 < -1){
+			if(x4 < -125){
+				normal();
+			}else
+				normal();
+		}else{
+			if(x5 < -256){
+				normal();
+			}else
+				normal();
+		}
+	}
+}
+\end{lstlisting}
+\caption{权重与程序执行路径的关系实例程序}
+\label{权重与程序执行路径的关系实例程序}
+\end{figure}
 
 
-%\begin{theorem}
-%给定待分析程序$prog$，假设$prog$中存在一个不安全状态$error$，
-%则算法\ref{algo-absint-symexe}能够检测该程序是不安全的，
-%并输入一条从程序初始入口到该不安全状态的执行路径。
-%\end{theorem}
-%
-%\begin{proof}
-%TODO
-%\end{proof}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[scale=3]{字段权重和程序执行路径的关系}
+\end{center}
+\caption{图\ref{权重与程序执行路径的关系实例程序}的执行树}
+\label{字段权重和程序执行路径的关系}
+\end{figure}
 
 
+\section{基于细粒度变异的动态测试}
+\label{基于字段权重的模糊测试能量调度策略}
+
+本节重点论述在AFL的原有能量调度基础上，基于关键字段和模拟退化算法设计能量调度策略。本章使用的能量的含义是指模糊测试中对一个测试用例的变异次数。
+
+\subsection{细粒度变异的测试用例生成过程}
+
+图\ref{细粒度变异的测试用例生成过程}是本方法采用的通过细粒度变异生成测试用例的过程。对于测试用例$s$，LSTM模型输出使距离减少的bit集，对照全局权重表形成归一化后的bit集，每个bit集的权重用$\omega^{'}_{i}$表示。对于每一个测试用例基于模拟退火框架生成一个能量$p$，按照bit集的权重重新计算每个bit集的权重$p_i$，能量越大表明该bit集变异的次数越多。通过对靠近目标区域的测试用例分配更多的能量，以及对每个bit集根据权值进行细粒度变异能够使测试用例以更大的可能性更快的到距离更近的测试用例，以此增加导向性模糊测试的效率。
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[scale=1.4]{细粒度变异的测试用例生成过程}
+\end{center}
+\caption{细粒度变异的测试用例生成过程}
+\label{细粒度变异的测试用例生成过程}
+\end{figure}
+
+
+\subsection{细粒度变异能量分配策略}
+
+AFL通过测试用例的执行时间、覆盖的基本块数量以及测试用例的深度（测试用例相对与初始测试用例变异的次数）来决定当前测试用例的能量。AFL初始的能量分配策略是以代码覆盖率为导向的，并不适合特定目标导向。本节基于字段权重，在AFL-go\upcite{bohme_directed_2017}的基础上，研究了一种细粒度模拟退火框架的能量分配策略。此策略的主要思想是对距离目标区域较近的测试用例变异能更容易击中目标区域。具体实施时，为距离目标区域较近的测试用例分配更高的能量，从而能以更高的可能性生成到达目标区域的测试用例。
+
+模拟退火法\upcite{kirkpatrick_optimization_1983}的出发点是基于物理学中固体物质的退火过程与一般组合优化问题之间的相似性。模拟退火算法从某一较高初温出发，伴随温度参数的不断下降，结合概率突跳特性在解空间中随机寻找目标函数的全局最优解，即在局部最优解能概率性地跳出并最终趋于全局最优。模拟退火算法是一种通用的优化算法，理论上算法具有概率的全局优化性能。温度是模拟退火的一个重要参数，随着温度的降低，较差解决方案的接受率也降低。在算法开始运行时，初始温度$T=T_0=1$，此时算法接受较差解决方案的概率较高，当$T$接近于0时，算法退化为经典的梯度下降算法。
+
+将模拟退火算法的框架应用到导向模糊测试中想要达到的效果是：测试开始时即温度较高时，允许以较高的概率变异那些距离目标区域较远测试用例，随着时间的推移这种概率越来越低，到时间趋于无穷时只变异距离目标区域最近的测试用例。现在最流行的冷却方案是指数冷却方案\upcite{kirkpatrick_optimization_1983}，如式~(\ref{模拟退火算法})所示。其中，$\alpha<1$是个常量，$\alpha$的区间为$[0.8,0.99]$。
+
+\begin{equation}\label{模拟退火算法}
+T_{exp} = T_0 \centerdot \alpha^{k}
+\end{equation}
+
+在用模糊测试方法挖掘漏洞时，一定会设定一个时间限制$t_x$。在使用模拟退火框架设计能量分配策略时，也需要设定一个$t_x$。在$t_x$之前是导向模糊测试的搜索路径阶段，在此阶段分配给距离较远的测试用例较大的能量，以搜索更多的路径。在$t_x$之后导向模糊测试进入收敛阶段，在此阶段分配给距离最近的测试用例的能量几乎达到最大，使产生的测使用例更好的逼近目标区域。在到达$t_x$时，模拟退火算法等价于梯度下降算法，距离目标区域最近的测试用例分配的最高的能量，让AFL着重变异和测试最有希望击中目标区域的测试用例。假设设置经过$k$轮的迭代之后$T_{exp}=0.1$，则在时间$t$的温度$T_exp$可以通过式~(\ref{t时间温度的计算})的推导获得。同样，可以将$T_{exp}$设置为其他的值，$T_{exp}$越小温度降低的越快。
+
+\begin{equation}\label{t时间温度的计算}
+\begin{aligned}
+& \alpha^{k_{l}} = 0.1 & \text{当经过}k_{l}\text{轮迭代之后}\\
+& k_{l} = log(0.1)/log(a) &\text{求解}k_{l}\\
+& T_{exp} = \alpha^{t/t_{x} \centerdot (log(0.1)/log(a))} & \text{将}k_{l}\text{代入}\\
+& T_{exp} = 10^{-t/t_{x}} &\text{化简}
+\end{aligned}
+\end{equation}
+
+模拟退火的温度参数随着时间的增加而减少的，而基于模拟退火框架的能量分配的目的是距离近的测试用例的能量随着时间的增加越来越高，距离大的测试用例的能量随时间的增加越来越低。所以在式~(\ref{t时间温度的计算})的基础上可定义模拟退火的能量分配如式~(\ref{基于模拟退火的能量分配})所示。其中$c_{1}$是一个可调节的常量，控制着搜索阶段距离大的测试用例所分配的能量，$c_{1}$越大距离大的测试用例能量越大。典型的，可以设置$c_{1} = 0.5$；在开始测试时测试距离为1的测试用例的能量为0.5。
+
+\begin{equation}\label{基于模拟退火的能量分配}
+\begin{aligned}
+& p(m,T_{b}) = (1- \hat{d}(s,T_{b})) \centerdot (1-T_{exp}) + c_{1}T_{exp}
+\end{aligned}
+\end{equation}
+
+在式~(\ref{基于模拟退火的能量分配})的基础上，可定义每个bit集的变异能量如式~(\ref{关键字段能量})所示，其中，$\omega^{'}_{i}$测试用例关键字段中每个bit的权重。
+
+\begin{equation}\label{关键字段能量}
+p_{i} = \frac{\omega^{'}}{\sum_{i} \omega^{'}} \centerdot p(m,T_{b})
+\end{equation}
+
+将式~(\ref{关键字段能量})应用到AFL原有的能量策略上，最终的能量分配如式~(\ref{最终能量分配})所示。其中，$c_{2}$是一个常量，用于控制不同距离的能量分配，$c_{2}$越大，距离大的测试用例分配的能量越小，此数值可以在测试时根据不同的目的具体调整。
+
+\begin{equation}\label{最终能量分配}
+\hat{p}_{i} = p_{afl}(s) \centerdot 2^{10(p_{i}-c_{2})}
+\end{equation}
 
 \section{实验与分析}
-\label{sec-experiment}
 
 \subsection{实验设计}
 
 （1）实验目的
 
-本实验的目的是在标准测试程序上验证结合静态程序分析的高效符号执行技术的有效性。验证本章方法相对于其他方法在挖掘漏洞上的效率；验证本章方法在漏洞挖掘数量上的优越性。
+为了测试基于细粒度变异的导向模糊测试方法的有效性，本节在测试效率以及已知漏洞的挖掘数量两个方面进行了实验。
 
 （2）实验环境
 
-本节基于Ｃ语言编译器Clang\upcite{noauthor_clang_nodate}结合KLEE实现了本章提出的高效符号执行技术（Fast Symbolic Execution，FastSE）。在实验中，本节选取公开的测试程序源码作为测试集与符号执行工具KLEE进行对比。本实验的测试集取自2017年软件验证国际竞赛
-\footnote{\url{https://sv-comp.sosy-lab.org/2017/}}
-的测试用例库。测试集总共有100个测试程序。每个测试程序中均含有一条assert语句，并且均存在一组输入，使得程序运行至该语句时，该语句的取值为假。100个测试程序中有68个程序包含循环，其中15个包含嵌套循环。实验的采用的硬件环境是Inter Xeon CPU E3-1231 v3 @ 3.40GHz，16G RAM。本实验设置的符号执行停机时间是20分钟，设置的内存限制是12GB。为了保证
-实验参数的一致性，对每一个测试程序设置的符号执行参数都是相同的。为了进行多方位的对比，除了原始的KLEE符号执行工具，本实验还将循环定长展开的KLEE也加入了实验。循环定长展开的KLEE在本实验中称为KLEE-Fix，定长展开的次数设定为10。
+%本节主要针对两个目标程序进行实验：readelf\upcite{noauthor_gnu.org_nodate}和libxml2\upcite{noauthor_xml_nodate}。readelf是Linux下binutils中用于分析ELF文件的命令，libxml2是一个XML的C语言解析器和工具库。本实验测试的readelf对应的binutils版本是2.28，libxml2版本是2.9.4，测试软件的基本情况如表\ref{测试软件基本信息}所示。根据CVE数据库的记录libxml2.9.4包含6个漏洞，readelf包含14个漏洞。除了将这些漏洞发生的代码行作为导向的目标区域，还在libxml2的代码中随机标记了42行代码，在readelf代码中随机标记了36行代码作为目标区域。本实验将就目标区域的覆盖数量、目标区域的击中次数以及漏洞的发现数量作为标准衡量本方法的有效性。
+
+本节主要针对readelf\upcite{noauthor_gnu.org_nodate}进行实验。readelf是Linux下binutils中用于分析ELF文件的命令，本实验测试的readelf对应的binutils版本是2.28，测试软件的基本情况如表\ref{测试软件基本信息}所示。根据CVE数据库的记录readelf包含14个漏洞。除了将这些漏洞发生的代码行作为导向的目标区域，还在readelf代码中随机标记了36行代码作为目标区域。本实验将就目标区域的覆盖数量、目标区域的击中次数以及漏洞的发现数量作为标准衡量本方法的可行性和有效性。
+
+\begin{table}[ht]
+\begin{center}
+\caption{测试软件基本信息}
+\label{测试软件基本信息}
+\begin{small}
+\begin{tabular}{|l|l|l|l|}
+\hline
+{\bf 软件版本} & {\bf CVE-ID} & {\bf CVE数量} & {\bf 总标记数量} \\
+\hline
+readelf2.28 & CVE-2017-14333，CVE-2017-15996，CVE-2017-16830 & &\\
+& CVE-2017-6965，CVE-2017-6966，CVE-2017-6969 & & \\
+& CVE-2017-7209，CVE-2017-8398，CVE-2017-9038 & & \\
+& CVE-2017-9039，CVE-2017-9041，CVE-2017-9042 & & \\
+& CVE-2017-9043 CVE-2017-9044 & 14 & 50\\
+\hline
+\end{tabular}
+\end{small}
+\end{center}
+\end{table}
+
+本实验使用Keras\upcite{chollet_keras:_2017}作为前端训练预测模型，选择Tensorflow\upcite{abadi_tensorflow:_2016}作为Keras的底层后端。因为训练测试用例的长度是不同的，而且存在非常大的测试用例一个输入文件可能达到200KB，所以本实验将大于10KB的文件以10KB为单位进行分段。本试验采用Nvidia GTX970 GPUs训练12小时，使用绝对平均误差（Mean Absolute Error，MAE）作为损失函数，使用Adam优化器\upcite{kingma_adam:_2014}以$5 \times 10^{-5}$的学习率训练模型。训练模时可以设定不同的输入输出文件大小，本实验采用的是64bit。
+
+动态导向模糊测试使用的是Inter Xeon CPU E3-1231 v3 @ 3.40GHz，16G RAM，实验设定的搜索路径时间为8小时，8小时后的时间为目标区域导向时间。
 
 （3）实验过程
 
-实验过程如图\ref{experiment_procedure}所示。对与每一个C源程序，首先，将其编译成LLVM IR；其次，在LLVM IR上做静态分析并将结果插桩到程序中；再次，在插桩后的程序上根据设计的特殊指令进行高效符号执行；最后，检查是否在未超时的情况下发现程序错误，从而生成测试用例。
+本实验的实验过程如图\ref{细粒度导向fuzzing基本框架}所示，首先训练与距离相关的关键字段以及关键字段的权重，然后进行动态模糊测试。
+本实验的训练所使用的测试用例是由AFL-go产生。刚开始测试时需要搜索更多的路径，所以在运行AFL-go时将式~(\ref{基于模拟退火的能量分配})中的$c_1$设为0.6，给予距离大的测试用例更大的能量，式~(\ref{最终能量分配})中的$c_2$参数设为0.5。本实验运行了AFL-go 6个小时来收集用于训练的样本。将收集的样本按照距离的大小排序，将距离等距的划分为10个区间，即$[0,0.1),[0.1,0.2)...[0.9,1]$。对落入每个区间的测试用例随机的抽取20\%。训练时，每次不放回式抽取两个测试用例，提取每个测试用例与目标区域的距离，按照式~(\ref{构造训练集})构造样本$xy$。
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[scale=1.4]{chap04/结合静态程序分析的高效符号执行技术实验过程}
-	\caption{结合静态程序分析的高效符号执行技术实验过程}
-	\label{experiment_procedure}
-\end{figure}
+\begin{equation}\label{构造训练集}
+xy = \{(x,x \oplus x^{'}) | |d(x,x^{'})| > 0\}
+\end{equation}
+
+在动态模糊测试阶段，针对每个测试用例，LSTM模型会输出需要变异的关键字段。关键字段结合全局字段权重表，用于指导字段变异和能量调度，从而近一步指导动态模糊测试的导向性。
 
 \subsection{结果分析}
-表\ref{FastSE_KLEE-Fix与KLEE的发现错误数量以及总时间耗费对比}为FastSE、KLEE-Fix与KLEE在测试实例时的超过时间限制的实例数量、发现错误的实例数量以及总测试时间。从表\ref{FastSE_KLEE-Fix与KLEE的发现错误数量以及总时间耗费对比}可以看出，FastSE在三个方面都相对于KLEE和KLEE-Fast都具有优势，分别比KLEE-Fix和KLEE多检测了6和14个错误实例。从超过时间限制的实例数量可以看出，KLEE在符号执行有循环的传程序时会耗费大量的时间。如果将循环进行定长展开，符号执行时间大大减少的同时也会发现更多的错误。
 
-\begin{table}[ht]
+AFL在判断测试用例是否重复时使用两个标准：（1）程序在执行不同测试用例经过的基本块不相同；（2）经过的基本块相同，但遍历基本块的次数不相同。对于一些有漏洞的危险区域，即使程序执行到目的基本块也不能保证能触发漏洞，例如由循环写造成的缓冲区溢出漏洞，触发此类型的漏洞就需要多次遍历循环内部的基本块。所以可以认为，在测试用例经过的基本块不变的情况下，若能够增加目的区域的遍历次数就更可能触发漏洞。本节将这种能够到达目标区域，经过的基本块相同，但是执行的次数不同的测试用例称为非重复击中目标区域测使用用例。图\ref{非重复击中目标区域测试用例数量对比}是本章方法、AFL-go以及AFL的非重复击中目标区域测使用用例数量的对比。
+
+从图\ref{非重复击中目标区域测试用例数量对比}上可以看出，在8小时之后本章方法和AFL-go非重复击中目标区域测试用例数量增加的速率明显增加，而原始的AFL则没有显著提高。经过24小时本章方法的非重复击中目标区域测试用例数量达到了213个，而AFL-go只达到了127个，AFL只有28个。从非重复击中目标区域测试用例的增加速率以及总数量来看，本章方法要优于AFL-go和AFL。
+
+\begin{figure}[htb]
 \begin{center}
-\caption{FastSE、KLEE-Fix与KLEE的错误发现数量以及总时间耗费对比}
-\label{FastSE_KLEE-Fix与KLEE的发现错误数量以及总时间耗费对比}
-\begin{small}
-\begin{tabular}{|l|l|l|l|}
-\hline
-{\bf } & {\bf Timeout数量} & {\bf 检测错误实例数量} & {\bf 总测试时间} \\
-\hline
-KLEE & 57 & 43 & 22小时17分12秒 \\
-KLEE-Fix & 19 & 51 & 14小时13分34秒\\
-FastSE & 11 & 57 & 12小时31分55秒\\
-\hline
-\end{tabular}
-\end{small}
+\includegraphics[scale=0.9]{非重复击中目标区域测试用例数量对比}
 \end{center}
-\end{table}
+\caption{非重复击中目标区域测试用例数量对比}
+\label{非重复击中目标区域测试用例数量对比}
+\end{figure}
 
-表\ref{FastSE_KLEE-Fix与KLEE发现错误数量交叉对比}是FastSE、KLEE-Fix与KLEE发现错误数量的交叉对比。“>”操作符表示前者发现错误而后者未发现错误的实例数量，例如FastSE > KLEE-Fix表示FastSE发现了错误而KLEE-Fix未发现的实例总数。从表\ref{FastSE_KLEE-Fix与KLEE发现错误数量交叉对比}可以看出三种方法发现的错误实例互有交叉而又互有不同。因为FastSE虽然能够计算循环的不变式，并将相应的约束插桩进程序中，使后续符号执行的路径数量大大减少，但是不变式计算是在抽象域上进行的，在无法精确表示循环时会将得到一个弱约束。弱约束引起的后果是计算出来的测试用例可能无法触发错误。所以在循环原本展开次数很少的情况下，KLEE确实能够触发FastSE所不能发现的错误。同理，因为循环的定长展开也是不完备的，所以KLEE也能发现KLEE-Fix所不能发现的错误。在大多数的情况下，只要循环次数增加，KLEE发现错误的能力就迅速减弱。从表\ref{FastSE_KLEE-Fix与KLEE发现错误数量交叉对比}可以看出，KLEE只能发现3个FastSE不能发现的错误，发现5个KLEE-Fix不能发现的错误；而FastSE则发现了17个KLEE不能发现的错误，发现了9个KLEE-Fix不能发现的错误。
+图\ref{目标区域覆盖数量对比}是本章方法、AFL-go以及AFL工具在测试readelf时，对标记的50个区域的覆盖情况。从图\ref{目标区域覆盖数量对比}可以看出本章方法和AFL-go在引导模糊测试到达目标区域时具有显著的优势。在8个小时之后，导向目标区域的速率明显增加。本章方法在运行了17小时36分钟之后能够覆盖35个目标区域，AFL-go在执行了22小时21分钟之后覆盖了24个目标区域，而原始的AFL在24个小时之后只能覆盖4个目标区域。实验表明，本章方法在导向目标区域的速率以及覆盖目标区域的数量比AFL-go有明显的提高。
 
-\begin{table}[ht]
+\begin{figure}[htb]
 \begin{center}
-\caption{FastSE、KLEE-Fix与KLEE发现错误数量交叉对比}
-\label{FastSE_KLEE-Fix与KLEE发现错误数量交叉对比}
-\begin{small}
-\begin{tabular}{|l|l|l|l|}
-\hline
-{\bf FastSE > KLEE-Fix} & {\bf FastSE > KLEE} & {\bf KLEE-Fix > FastSE} \\
-9 & 17 & 2 \\ \hline
-{\bf KLEE-Fix > KLEE} & {\bf KLEE > FastSE} & {\bf KLEE > KLEE-Fix} \\
-13 & 3 & 5\\
-\hline
-\end{tabular}
-\end{small}
+\includegraphics[scale=0.9]{目标区域覆盖数量对比}
 \end{center}
-\end{table}
+\caption{目标区域覆盖数量对比}
+\label{目标区域覆盖数量对比}
+\end{figure}
 
+图\ref{发现漏洞数量对比}是本章方法、AFL-go以及AFL工具在测试readelf测试漏洞数量的对比情况。从图\ref{发现漏洞数量对比}可以看出，AFL在24个小时之内没有发现任何漏洞，而在指定目标区域后，本章方法和AFL-go发现的漏洞数量显著增加。本章方法在运行16小时38分钟后发现了11个漏洞，AFL-go在运行了19个小时25分钟后发现了6个漏洞；本章方法在5小时31分钟时发现了第一个漏洞，而AFL-go在8小时13分钟发现了第一个漏洞；说明经过一段时间的路径探索之后本章方法能更早更快的发现漏洞，且最终发现的漏洞比AFL-go多出3个。
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[scale=0.9]{发现漏洞数量对比}
+\end{center}
+\caption{发现漏洞数量对比}
+\label{发现漏洞数量对比}
+\end{figure}
 
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics{figures/chap04/{log_unsafe.time}.pdf}
-%	\caption{运行时间总体曲线图}
-%	\label{fig-time1}
-%\end{figure}
-%
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics{figures/chap04/{log_unsafe-scatter.plain.ic3.time}.pdf}
-%	\caption{运行时间散点对比图}
-%	\label{fig-time2}
-%\end{figure}
+\section{本章小节}
 
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics{figures/chap04/{log_unsafe_node.number_of_nodes_created}.pdf}
-%	\caption{内存消耗总体曲线图}
-%	\label{fig-memory}
-%\end{figure}
-
-\section{本章小结}
-\label{sec-conclusion}
-本章研究并提出了一种基于抽象解释的高效符号执行技术。给定待分析的源程序，首先解析出程序的控制流图。区别于其他符号执行技术，新技术通过静态程序分析方法，从程序的控制流图中计算出循环程序的不变式，然后对程序进行插桩用循环不变式代替循环，形成新的控制流图。在新的控制流图上进行符号执行，符号执行的路径将大大减少。通过对100个测试程序进行实验并分析可以得出本方法在超过时间限制的实例数量、发现错误的实例数量以及总测试时间三个方面均优于原始符号执行工具KLEE以及对循环进行定长展开的KLEE-Fix。实验论证了本方法在符号执行有循环的程序时的有效性。
+本节提出了一种基于细粒度变异的导向模糊测试方法。该方法首先AFL-go收集测试用例；然后利用时间递归神经网络（Long Short-Term Memory，LSTM）训练出一个模型，用于判断哪些字段对靠近目标区域其关键作用，同时收集每个字段的权重；在动态测试测试用例之前，利用上述模型判断对于当前测试用例哪些是关键字段并根据字段权重定向的变异。本章方法能够更细粒度的变异制定的字段，很大程度上消除AFL变异的盲目性，从而能够提高导向模糊测试的效率。

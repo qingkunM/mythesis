@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.8.8)  14 JAN 2018 00:00
+This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.8.8)  17 JAN 2018 14:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1876,7 +1876,11 @@ Package: colortbl 2012/02/13 v1.0a Color table columns (DPC)
 Package: xeCJK-listings 2013/12/08 v3.2.9 xeCJK patch file for listings
 \l__xeCJK_listings_flag_int=\count341
 )
-(./thesis.aux)
+(./thesis.aux
+
+LaTeX Warning: Label `过程间边界检测示例程序' multiply defined.
+
+)
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 104.
@@ -2246,10 +2250,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [9]
-[10] [11]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [12]
+[10] [11] [12]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [13]
@@ -2301,14 +2302,9 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 ]
-File: figures/抽象语法树示意图.pdf Graphic file (type QTm)
+File: figures/chap02/抽象语法树示意图.pdf Graphic file (type QTm)
 
-<use  "figures/抽象语法树示意图.pdf" >
-Overfull \hbox (21.13098pt too wide) in paragraph at lines 50--51
- [][] 
- []
-
-[17]
+<use  "figures/chap02/抽象语法树示意图.pdf" > [17]
 File: figures/控制流图.pdf Graphic file (type QTm)
  <use  "figures/控制流图.pdf" >
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -2329,9 +2325,9 @@ Underfull \vbox (badness 2065) has occurred while \output is active []
 . This font family consists of the following shapes:
 .................................................
 Package hyperref Info: bookmark level for unknown definition defaults to 0 on i
-nput line 96.
+nput line 97.
 
-Overfull \hbox (12.16428pt too wide) in paragraph at lines 113--114
+Overfull \hbox (12.16428pt too wide) in paragraph at lines 114--115
 []\EU1/AdobeKaitiStd(0)/m/n/12.045 基 于 控 制 流 图 的 漏 洞 可 以 用 一 个 四 元 组 $\OT1/txr/
 m/n/12.045 (\OML/txmi/m/it/12.045 S[]; S[]; S[]; \OMS/txsy/m/n/12.045 f\OT1/txr
 /m/n/12.045 (\OML/txmi/m/it/12.045 S[]; t[]\OT1/txr/m/n/12.045 )\OMS/txsy/m/n/1
@@ -2344,9 +2340,9 @@ File: figures/chap04/example1.pdf Graphic file (type QTm)
 Missing character: There is no ， in font txr!
  [23]
 Package hyperref Info: bookmark level for unknown lemma defaults to 0 on input 
-line 243.
+line 244.
 Package hyperref Info: bookmark level for unknown proof defaults to 0 on input 
-line 247.
+line 248.
 Missing character: There is no ， in font txr!
  [24]
 Missing character: There is no ① in font Times New Roman/OT:mapping=tex-text;!
@@ -2382,14 +2378,22 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [31]
-File: figures/抽象语法树实例.png Graphic file (type QTm)
+File: figures/chap03/抽象语法树性质图实例.pdf Graphic file (type QTm)
 
-<use  "figures/抽象语法树实例.png" >
-File: figures/funCFG.png Graphic file (type QTm)
- <use  "figures/funCFG.png" > [32]
-File: figures/funDFG.png Graphic file (type QTm)
-
-<use  "figures/funDFG.png" >
+<use  "figures/chap03/抽象语法树性质图实例.pdf" >
+Missing character: There is no 对 in font txr!
+Missing character: There is no 于 in font txr!
+Missing character: There is no 每 in font txr!
+Missing character: There is no 一 in font txr!
+Missing character: There is no 个 in font txr!
+Missing character: There is no 节 in font txr!
+Missing character: There is no 点 in font txr!
+Missing character: There is no 有 in font txr!
+File: figures/chap03/控制依赖性质图实例.pdf Graphic file (type QTm)
+ <use  "figures/chap03/控制依赖性质图实例.pdf" >
+[32]
+File: figures/chap03/数据依赖性质图实例.pdf Graphic file (type QTm)
+ <use  "figures/chap03/数据依赖性质图实例.pdf" >
 Overfull \hbox (24.14096pt too wide) in paragraph at lines 200--201
 []\EU1/AdobeKaitiStd(0)/m/n/12.045 程 序 性 质 图 可 以 用 $\OML/txmi/m/it/12.045 G \OT
 1/txr/m/n/12.045 = (\OML/txmi/m/it/12.045 V; E; ^^U; ^^V; s; d\OT1/txr/m/n/12.0
@@ -2407,29 +2411,29 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [35]
 [36]
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 276.
- [37] [38]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[37] [38]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 323.
- [39]
+put line 333.
+ [39] [40]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [40]
-[41]
-Overfull \hbox (2.73pt too wide) in paragraph at lines 419--419
+ [41]
+Overfull \hbox (2.73pt too wide) in paragraph at lines 429--429
 [] []\EU1/TimesNewRoman(0)/bx/n/12.045 if \EU1/TimesNewRoman(0)/m/n/12.045 isIn
 teract(condition, symbols) or isInteract(condition, bufferVar)
  []
 
 [42]
-Underfull \hbox (badness 3803) in paragraph at lines 460--460
+Underfull \hbox (badness 3803) in paragraph at lines 471--471
 [] []\EU1/TimesNewRoman(0)/bx/n/12.045 if  \EU1/TimesNewRoman(0)/m/n/12.045 (DD
 GEdgeConoveySymbol(arg)) or DDGBeginWithInputFunc-
  []
 
 [43]
-Underfull \hbox (badness 10000) in paragraph at lines 501--502
+Underfull \hbox (badness 10000) in paragraph at lines 513--514
 [] []\EU1/TimesNewRoman(0)/m/n/12.045 UAFS.add(freeCall.location, statement.loc
 ation, state-
  []
@@ -2447,34 +2451,37 @@ File: figures/基于机器学习的缓冲区溢出漏洞挖掘框架.pdf Graphic
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [48]
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [49]
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[49]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [50]
 File: figures/accumulating_the_operations_of_i.pdf Graphic file (type QTm)
 
-<use  "figures/accumulating_the_operations_of_i.pdf" > [51]
+<use  "figures/accumulating_the_operations_of_i.pdf" >
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [52]
-[53]
-Underfull \vbox (badness 7238) has occurred while \output is active []
+ [51]
+[52]
 
- [54]
-[55]
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
+nput line 874.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[53] [54]
 File: figures/Simplified_CPG_of_code_for_Fig7.pdf Graphic file (type QTm)
  <use  "figures/Simplified_CPG_of_code_for_Fig7.pdf" >
-Overfull \hbox (25.64786pt too wide) in paragraph at lines 906--907
+Overfull \hbox (25.64786pt too wide) in paragraph at lines 947--948
  [][] 
  []
 
 File: figures/IPSG_and_DSSG.pdf Graphic file (type QTm)
-<use  "figures/IPSG_and_DSSG.pdf" >
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [56]
+<use  "figures/IPSG_and_DSSG.pdf" > [55] [56]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [57]
@@ -2483,7 +2490,10 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [58]
 File: figures/compareToBOMiner.pdf Graphic file (type QTm)
 
-<use  "figures/compareToBOMiner.pdf" > [59]
+<use  "figures/compareToBOMiner.pdf" >
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [59]
 File: figures/compareToJoern.pdf Graphic file (type QTm)
 
 <use  "figures/compareToJoern.pdf" >
@@ -2494,16 +2504,80 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [61])
 (./data/chap04.tex [62]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [63
+
+
+]
+File: figures/关键字段.pdf Graphic file (type QTm)
+
+<use  "figures/关键字段.pdf" > [64]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [65]
+File: figures/chap05/细粒度导向fuzzing基本框架.pdf Graphic file (type QTm)
+
+<use  "figures/chap05/细粒度导向fuzzing基本框架.pdf" >
+Overfull \hbox (6.37401pt too wide) in paragraph at lines 86--87
+ [] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [66]
+File: figures/调和平均数和算术平均值区别.pdf Graphic file (type QTm)
+
+<use  "figures/调和平均数和算术平均值区别.pdf" > [67] [68]
+File: figures/用于距离测量的的静态插桩.pdf Graphic file (type QTm)
+
+<use  "figures/用于距离测量的的静态插桩.pdf" >
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [69]
+[70] [71]
+File: figures/字段权重和程序执行路径的关系.pdf Graphic file (type QTm)
+ <use  "figures/字段权重和程序执行路径的关系.pdf" >
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [72]
+File: figures/细粒度变异的测试用例生成过程.pdf Graphic file (type QTm)
+
+<use  "figures/细粒度变异的测试用例生成过程.pdf" >
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [73]
+[74] [75]
+Overfull \hbox (17.22044pt too wide) in paragraph at lines 389--401
+ [] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [76]
+File: figures/非重复击中目标区域测试用例数量对比.png Graphic file (type QTm)
+
+<use  "figures/非重复击中目标区域测试用例数量对比.png" >
+File: figures/目标区域覆盖数量对比.png Graphic file (type QTm)
+ <use  "figures/目标区域覆盖数量对比.png" >
+File: figures/发现漏洞数量对比.png Graphic file (type QTm)
+
+<use  "figures/发现漏洞数量对比.png" > [77]) (./data/chap05.tex [78]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [79]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[63
+[80
 
 
 ]
 Missing character: There is no ] in font nullfont!
 
-Overfull \hbox (50.11797pt too wide) in paragraph at lines 100--114
+Overfull \hbox (50.11797pt too wide) in paragraph at lines 101--115
 [][] 
  []
 
@@ -2514,135 +2588,69 @@ Missing character: There is no 　 in font txr!
 Missing character: There is no 　 in font txr!
 Missing character: There is no ＝ in font txr!
 Missing character: There is no ＝ in font txr!
-[64]
+[81]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [65]
-File: figures/chap04/framework.pdf Graphic file (type QTm)
+ [82]
+File: figures/chap04/基于抽象解释的符号执行技术框架.pdf Graphic file (type QTm)
 
-<use  "figures/chap04/framework.pdf" > [66] [67]
-File: figures/chap04/galois.pdf Graphic file (type QTm)
-
-<use  "figures/chap04/galois.pdf" > [68] [69]
-Package hyperref Info: bookmark level for unknown example defaults to 0 on inpu
-t line 366.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[70]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [71]
-Missing character: There is no 　 in font txr!
-Missing character: There is no ＝ in font txr!
-Missing character: There is no 　 in font txr!
-Missing character: There is no ] in font nullfont!
-
-[72]
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[73]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [74]
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[75]
-File: figures/chap04/符号执行变换后的程序.pdf Graphic file (type QTm)
- <use  "figures/chap04/符号执行变换后的程序.pdf" >
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-LaTeX Font Info:    Font shape `U/fsy/m/n' will be
-(Font)              scaled to size 8.99994pt on input line 753.
-LaTeX Font Info:    Font shape `U/fsy/m/n' will be
-(Font)              scaled to size 6.29996pt on input line 753.
-LaTeX Font Info:    Font shape `U/fsy/m/n' will be
-(Font)              scaled to size 4.49997pt on input line 753.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [76]
-File: figures/chap04/结合静态程序分析的高效符号执行技术实验过程.pdf Graphic file (type QTm)
-
-<use  "figures/chap04/结合静态程序分析的高效符号执行技术实验过程.pdf" >
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [77]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [78])
-(./data/chap05.tex
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [79]
-[80] [81
-
-
-]
-File: figures/关键字段.pdf Graphic file (type QTm)
- <use  "figures/关键字段.pdf" > [82]
+<use  "figures/chap04/基于抽象解释的符号执行技术框架.pdf" >
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [83]
-File: figures/细粒度导向fuzzing基本框架.pdf Graphic file (type QTm)
+[84]
+File: figures/chap04/galois.pdf Graphic file (type QTm)
+ <use  "figures/chap04/galois.pdf" > [85] [86]
+Package hyperref Info: bookmark level for unknown example defaults to 0 on inpu
+t line 367.
 
-<use  "figures/细粒度导向fuzzing基本框架.pdf" >
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[87]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [84]
-File: figures/调和平均数和算术平均值区别.pdf Graphic file (type QTm)
+ [88]
+Missing character: There is no 　 in font txr!
+Missing character: There is no ＝ in font txr!
+Missing character: There is no 　 in font txr!
+File: figures/chap04/示例程序2符号执行树.pdf Graphic file (type QTm)
 
-<use  "figures/调和平均数和算术平均值区别.pdf" > [85]
+<use  "figures/chap04/示例程序2符号执行树.pdf" > [89] [90] [91]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [86]
-File: figures/用于距离测量的的静态插桩.pdf Graphic file (type QTm)
+ [92]
+File: figures/chap04/符号执行变换后的程序.pdf Graphic file (type QTm)
 
-<use  "figures/用于距离测量的的静态插桩.pdf" >
+<use  "figures/chap04/符号执行变换后的程序.pdf" >
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [87]
-[88] [89]
-File: figures/字段权重和程序执行路径的关系.pdf Graphic file (type QTm)
- <use  "figures/字段权重和程序执行路径的关系.pdf" >
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [90]
-File: figures/细粒度变异的测试用例生成过程.pdf Graphic file (type QTm)
-
-<use  "figures/细粒度变异的测试用例生成过程.pdf" >
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [91]
-[92] [93]
-Overfull \hbox (17.22044pt too wide) in paragraph at lines 382--394
- [] 
- []
-
+ [93]
+LaTeX Font Info:    Font shape `U/fsy/m/n' will be
+(Font)              scaled to size 8.99994pt on input line 761.
+LaTeX Font Info:    Font shape `U/fsy/m/n' will be
+(Font)              scaled to size 6.29996pt on input line 761.
+LaTeX Font Info:    Font shape `U/fsy/m/n' will be
+(Font)              scaled to size 4.49997pt on input line 761.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [94]
-File: figures/非重复击中目标区域测试用例数量对比.png Graphic file (type QTm)
+File: figures/chap04/结合静态程序分析的高效符号执行技术实验过程.pdf Graphic file (type QTm)
 
-<use  "figures/非重复击中目标区域测试用例数量对比.png" >
-File: figures/目标区域覆盖数量对比.png Graphic file (type QTm)
- <use  "figures/目标区域覆盖数量对比.png" >
-File: figures/发现漏洞数量对比.png Graphic file (type QTm)
+<use  "figures/chap04/结合静态程序分析的高效符号执行技术实验过程.pdf" >
+Underfull \vbox (badness 7832) has occurred while \output is active []
 
-<use  "figures/发现漏洞数量对比.png" > [95]) (./data/chap06.tex [96]
+ [95])
+(./data/chap06.tex
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [97]
-[98
+ [96]
+[97] [98
 
 
 ]) (./data/ack.tex [99]) [100
@@ -2686,13 +2694,31 @@ Underfull \hbox (badness 1400) in paragraph at lines 434--439
 lication-aware evolutionary
  []
 
-[106] [107] [108]
-Underfull \hbox (badness 1596) in paragraph at lines 759--765
+[106]
+Underfull \hbox (badness 6944) in paragraph at lines 567--569
+[]\EU1/TimesNewRoman(0)/m/n/12.045 Titan: Distributed Graph Database. [][]$[][]
+[][] [] [] [] [][][][][] [] [][][][][][][][][][][][][] []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 571--573
+[]\EU1/TimesNewRoman(0)/m/n/12.045 Newsletter signup. [][]$[][][][][] [] [] [] 
+[][][][][] [] [][][][][][][][][][] [] [][][] []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 571--573
+[][][][][][][][] [] [][][][] [] [][][][][][][][][][][][][][][][] [] [][][][][][
+][][][] []
+ []
+
+[107]
+Underfull \hbox (badness 1596) in paragraph at lines 666--672
 []\EU1/TimesNewRoman(0)/m/n/12.045 Chollet F. keras: Deep Learning library for 
 Python. Runs on TensorFlow,
  []
 
-[109]) (./data/resume.tex [110]
+[108]) (./data/resume.tex [109]
 Overfull \hbox (20.27905pt too wide) in paragraph at lines 9--10
 \EU1/TimesNewRoman(0)/m/n/12.045 nerability Through Similar Functions. PIERS201
 6.(EI \EU1/AdobeSongStd(1)/m/n/12.045 检 索，|  检 索 号 \EU1/TimesNewRoman(0)/m/n/12
@@ -2706,9 +2732,9 @@ Overfull \hbox (25.26315pt too wide) in paragraph at lines 15--16
 /12.045 20180104610722) 
  []
 
-[111
+[110
 
-]) [112]
+]) [111]
 \tf@thm=\write9
 \openout9 = `thesis.thm'.
 
@@ -2721,6 +2747,9 @@ Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 147.
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 147.
  )
 (\end occurred inside a group at level 1)
@@ -2728,12 +2757,12 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 147.
 ### simple group (level 1) entered at line 159 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 40400 strings out of 493918
- 758650 string characters out of 6150564
- 922261 words of memory out of 5000000
- 42947 multiletter control sequences out of 15000+600000
- 84330 words of font info for 318 fonts, out of 8000000 for 9000
+ 40272 strings out of 493918
+ 755228 string characters out of 6150564
+ 910058 words of memory out of 5000000
+ 42818 multiletter control sequences out of 15000+600000
+ 84306 words of font info for 315 fonts, out of 8000000 for 9000
  1144 hyphenation exceptions out of 8191
- 66i,24n,77p,10452b,2533s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 59i,21n,66p,10452b,2222s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on thesis.pdf (125 pages).
+Output written on thesis.pdf (124 pages).

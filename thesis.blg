@@ -4,29 +4,25 @@ The top-level auxiliary file: thesis.aux
 The style file: bstutf8.bst
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
-Reallocated field_info (elt_size=4) to 10715 items from 5000.
+Reallocated field_info (elt_size=4) to 10265 items from 5000.
 Database file #1: ref/refs.bib
-Repeated entry---line 316 of file ref/refs.bib
- : @inproceedings{bekrar_finding_2011
- :                                   ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 1053 of file ref/refs.bib
+Repeated entry---line 1083 of file ref/refs.bib
  : @misc{noauthor_zzuf_nodate
  :                           ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 1060 of file ref/refs.bib
+Repeated entry---line 1090 of file ref/refs.bib
  : @article{miller_empirical_1990
  :                               ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 1199 of file ref/refs.bib
+Repeated entry---line 1229 of file ref/refs.bib
  : @inproceedings{christakis_guiding_2016
  :                                       ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 1219 of file ref/refs.bib
+Repeated entry---line 1249 of file ref/refs.bib
  : @article{ma_directed_2011
  :                          ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 1260 of file ref/refs.bib
+Repeated entry---line 1290 of file ref/refs.bib
  : @inproceedings{sparks_automated_2007
  :                                     ,
 I'm skipping whatever remains of this entry
@@ -161,39 +157,23 @@ Warning--The editor in yamaguchi_generalized_2012 is missing.
 Warning--empty editor in yamaguchi_generalized_2012
 Warning--The editor in gascon_structural_2013 is missing.
 Warning--empty editor in gascon_structural_2013
-Warning--there's a publisher but no address in sutton_fuzzing:_2007
-Warning--The editor in robertson_run-time_2003 is missing.
-Warning--empty editor in robertson_run-time_2003
-Warning--The editor in wu_new_2009 is missing.
-Warning--empty editor in wu_new_2009
-Warning--empty pages in wu_new_2009
-Warning--The editor in lanzi_smart_2007 is missing.
-Warning--empty editor in lanzi_smart_2007
-Warning--The editor in rawat_offset-aware_2011 is missing.
-Warning--empty editor in rawat_offset-aware_2011
-Warning--The editor in ganesh_taint-based_2009 is missing.
-Warning--empty editor in ganesh_taint-based_2009
-Warning--The editor in bekrar_finding_2011 is missing.
-Warning--empty editor in bekrar_finding_2011
-Warning--The editor in rawat_evolutionary_2010 is missing.
-Warning--empty editor in rawat_evolutionary_2010
-Warning--The editor in liu_vulnerability_2008 is missing.
-Warning--empty editor in liu_vulnerability_2008
-Warning--The author in noauthor_antiparser_nodate is missing.
-Warning--There is month but no year in noauthor_antiparser_nodate
-Warning--The author in noauthor_sulley:_2017 is missing.
+Warning--The editor in yamaguchi_modeling_2014 is missing.
+Warning--empty editor in yamaguchi_modeling_2014
 Warning--there's neither address nor publisher in dekok_pscan:_2000
+Warning--empty pages in rodriguez_graph_2010
 Warning--there's a publisher but no address in parr_definitive_2013
 Warning--The editor in moonen_generating_2001 is missing.
 Warning--empty editor in moonen_generating_2001
-Warning--The editor in yamaguchi_modeling_2014 is missing.
-Warning--empty editor in yamaguchi_modeling_2014
+Warning--The author in noauthor_neo4j_nodate is missing.
+Warning--There is month but no year in noauthor_neo4j_nodate
+Warning--The author in noauthor_titan:_nodate is missing.
+Warning--There is month but no year in noauthor_titan:_nodate
+Warning--The author in noauthor_newsletter_nodate is missing.
+Warning--There is month but no year in noauthor_newsletter_nodate
 Warning--The author in gremlin is missing.
 Warning--There is month but no year in gremlin
 Warning--The author in noauthor_cve_nodate is missing.
 Warning--There is month but no year in noauthor_cve_nodate
-Warning--The author in noauthor_neo4j_nodate is missing.
-Warning--There is month but no year in noauthor_neo4j_nodate
 Warning--The editor in rodriguez_gremlin_2015 is missing.
 Warning--empty editor in rodriguez_gremlin_2015
 Warning--The author in noauthor_a2ps_nodate is missing.
@@ -201,10 +181,6 @@ Warning--There is month but no year in noauthor_a2ps_nodate
 Warning--there's neither address nor publisher in kratkiewicz_evaluating_2005
 Warning--The editor in zitser_testing_2004 is missing.
 Warning--empty editor in zitser_testing_2004
-Warning--The editor in logozzo_pentagons:_2008 is missing.
-Warning--empty editor in logozzo_pentagons:_2008
-Warning--The author in noauthor_clang_nodate is missing.
-Warning--There is month but no year in noauthor_clang_nodate
 Warning--The editor in santelices_test-suite_2008 is missing.
 Warning--empty editor in santelices_test-suite_2008
 Warning--The editor in person_directed_2011 is missing.
@@ -218,47 +194,51 @@ Warning--The author in noauthor_gnu.org_nodate is missing.
 Warning--There is month but no year in noauthor_gnu.org_nodate
 Warning--empty pages in abadi_tensorflow:_2016
 Warning--empty pages in kingma_adam:_2014
+Warning--The editor in logozzo_pentagons:_2008 is missing.
+Warning--empty editor in logozzo_pentagons:_2008
+Warning--The author in noauthor_clang_nodate is missing.
+Warning--There is month but no year in noauthor_clang_nodate
 
 Done.
-You've used 127 entries,
+You've used 117 entries,
             4554 wiz_defined-function locations,
-            1608 strings with 29766 characters,
-and the built_in function-call counts, 66089 in all, are:
-= -- 7407
-> -- 991
-< -- 82
-+ -- 600
-- -- 288
-* -- 5281
-:= -- 7203
-add.period$ -- 456
-call.type$ -- 127
+            1558 strings with 27576 characters,
+and the built_in function-call counts, 59829 in all, are:
+= -- 6705
+> -- 885
+< -- 73
++ -- 536
+- -- 256
+* -- 4757
+:= -- 6492
+add.period$ -- 415
+call.type$ -- 117
 change.case$ -- 0
 chr.to.int$ -- 0
-cite$ -- 312
-duplicate$ -- 4365
-empty$ -- 7243
-format.name$ -- 288
-if$ -- 16113
+cite$ -- 286
+duplicate$ -- 3955
+empty$ -- 6579
+format.name$ -- 256
+if$ -- 14597
 int.to.chr$ -- 0
-int.to.str$ -- 127
+int.to.str$ -- 117
 missing$ -- 0
-newline$ -- 714
-num.names$ -- 103
-pop$ -- 688
+newline$ -- 653
+num.names$ -- 93
+pop$ -- 635
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1919
+skip$ -- 1765
 stack$ -- 0
-substring$ -- 7428
-swap$ -- 1331
-text.length$ -- 82
+substring$ -- 6699
+swap$ -- 1204
+text.length$ -- 73
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 942
-warning$ -- 185
-while$ -- 627
-width$ -- 130
-write$ -- 1049
-(There were 6 error messages)
+type$ -- 867
+warning$ -- 169
+while$ -- 558
+width$ -- 120
+write$ -- 959
+(There were 5 error messages)
