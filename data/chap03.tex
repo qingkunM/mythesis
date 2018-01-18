@@ -609,7 +609,8 @@ splash/Splash.cc & drawImage & Y & CVE-2009-3604\tabularnewline
 
 （3）UAF漏洞挖掘实验
 
-本实验测试的软件是libxml2-2.9.3，libxml2是一个xml c语言版的解析器，本为Gnome项目开发的工具，是一个基于MIT License的免费开源软件。它除了支持c语言版以外，还支持c++、PHP、Pascal、Ruby、Tcl等语言的绑定，能在Windows、Linux、Solaris、MacOsX等平台上运行。表\ref{use after free漏洞挖掘实验}是算法\ref{UAF检测算法}运行在libxml2-2.9.3上的实验结果。算法共检测了2个UAF漏洞对应的CVE编号分别为CVE-2016-1837和CVE-2016-1835。同时也产生了13个误报，误报率为86.7\%。虽然误报率较高，但是libxml2-2.9.3中包含245个内存释放，所以总体上算法\ref{UAF检测算法}大大缩小了需要关注的代码范围。
+%本实验测试的软件是libxml2-2.9.3，libxml2是一个xml c语言版的解析器，本为Gnome项目开发的工具，是一个基于MIT License的免费开源软件。它除了支持c语言版以外，还支持c++、PHP、Pascal、Ruby、Tcl等语言的绑定，能在Windows、Linux、Solaris、MacOsX等平台上运行。
+表\ref{use after free漏洞挖掘实验}是算法\ref{UAF检测算法}运行在libxml2-2.9.3上的实验结果。算法共检测了2个UAF漏洞对应的CVE编号分别为CVE-2016-1837和CVE-2016-1835。同时也产生了13个误报，误报率为86.7\%。虽然误报率较高，但是libxml2-2.9.3中包含245个内存释放，所以总体上算法\ref{UAF检测算法}大大缩小了需要关注的代码范围。
 
 \begin{table}[ht]
 \begin{center}

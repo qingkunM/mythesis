@@ -4,7 +4,6 @@ The top-level auxiliary file: thesis.aux
 The style file: bstutf8.bst
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
-Reallocated field_info (elt_size=4) to 10265 items from 5000.
 Database file #1: ref/refs.bib
 Repeated entry---line 1083 of file ref/refs.bib
  : @misc{noauthor_zzuf_nodate
@@ -33,32 +32,6 @@ Warning--The author in noauthor_autodafe_nodate is missing.
 Warning--There is month but no year in noauthor_autodafe_nodate
 Warning--The author in noauthor_78_nodate is missing.
 Warning--There is month but no year in noauthor_78_nodate
-Warning--The author in wnoauthor_cern_nodate is missing.
-Warning--There is month but no year in wnoauthor_cern_nodate
-Warning--The author in noauthor_its4_nodate is missing.
-Warning--There is month but no year in noauthor_its4_nodate
-Warning--The author in flawfinder_nodate is missing.
-Warning--There is month but no year in flawfinder_nodate
-Warning--The editor in dor_cssv:_2003 is missing.
-Warning--empty editor in dor_cssv:_2003
-Warning--The editor in cousot_astree_2007 is missing.
-Warning--empty editor in cousot_astree_2007
-Warning--The editor in delmas_towards_2009 is missing.
-Warning--empty editor in delmas_towards_2009
-Warning--empty pages in almossawi_analysis_2006
-Warning--The editor in das_esp:_2002 is missing.
-Warning--empty editor in das_esp:_2002
-Warning--The editor in chen_mops:_2002 is missing.
-Warning--empty editor in chen_mops:_2002
-Warning--The editor in holzmann_static_2002 is missing.
-Warning--empty editor in holzmann_static_2002
-Warning--empty pages in holzmann_static_2002
-Warning--The author in noauthor_slam_nodate is missing.
-Warning--There is month but no year in noauthor_slam_nodate
-Warning--The author in noauthor_spin_nodate is missing.
-Warning--There is month but no year in noauthor_spin_nodate
-Warning--The author in noauthor_cbmc_nodate is missing.
-Warning--There is month but no year in noauthor_cbmc_nodate
 Warning--The editor in padmanabhuni_predicting_2014 is missing.
 Warning--empty editor in padmanabhuni_predicting_2014
 Warning--The editor in neuhaus_predicting_2007 is missing.
@@ -74,18 +47,10 @@ Warning--empty editor in yamaguchi_chucky:_2013
 Warning--The editor in yamaguchi_automatic_2015 is missing.
 Warning--empty editor in yamaguchi_automatic_2015
 Warning--empty pages in rajpal_not_2017
-Warning--The editor in martin_finding_2005 is missing.
-Warning--empty editor in martin_finding_2005
 Warning--The editor in godefroid_dart:_2005 is missing.
 Warning--empty editor in godefroid_dart:_2005
 Warning--The editor in sen_cute_2006 is missing.
 Warning--empty editor in sen_cute_2006
-Warning--The editor in cadar_klee:_2008 is missing.
-Warning--empty editor in cadar_klee:_2008
-Warning--The author in noauthor_llvm_nodate is missing.
-Warning--There is month but no year in noauthor_llvm_nodate
-Warning--The editor in molnar_dynamic_2009 is missing.
-Warning--empty editor in molnar_dynamic_2009
 Warning--there's a school but no address in hunter__2010
 Warning--The editor in godefroid_higher-order_2011 is missing.
 Warning--empty editor in godefroid_higher-order_2011
@@ -144,7 +109,6 @@ Warning--empty pages in bohme_directed_2017
 Warning--The editor in newsome_dynamic_2005 is missing.
 Warning--empty editor in newsome_dynamic_2005
 Warning--empty pages in newsome_dynamic_2005
-Warning--there's a school but no address in zhangliyong_2011
 Warning--The author in noauthor_code_nodate is missing.
 Warning--There is month but no year in noauthor_code_nodate
 Warning--The editor in ashcraft_using_2002 is missing.
@@ -159,6 +123,10 @@ Warning--The editor in gascon_structural_2013 is missing.
 Warning--empty editor in gascon_structural_2013
 Warning--The editor in yamaguchi_modeling_2014 is missing.
 Warning--empty editor in yamaguchi_modeling_2014
+Warning--The editor in cadar_klee:_2008 is missing.
+Warning--empty editor in cadar_klee:_2008
+Warning--The author in wnoauthor_cern_nodate is missing.
+Warning--There is month but no year in wnoauthor_cern_nodate
 Warning--there's neither address nor publisher in dekok_pscan:_2000
 Warning--empty pages in rodriguez_graph_2010
 Warning--there's a publisher but no address in parr_definitive_2013
@@ -181,6 +149,8 @@ Warning--There is month but no year in noauthor_a2ps_nodate
 Warning--there's neither address nor publisher in kratkiewicz_evaluating_2005
 Warning--The editor in zitser_testing_2004 is missing.
 Warning--empty editor in zitser_testing_2004
+Warning--The author in flawfinder_nodate is missing.
+Warning--There is month but no year in flawfinder_nodate
 Warning--The editor in santelices_test-suite_2008 is missing.
 Warning--empty editor in santelices_test-suite_2008
 Warning--The editor in person_directed_2011 is missing.
@@ -200,45 +170,45 @@ Warning--The author in noauthor_clang_nodate is missing.
 Warning--There is month but no year in noauthor_clang_nodate
 
 Done.
-You've used 117 entries,
+You've used 97 entries,
             4554 wiz_defined-function locations,
-            1558 strings with 27576 characters,
-and the built_in function-call counts, 59829 in all, are:
-= -- 6705
-> -- 885
-< -- 73
-+ -- 536
-- -- 256
-* -- 4757
-:= -- 6492
-add.period$ -- 415
-call.type$ -- 117
+            1471 strings with 24742 characters,
+and the built_in function-call counts, 50302 in all, are:
+= -- 5644
+> -- 742
+< -- 61
++ -- 449
+- -- 215
+* -- 4011
+:= -- 5468
+add.period$ -- 346
+call.type$ -- 97
 change.case$ -- 0
 chr.to.int$ -- 0
-cite$ -- 286
-duplicate$ -- 3955
-empty$ -- 6579
-format.name$ -- 256
-if$ -- 14597
+cite$ -- 237
+duplicate$ -- 3322
+empty$ -- 5520
+format.name$ -- 215
+if$ -- 12263
 int.to.chr$ -- 0
-int.to.str$ -- 117
+int.to.str$ -- 97
 missing$ -- 0
-newline$ -- 653
-num.names$ -- 93
-pop$ -- 635
+newline$ -- 544
+num.names$ -- 78
+pop$ -- 523
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1765
+skip$ -- 1474
 stack$ -- 0
-substring$ -- 6699
-swap$ -- 1204
-text.length$ -- 73
+substring$ -- 5686
+swap$ -- 1009
+text.length$ -- 61
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 867
-warning$ -- 169
-while$ -- 558
-width$ -- 120
-write$ -- 959
+type$ -- 723
+warning$ -- 140
+while$ -- 472
+width$ -- 99
+write$ -- 798
 (There were 5 error messages)
