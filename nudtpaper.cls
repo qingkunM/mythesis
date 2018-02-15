@@ -472,7 +472,8 @@
   \optionas{Advisor}
 \else
   \optionpaperclass{博士}
-  \optionpaperclassen{Doctor}
+  \optionpaperclassen{PhD}
+  %%\optionpaperclassen{Doctor}
   \optionas{Supervisor}
 \fi
 \newcommand{\checkparameter}

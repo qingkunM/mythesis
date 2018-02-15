@@ -43,7 +43,10 @@
 %5. 如果想生成盲评，传递anon即可，仍需修改个人成果部分
 % \documentclass[master,otf,anon]{nudtpaper}
 %
+%公开版
 \documentclass[PhD,otf]{nudtpaper}
+%盲评版
+%\documentclass[anon]{nudtpaper}
 \usepackage{mynudt}
 \usepackage{url}
 %new added package
@@ -54,6 +57,14 @@
 %\usepackage{color}
 %\usepackage[usenames,dvipsnames]{color}
 \usepackage{colortbl}
+
+\usepackage{afterpage}
+
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \addtocounter{page}{0}%
+    \newpage}
 
 
 \makeatletter
@@ -79,7 +90,10 @@
 
 
 \classification{TP957}
+%公开版
 \serialno{13049023}
+%盲评版
+%\serialno{}
 \confidentiality{公开}
 \UDC{}
 \title{源代码软件漏洞自动挖掘关键技术研究}
@@ -87,7 +101,7 @@
 \author{孟庆坤}
 %\zhdate{\zhtoday}
 \zhdate{二〇一七年十一月}
-\entitle{Study on Key Technology for Vulnerability Detection of Souce Code Software}
+\entitle{Study on Key Technology for Automatic Vulnerability Detection of Souce Code Software}
 \enauthor{Meng qingkun}
 \endate{\entoday}
 \subject{信息与通信工程}

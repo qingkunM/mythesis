@@ -7,7 +7,7 @@
 的源代码软件进行完整的符号执行测试是一个NP完全问题。因此，现有的测试方
 法必须在完备性和有效性之间做权衡。%wb
 导致符号执行路径空间爆炸的一个非常关键的因素是程序中的循环语句。在分析循环程序时，符号执行每一次进入循环体内部，都需要构造两条分支路径，分别对应了循环条件为真或假的情况。
-总共的分支路径数目随着循环次数的增加呈指数级增加。
+总的分支路径数目随着循环次数的增加呈指数级增加。
 特别的，如果循环控制变量与输入相关，且没有对循环展开次数进行人为的限定，则循环将进行无限展开，甚至一个简单的循环将直接导致符号执行的路径爆炸问题。
 目前试图缓解路径空间爆炸问题的方式是，
 在符号执行的具体实现中，设计出好的路径遍历策略或者路径调度算法来提高符号执行的分析性能，
@@ -17,7 +17,7 @@
 或者通过设置时间上限或者内存空间上限来缓解路径爆炸引起的分析工具崩溃的问题。
 但是这些路径遍历策略或者调度算法都只是局部改进，很难从根本上解决这一问题。
 
-针对C源代码软件，本章提出了一种基于抽象解释静态分析的高效符号执行技术。给定待分析的源程序，首先解析出程序的控制流图。区别于其他符号执行技术，新技术通过静态程序分析方法，从程序的控制流图中计算出循环程序的不变式，然后对程序进行插桩用循环不变式代替循环，形成新的控制流图。在新的控制流图上进行符号执行（Property Graph，PG），符号执行的路径将大大减少。
+本章提出了一种基于抽象解释静态分析的高效符号执行技术。给定待分析的源程序，首先解析出程序的控制流图。区别于其他符号执行技术，新技术通过静态程序分析方法，从程序的控制流图中计算出循环程序的不变式，然后对程序进行插桩用循环不变式代替循环，形成新的控制流图。在新的控制流图上进行符号执行（Property Graph，PG），符号执行的路径将大大减少。
 
 \section{问题描述}
 
@@ -140,7 +140,7 @@ $x=2(m+n)　\wedge y=4 \wedge m \neq 0 \wedge n =0 \wedge x　＝＝ y$是否可
 %但是，无论静态符号执行还是动态符号执行，都没法从根本上避免路径状态空间爆炸所造成的影响。
 
 导致符号执行路径空间爆炸的另一个关键因素是程序中的循环语句，例如图\ref{fig-example2}中所示的while循环。
-在分析这类循环程序时，符号执行每一次进入循环体内部，都需要构造两条分支路径，分别对应了循环条件为真或假的情况。总共的分支路径数目随着循环次数的增加呈指数级增加。特别的，如果循环控制变量输入相关，且没有对循环展开次数进行人为的限定，则循环将进行无限展开，一个简单的循环将直接导致符号执行的路径爆炸问题。因此本章提出了一种基于抽象解释静态分析的高效符号执行技术用于缓解由循环引起的路径爆炸问题。
+在分析这类循环程序时，符号执行每一次进入循环体内部，都需要构造两条分支路径，分别对应了循环条件为真或假的情况。总共的分支路径数目随着循环次数的增加呈指数级增加。特别的，如果循环控制变量与输入相关，且没有对循环展开次数进行人为的限定，则循环将无限展开，一个简单的循环都可能直接导致符号执行的路径爆炸问题。因此本章提出了一种基于抽象解释静态分析的高效符号执行技术用于缓解由循环引起的路径爆炸问题。
 
 
 \begin{figure}[h]
@@ -171,7 +171,7 @@ void LoopExample(int x) {
 
 \begin{figure}[h]
 	\centering
-	\includegraphics{chap04/基于抽象解释的符号执行技术框架}
+	\includegraphics{chap05/基于抽象解释的符号执行技术框架}
 	\caption{基于抽象解释的符号执行技术框架}
 	\label{fig-framework}
 \end{figure}
@@ -252,7 +252,7 @@ $\forall x\in P, \forall y\in Q. \alpha(x) \subseteq y$当且仅当$x\leq \gamma
 
 \begin{figure}[h]
 \centering
-\includegraphics{figures/chap04/galois.pdf}
+\includegraphics{figures/chap05/galois.pdf}
 \caption{Galois连接示意图}
 \label{fig-galois}
 \end{figure}
@@ -499,7 +499,7 @@ $\Sigma(l)$表示了在该节点位置，程序变量所有可能取值的约束
 
 \begin{figure}[htp]
 \centering
-\includegraphics{chap04/示例程序2符号执行树}
+\includegraphics{chap05/示例程序2符号执行树}
 \caption{示例程序2符号执行树}
 \label{fig-tree2}
 \end{figure}
@@ -595,10 +595,12 @@ $i=3,p=x;while(p>0);i=i+4;p=p-1;if(i < 80);while(p>0);i=i+4;p=p-1;if(i\geq 80);a
 
 \subsection{高效符号执行算法}
 
-该技术的核心思想如算法\ref{algo-absint-symexe}所示。大体上，算法分为两部分：静态分析部分和动态符号执行部分。算法接收待验证程序源码$Prog$作为输入，并初始化抽象执行树tree、工作列表以及程序语义不动点。抽象执行树的节点代表了程序的抽象状态，树的边表示程序的执行路径。
-每个节点$\eta$包括了三部分信息：程序的指令位置$loc$，程序变量的符号取值$\sigma$和程序路径在当前位置的路径约束$\pi$。算法维护一个工作列表，里面的元素是待遍历的树节点，即程序状态。算法在进行符号执行式，逐次从工作列表中取出一个节点$\eta$进行分析，直至工作列表为空。
+该技术的核心思想如算法\ref{algo-absint-symexe}所示。大体上，算法分为两部分：静态分析部分和动态符号执行部分。算法接收待验证程序源码$prog$作为输入，首先进行静态分析并将结果插桩到程序中生成新的程序$prog^{'}$；然后初始化抽象执行树（根节点为$\eta_{root}$）进行符号执行。
+%、工作列表以及程序语义不动点。
+抽象执行树的节点代表了程序的抽象状态，树的边表示程序的执行路径。
+每个节点$\eta$包括了三部分信息：程序的指令位置$loc$，程序变量的符号取值$\sigma$和程序路径在当前位置的路径约束$\pi$。算法维护一个工作列表，里面的元素是待遍历的树节点，即程序状态。算法在进行符号执行式，逐次从工作列表中取出一个节点$\eta$进行分析，直至工作列表为空。算法的具体执行过程如下所示。
 %依据节点的不同类型，算法进行相应的计算。程序的语义不动点是一个$<loc,constraints>$的二元组，$loc$表示的是程序指令位置，$constraints$表示$loc$位置上的约束。
-结合静态程序分析的高效符号执行算法算法\ref{algo-absint-symexe}可分为以下过程。
+%结合静态程序分析的高效符号执行算法可分为以下过程。
 
 %（1）对于程序$Prog$中的每个循环运行基于抽象解释的静态程序分析算法生成程序在各个位置的不动点（第6行），然后将不动点以注释的形式写入程序中。
 
@@ -624,7 +626,7 @@ $i=3,p=x;while(p>0);i=i+4;p=p-1;if(i < 80);while(p>0);i=i+4;p=p-1;if(i\geq 80);a
 （1）对于程序$Prog$中的每个循环运行基于抽象解释的静态程序分析算法生成程序在各个位置的不动点（第3行），然后将不动点以注释的形式写入程序中（第4行），其中不动点是由各个变量的不变式组成。下面以图\ref{fig-example2}中的循环程序为例，阐述生成不变式的过程。首先在循环中加入一个初始值为0的计数变量counter，用于记录循环的展开次数。加入$counter$的目的是表达程序变量和循环展开次数的关系。为了在每个程序点产生不变式，本章在多面体抽象域\upcite{chen_interval_2009}中运行前向抽象解释算法进行静态分析。多面体抽象域是一个完全的数值关系域，可以用来表达任意的线性等式和不等式。多面体抽象域比数值域\upcite{chen_interval_2009}、五边形域\upcite{logozzo_pentagons:_2008}以及八边形域\upcite{mine_octagon_2006}表达能力更强，同时耗费的资源也更多。
 如图\ref{fig-example3}第4行所示；此不变式表示要到达当前程序点变量$x$需要满足的约束条件。插入不动点的位置有三类：循环的入口处，分支语句处以及循环结束处，分别对应图\ref{fig-example3}的第4-5行、第9行以及第12-13行。
 
-（2）在进行符号执行之前，需要通过插桩的方式插入特殊指令（第6行），使得在符号执行时能够辨别需要处理的循环对象。在每个循环的开始处插入"LSEntry"表示循环处理开始，如图\ref{fig-example3}的第3行；在循环的结束处插入“LSEnd”表示循环处理结束，如图\ref{fig-example3}的第15行。
+（2）在进行符号执行之前，需要通过插桩的方式插入特殊指令（第6行），使得在符号执行时能够识别需要处理的循环对象。在每个循环的开始处插入"LSEntry"表示循环处理开始，如图\ref{fig-example3}的第3行；在循环的结束处插入“LSEnd”表示循环处理结束，如图\ref{fig-example3}的第15行。
 
 \begin{figure}[h]
 \begin{lstlisting}
@@ -651,14 +653,14 @@ void LoopExample(int x) {
 \label{fig-example3}
 \end{figure}
 
-（3）动态符号执行的过程中会逐条读取指令，根据指令类型的不同执行不同的操作（第8-21行）。其中第9-15行为正常的符号执行过程。从$worklist$中取出一个$\eta$，判断当前位置是否存在错误（第10行），如果存在则调用约束求解器求解测试用例（第13行），然后返回测试用例。本章对符号执行的修改体现在对新添指令“LSEntry”和“LSEnd”的处理上（第17行）。动态符号执行最主要的三个操作是约束累积、更新内存（包括符号内存和具体内存）以及约束求解。图\ref{符号执行变换后的程序}是符号执行变换后程序的示意过程。以图\ref{fig-example3}中的程序为例，符号执行时将x符号化。当符号执行读取本章自定义的标识指令“LSEntry”时，则会根据抽象解释产生的注释做相应的操作。首先，新建表示循环展开次数的变量counter。然后，若目标区域包含在循环内部，则从注释/* i = 4 * counter + 3, counter = 20, x = counter + p, p > 0*/提取等式进行具体和符号内存更新，具体内存的更新为i=83，counter=20，符号内存的更新为x=20+p；提取不等式p>0更新符号约束
-，进而约束求解求得满足约束的测试用例，此例中只要x>=20都能满足约束条件。若目标区域在循环外部，例如图\ref{fig-example3}的第17行，则从注释/* i = 4 * counter + 3, x = counter + p, counter >= 0, 
+（3）动态符号执行的过程中会逐条读取指令，根据指令类型的不同执行不同的操作（第9-22行）。其中第10-16行为正常的符号执行过程。从$worklist$中取出一个$\eta$，判断当前位置是否存在错误（第11行），如果存在则调用约束求解器求解测试用例（第14行），然后返回测试用例。本章对符号执行的修改体现在对新添指令“LSEntry”和“LSEnd”的处理上（第18行）。动态符号执行最主要的三个操作是约束累积、更新内存（包括符号内存和具体内存）以及约束求解。图\ref{符号执行变换后的程序}是符号执行变换后程序的示意过程。以图\ref{fig-example3}中的程序为例，符号执行时将x符号化。当符号执行读取本章自定义的标识指令“LSEntry”时，则会根据抽象解释产生的注释做相应的操作。首先，新建表示循环展开次数的变量counter。然后，若目标区域包含在循环内部，则从注释/* i = 4 * counter + 3, counter = 20, x = counter + p, p > 0*/提取等式进行具体和符号内存更新，具体内存的更新为i=83，counter=20，符号内存的更新为x=20+p；提取不等式p>0更新符号约束
+，进而约束求解，得出满足约束的测试用例，此例中满足x>=20的输入都能满足约束条件。若目标区域在循环外部，例如图\ref{fig-example3}的第17行，则从注释/* i = 4 * counter + 3, x = counter + p, counter >= 0, 
    counter <= 19, p < 0*/提取等式counter=x-p，i=4*counter+3更新内存，提取不等式counter>=0累积约束，返回到自定义标识指令“LSEnd”继续后面程序的符号执行。例如，在符号执行到图\ref{符号执行变换后的程序}第16行时，将i>78加入到约束并对约束求解，解得x=19就是到达第17行assert语句的输入。利用抽象解释产生的不变式，将图\ref{符号执行变换后的程序}的while循环变换成一个分支语句，一个指向循环中的目标区域，一个指向循环后的程序点；若目标区域不在循环内部，则将while循环变换成一个顺序语句。如此则能大大减少符号执行中因循环引起的执行状态。
 %扩展的符号执行语义
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[scale=1.4]{chap04/符号执行变换后的程序}
+\includegraphics[scale=1.4]{chap05/符号执行变换后的程序}
 \end{center}
 \caption{符号执行变换后的程序}
 \label{符号执行变换后的程序}
@@ -708,7 +710,9 @@ void LoopExample(int x) {
 	\STATE annotate($fixpoint$)
 \ENDFOR
 \STATE $prog^{'}$ = instrument(prog)
-\STATE $worklist$ = initilize($prog^{'}$)
+\STATE $\eta_{root}$ = initilize($prog^{'}$)
+\STATE $worklist \gets \{ \eta_{root}\}$
+%\STATE $worklist$ = initilize()
 %\STATE $fixpoint$ = forwardAnalysis(prog)
 %\IF{ContainsLoop($prog$)}
 %\STATE $locs$ = obtainLoopLoc($prog$)
@@ -764,11 +768,11 @@ void LoopExample(int x) {
 
 （3）实验过程
 
-实验过程如图\ref{experiment_procedure}所示。对与每一个C源程序，首先，将其编译成LLVM IR；其次，在LLVM IR上做静态分析并将结果插桩到程序中；再次，在插桩后的程序上根据设计的特殊指令进行高效符号执行；最后，检查是否在未超时的情况下发现程序错误，从而生成测试用例。
+实验过程如图\ref{experiment_procedure}所示。对于每一个C源程序，首先，将其编译成LLVM IR；其次，在LLVM IR上做静态分析并将结果插桩到程序中；再次，在插桩后的程序上根据设计的特殊指令进行高效符号执行；最后，检查是否在未超时的情况下发现程序错误，从而生成测试用例。
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=1.4]{chap04/结合静态程序分析的高效符号执行技术实验过程}
+	\includegraphics[scale=1.4]{chap05/结合静态程序分析的高效符号执行技术实验过程}
 	\caption{结合静态程序分析的高效符号执行技术实验过程}
 	\label{experiment_procedure}
 \end{figure}
@@ -816,21 +820,21 @@ FastSE & 11 & 57 & 12小时31分55秒\\
 
 %\begin{figure}[h]
 %	\centering
-%	\includegraphics{figures/chap04/{log_unsafe.time}.pdf}
+%	\includegraphics{figures/chap05/{log_unsafe.time}.pdf}
 %	\caption{运行时间总体曲线图}
 %	\label{fig-time1}
 %\end{figure}
 %
 %\begin{figure}[h]
 %	\centering
-%	\includegraphics{figures/chap04/{log_unsafe-scatter.plain.ic3.time}.pdf}
+%	\includegraphics{figures/chap05/{log_unsafe-scatter.plain.ic3.time}.pdf}
 %	\caption{运行时间散点对比图}
 %	\label{fig-time2}
 %\end{figure}
 
 %\begin{figure}[h]
 %	\centering
-%	\includegraphics{figures/chap04/{log_unsafe_node.number_of_nodes_created}.pdf}
+%	\includegraphics{figures/chap05/{log_unsafe_node.number_of_nodes_created}.pdf}
 %	\caption{内存消耗总体曲线图}
 %	\label{fig-memory}
 %\end{figure}

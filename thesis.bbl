@@ -633,6 +633,10 @@ A survey of symbolic execution techniques~[J].
 arXiv preprint arXiv:1610.00502.
 2016.
 
+\bibitem{noauthor_writing_nodate}
+Writing an {LLVM} {Pass} — {LLVM} 7 documentation.
+\url{https://llvm.org/docs/WritingAnLLVMPass.html}.
+
 \bibitem{rodriguez_recurrent_1999}
 Rodriguez~P, Wiles~J, Elman~J~L.
 A recurrent neural network that learns to count~[J].
@@ -651,6 +655,12 @@ Bahdanau~D, Cho~K, Bengio~Y.
 Neural machine translation by jointly learning to align and translate~[J].
 arXiv preprint arXiv:1409.0473.
 2014.
+
+\bibitem{hochreiter_long_1997}
+Hochreiter~S, Schmidhuber~J.
+Long short-term memory~[J].
+Neural computation.
+1997, 9~(8):  1735--1780.
 
 \bibitem{kirkpatrick_optimization_1983}
 Kirkpatrick~S, Gelatt~C~D, Vecchi~M~P.

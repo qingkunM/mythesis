@@ -4,25 +4,25 @@ The top-level auxiliary file: thesis.aux
 The style file: bstutf8.bst
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
-Reallocated field_info (elt_size=4) to 10265 items from 5000.
+Reallocated field_info (elt_size=4) to 10355 items from 5000.
 Database file #1: ref/refs.bib
-Repeated entry---line 1083 of file ref/refs.bib
+Repeated entry---line 1102 of file ref/refs.bib
  : @misc{noauthor_zzuf_nodate
  :                           ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 1090 of file ref/refs.bib
+Repeated entry---line 1109 of file ref/refs.bib
  : @article{miller_empirical_1990
  :                               ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 1229 of file ref/refs.bib
+Repeated entry---line 1248 of file ref/refs.bib
  : @inproceedings{christakis_guiding_2016
  :                                       ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 1249 of file ref/refs.bib
+Repeated entry---line 1268 of file ref/refs.bib
  : @article{ma_directed_2011
  :                          ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 1290 of file ref/refs.bib
+Repeated entry---line 1309 of file ref/refs.bib
  : @inproceedings{sparks_automated_2007
  :                                     ,
 I'm skipping whatever remains of this entry
@@ -188,6 +188,8 @@ Warning--empty editor in person_directed_2011
 Warning--The editor in bohme_regression_2013 is missing.
 Warning--empty editor in bohme_regression_2013
 Warning--empty pages in baldoni_survey_2016
+Warning--The author in noauthor_writing_nodate is missing.
+Warning--There is month but no year in noauthor_writing_nodate
 Warning--empty pages in cho_learning_2014
 Warning--empty pages in bahdanau_neural_2014
 Warning--The author in noauthor_gnu.org_nodate is missing.
@@ -200,45 +202,45 @@ Warning--The author in noauthor_clang_nodate is missing.
 Warning--There is month but no year in noauthor_clang_nodate
 
 Done.
-You've used 117 entries,
+You've used 119 entries,
             4554 wiz_defined-function locations,
-            1558 strings with 27576 characters,
-and the built_in function-call counts, 59829 in all, are:
-= -- 6705
-> -- 885
-< -- 73
-+ -- 536
-- -- 256
-* -- 4757
-:= -- 6492
-add.period$ -- 415
-call.type$ -- 117
+            1566 strings with 27805 characters,
+and the built_in function-call counts, 60654 in all, are:
+= -- 6800
+> -- 893
+< -- 74
++ -- 541
+- -- 258
+* -- 4817
+:= -- 6571
+add.period$ -- 421
+call.type$ -- 119
 change.case$ -- 0
 chr.to.int$ -- 0
-cite$ -- 286
-duplicate$ -- 3955
-empty$ -- 6579
-format.name$ -- 256
-if$ -- 14597
+cite$ -- 290
+duplicate$ -- 4007
+empty$ -- 6674
+format.name$ -- 258
+if$ -- 14805
 int.to.chr$ -- 0
-int.to.str$ -- 117
+int.to.str$ -- 119
 missing$ -- 0
-newline$ -- 653
-num.names$ -- 93
-pop$ -- 635
+newline$ -- 663
+num.names$ -- 94
+pop$ -- 645
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1765
+skip$ -- 1799
 stack$ -- 0
-substring$ -- 6699
-swap$ -- 1204
-text.length$ -- 73
+substring$ -- 6789
+swap$ -- 1224
+text.length$ -- 74
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 867
-warning$ -- 169
-while$ -- 558
-width$ -- 120
-write$ -- 959
+type$ -- 880
+warning$ -- 171
+while$ -- 564
+width$ -- 122
+write$ -- 974
 (There were 5 error messages)
