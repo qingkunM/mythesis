@@ -525,10 +525,11 @@
       \raisebox{-3.7ex}[0pt]{指\ 导\ 教\ 师} &
         {\fs \hfil\raisebox{-3.7ex}[0pt]{\@supervisor}\hfil{}} & \\[3.2ex]
         \cline{2-2}
-      \ifx\@cosupervisor\@empty\else
+      %\ifx\@cosupervisor\@empty\else
+      \raisebox{-3.7ex}[0pt]{协\ 助\ 指\ 导\ 教\ 师}
         & {\fs \hfil\raisebox{-3.7ex}[0pt]{\@cosupervisor}\hfil{}} & \\[3.2ex]
         \cline{2-2}
-      \fi
+      %\fi
     \end{tabular}
   }
   \end{center}%
@@ -551,9 +552,11 @@
   \begin{tabular}{rl}
     Candidate:\ & {\textsf{\@enauthor}}\\
     \@optionas{}:\ & {\textsf{\@ensupervisor}}\\
-    \ifx\@encosupervisor\@empty\else
-      & {\textsf{\@encosupervisor}} \\
-    \fi
+    %加入协助指导教师
+    Cosupervisor:\ & {\textsf{\@encosupervisor}}\\
+%    \ifx\@encosupervisor\@empty\else
+%      & {\textsf{\@encosupervisor}} \\
+%    \fi
   \end{tabular}}
   \vfill\vfill\vfill\vfill
   {\sanhao[1.5]

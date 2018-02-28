@@ -40,11 +40,40 @@ Dor~N, Rodeh~M, Sagiv~M.
 In {ACM} {Sigplan} {Notices}.
 2003:  155--167.
 
+\bibitem{chen_interval_2009}
+Chen~L, Miné~A, Wang~J, et~al.
+Interval polyhedra: {An} abstract domain to infer interval linear
+  relationships~[J].
+Static Analysis.
+2009:  309--325.
+
+\bibitem{logozzo_pentagons:_2008}
+Logozzo~F, Fähndrich~M.
+Pentagons: a weakly relational abstract domain for the efficient validation of
+  array accesses~[C].
+In Proceedings of the 2008 {ACM} symposium on {Applied} computing.
+2008:  184--188.
+
+\bibitem{mine_octagon_2006}
+Miné~A.
+The octagon abstract domain~[J].
+Higher-order and symbolic computation.
+2006, 19~(1):  31--100.
+
 \bibitem{cousot_astree_2007}
 Cousot~P.
 The astrée static analysis tool~[C].
 In {ES} {PASS} {Workshop}, {Berlin}, {Germany}.
 2007:  16--17.
+
+\bibitem{kastner_efficient_2011}
+Kästner~D, Ferdinand~C.
+Efficient verification of non-functional safety properties by abstract
+  interpretation: {Timing}, stack consumption, and absence of runtime
+  errors~[C].
+In Proceedings of the 29th {International} {System} {Safety} {Conference}
+  {ISSC}2011, {Las} {Vegas}.
+2011.
 
 \bibitem{delmas_towards_2009}
 Delmas~D, Goubault~E, Putot~S, et~al.
@@ -54,11 +83,25 @@ In International {Workshop} on {Formal} {Methods} for {Industrial} {Critical}
   {Systems}.
 2009:  53--69.
 
+\bibitem{noauthor_code_nodate}
+Code {Contracts} for .{NET} - {Visual} {Studio} {Marketplace}.
+\url{https://marketplace.visualstudio.com/items?itemName=RiSEResearchinSoftwareEngineering.CodeContractsforNET}.
+
+\bibitem{rfleming_codesonar_2015}
+rfleming．
+{CodeSonar}.
+October 2015．
+\url{https://www.grammatech.com/products/codesonar}.
+
 \bibitem{almossawi_analysis_2006}
 Almossawi~A, Lim~K, Sinha~T.
 Analysis tool evaluation: {Coverity} prevent~[J].
 Pittsburgh, PA: Carnegie Mellon University.
 2006.
+
+\bibitem{noauthor_boon_nodate}
+{BOON}.
+\url{http://people.eecs.berkeley.edu/~daw/boon/}.
 
 \bibitem{king_symbolic_1976}
 King~J~C.
@@ -66,17 +109,21 @@ Symbolic execution and program testing~[J].
 Communications of the ACM.
 1976, 19~(7):  385--394.
 
+\bibitem{das_esp:_2002}
+Das~M, Lerner~S, Seigle~M.
+{ESP}: {Path}-sensitive program verification in polynomial time~[C].
+In {ACM} {Sigplan} {Notices}.
+2002:  57--68.
+
 \bibitem{bush_static_2000}
 Bush~W~R, Pincus~J~D, Sielaff~D~J.
 A static analyzer for finding dynamic programming errors~[J].
 Software-practice and Experience.
 2000, 30~(7):  775--802.
 
-\bibitem{das_esp:_2002}
-Das~M, Lerner~S, Seigle~M.
-{ESP}: {Path}-sensitive program verification in polynomial time~[C].
-In {ACM} {Sigplan} {Notices}.
-2002:  57--68.
+\bibitem{noauthor_prefast_nodate}
+{PREfast} {Overview} ({Windows} {CE} 5.0).
+\url{https://msdn.microsoft.com/en-us/library/aa448765.aspx}.
 
 \bibitem{chen_mops:_2002}
 Chen~H, Wagner~D.
@@ -477,10 +524,6 @@ In In {In} {Proceedings} of the 12th {Network} and {Distributed} {Systems}
 软件源代码安全分析研究~[D].
 [S.~l.]: 西安: 西安电子科技大学, 2011.
 
-\bibitem{noauthor_code_nodate}
-Code {Check} - {Help} with {Building} {Codes}.
-\url{http://www.codecheck.com/cc/index.html}.
-
 \bibitem{ashcraft_using_2002}
 Ashcraft~K, Engler~D.
 Using programmer-written compiler extensions to catch security holes~[C].
@@ -692,26 +735,6 @@ Kingma~D, Ba~J.
 Adam: {A} method for stochastic optimization~[J].
 arXiv preprint arXiv:1412.6980.
 2014.
-
-\bibitem{chen_interval_2009}
-Chen~L, Miné~A, Wang~J, et~al.
-Interval polyhedra: {An} abstract domain to infer interval linear
-  relationships~[J].
-Static Analysis.
-2009:  309--325.
-
-\bibitem{logozzo_pentagons:_2008}
-Logozzo~F, Fähndrich~M.
-Pentagons: a weakly relational abstract domain for the efficient validation of
-  array accesses~[C].
-In Proceedings of the 2008 {ACM} symposium on {Applied} computing.
-2008:  184--188.
-
-\bibitem{mine_octagon_2006}
-Miné~A.
-The octagon abstract domain~[J].
-Higher-order and symbolic computation.
-2006, 19~(1):  31--100.
 
 \bibitem{noauthor_clang_nodate}
 "clang" {C} {Language} {Family} {Frontend} for {LLVM}.

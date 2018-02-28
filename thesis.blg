@@ -4,25 +4,29 @@ The top-level auxiliary file: thesis.aux
 The style file: bstutf8.bst
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
-Reallocated field_info (elt_size=4) to 10355 items from 5000.
+Reallocated field_info (elt_size=4) to 10535 items from 5000.
 Database file #1: ref/refs.bib
-Repeated entry---line 1102 of file ref/refs.bib
+Repeated entry---line 183 of file ref/refs.bib
+ : @misc{noauthor_code_nodate
+ :                           ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1138 of file ref/refs.bib
  : @misc{noauthor_zzuf_nodate
  :                           ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 1109 of file ref/refs.bib
+Repeated entry---line 1145 of file ref/refs.bib
  : @article{miller_empirical_1990
  :                               ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 1248 of file ref/refs.bib
+Repeated entry---line 1284 of file ref/refs.bib
  : @inproceedings{christakis_guiding_2016
  :                                       ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 1268 of file ref/refs.bib
+Repeated entry---line 1304 of file ref/refs.bib
  : @article{ma_directed_2011
  :                          ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 1309 of file ref/refs.bib
+Repeated entry---line 1345 of file ref/refs.bib
  : @inproceedings{sparks_automated_2007
  :                                     ,
 I'm skipping whatever remains of this entry
@@ -41,13 +45,24 @@ Warning--The author in flawfinder_nodate is missing.
 Warning--There is month but no year in flawfinder_nodate
 Warning--The editor in dor_cssv:_2003 is missing.
 Warning--empty editor in dor_cssv:_2003
+Warning--The editor in logozzo_pentagons:_2008 is missing.
+Warning--empty editor in logozzo_pentagons:_2008
 Warning--The editor in cousot_astree_2007 is missing.
 Warning--empty editor in cousot_astree_2007
+Warning--The editor in kastner_efficient_2011 is missing.
+Warning--empty editor in kastner_efficient_2011
+Warning--empty pages in kastner_efficient_2011
 Warning--The editor in delmas_towards_2009 is missing.
 Warning--empty editor in delmas_towards_2009
+Warning--The author in noauthor_code_nodate is missing.
+Warning--There is month but no year in noauthor_code_nodate
 Warning--empty pages in almossawi_analysis_2006
+Warning--The author in noauthor_boon_nodate is missing.
+Warning--There is month but no year in noauthor_boon_nodate
 Warning--The editor in das_esp:_2002 is missing.
 Warning--empty editor in das_esp:_2002
+Warning--The author in noauthor_prefast_nodate is missing.
+Warning--There is month but no year in noauthor_prefast_nodate
 Warning--The editor in chen_mops:_2002 is missing.
 Warning--empty editor in chen_mops:_2002
 Warning--The editor in holzmann_static_2002 is missing.
@@ -145,8 +160,6 @@ Warning--The editor in newsome_dynamic_2005 is missing.
 Warning--empty editor in newsome_dynamic_2005
 Warning--empty pages in newsome_dynamic_2005
 Warning--there's a school but no address in zhangliyong_2011
-Warning--The author in noauthor_code_nodate is missing.
-Warning--There is month but no year in noauthor_code_nodate
 Warning--The editor in ashcraft_using_2002 is missing.
 Warning--empty editor in ashcraft_using_2002
 Warning--The author in noauthor_splint_nodate is missing.
@@ -196,51 +209,49 @@ Warning--The author in noauthor_gnu.org_nodate is missing.
 Warning--There is month but no year in noauthor_gnu.org_nodate
 Warning--empty pages in abadi_tensorflow:_2016
 Warning--empty pages in kingma_adam:_2014
-Warning--The editor in logozzo_pentagons:_2008 is missing.
-Warning--empty editor in logozzo_pentagons:_2008
 Warning--The author in noauthor_clang_nodate is missing.
 Warning--There is month but no year in noauthor_clang_nodate
 
 Done.
-You've used 119 entries,
+You've used 123 entries,
             4554 wiz_defined-function locations,
-            1566 strings with 27805 characters,
-and the built_in function-call counts, 60654 in all, are:
-= -- 6800
-> -- 893
+            1584 strings with 28475 characters,
+and the built_in function-call counts, 61625 in all, are:
+= -- 6888
+> -- 906
 < -- 74
-+ -- 541
-- -- 258
-* -- 4817
-:= -- 6571
-add.period$ -- 421
-call.type$ -- 119
++ -- 549
+- -- 263
+* -- 4884
+:= -- 6669
+add.period$ -- 433
+call.type$ -- 123
 change.case$ -- 0
 chr.to.int$ -- 0
-cite$ -- 290
-duplicate$ -- 4007
-empty$ -- 6674
-format.name$ -- 258
-if$ -- 14805
+cite$ -- 301
+duplicate$ -- 4079
+empty$ -- 6808
+format.name$ -- 261
+if$ -- 15037
 int.to.chr$ -- 0
-int.to.str$ -- 119
+int.to.str$ -- 123
 missing$ -- 0
-newline$ -- 663
-num.names$ -- 94
-pop$ -- 645
+newline$ -- 683
+num.names$ -- 96
+pop$ -- 673
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1799
+skip$ -- 1828
 stack$ -- 0
-substring$ -- 6789
-swap$ -- 1224
-text.length$ -- 74
+substring$ -- 6855
+swap$ -- 1242
+text.length$ -- 80
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 880
-warning$ -- 171
-while$ -- 564
-width$ -- 122
-write$ -- 974
-(There were 5 error messages)
+type$ -- 887
+warning$ -- 178
+while$ -- 569
+width$ -- 126
+write$ -- 1002
+(There were 6 error messages)

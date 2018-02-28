@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.8.8)  19 JAN 2018 14:34
+This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2017.8.8)  28 FEB 2018 17:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2241,28 +2241,24 @@ File: figures/chap01/根据挖掘方式分类.png Graphic file (type QTm)
  <use  "figures/chap01/根据挖掘方式分类.png" >
 File: figures/chap01/根据挖掘软件类型分类.png Graphic file (type QTm)
 
-<use  "figures/chap01/根据挖掘软件类型分类.png" > [2]
+<use  "figures/chap01/根据挖掘软件类型分类.png" >
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [2]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [3]
-[4]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [5]
+ [4]
+[5] [6] [7]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [6]
-[7] [8]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [9]
-[10] [11] [12]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [13]
+ [8]
+[9] [10] [11] [12] [13]
 File: figures/chap01/论文的组织结构.pdf Graphic file (type QTm)
-
-<use  "figures/chap01/论文的组织结构.pdf" >) (./data/chap02.tex [14]
+ <use  "figures/chap01/论文的组织结构.pdf" >)
+(./data/chap02.tex [14]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [15]
@@ -2669,63 +2665,75 @@ Underfull \hbox (badness 10000) in paragraph at lines 23--25
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 95--97
-[]\EU1/TimesNewRoman(0)/m/n/12.045 SLAM. [][]$[][][][][] [] [] [] [][][] [] [][
-][][][][][][][] [] [][][] [] [][][][][][] [] [][][][][][][][] []
+Underfull \hbox (badness 10000) in paragraph at lines 87--89
+[]\EU1/TimesNewRoman(0)/m/n/12.045 Code Contracts for .NET - Visual Studio Mark
+etplace. [][]$[][][][][] []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 87--89
+[] [] [][][][][][][][][][][] [] [][][][][][][][][][][][] [] [][][] [] [][][][][
+] [] [][][][][][][][] []
  []
 
 [104
 
 
-] [105] [106] [107]
-Underfull \hbox (badness 10000) in paragraph at lines 354--356
+]
+Underfull \hbox (badness 10000) in paragraph at lines 142--144
+[]\EU1/TimesNewRoman(0)/m/n/12.045 SLAM. [][]$[][][][][] [] [] [] [][][] [] [][
+][][][][][][][] [] [][][] [] [][][][][][] [] [][][][][][][][] []
+ []
+
+[105] [106] [107]
+Underfull \hbox (badness 10000) in paragraph at lines 401--403
 []\EU1/TimesNewRoman(0)/m/n/12.045 Peach Platform. [][]$[][][][][] [] [] [] [][
 ][] [] [][][][][] [] [][][][] [] [][][][][][][][] []
  []
 
 
-Underfull \hbox (badness 2073) in paragraph at lines 358--360
+Underfull \hbox (badness 2073) in paragraph at lines 405--407
 []\EU1/TimesNewRoman(0)/m/n/12.045 Immunity Inc. | Knowing You’re Secure. [][]$
 [][][][] [] [] [] [][][] [] [][][][][][][][][][][] []
  []
 
-
-Underfull \hbox (badness 1052) in paragraph at lines 394--399
+[108]
+Underfull \hbox (badness 1052) in paragraph at lines 441--446
 \EU1/TimesNewRoman(0)/m/n/12.045 tion of test case scenarios derived from UML d
 iagrams [J]. arXiv preprint
  []
 
-[108]
-Underfull \hbox (badness 1400) in paragraph at lines 434--439
+
+Underfull \hbox (badness 1400) in paragraph at lines 481--486
 []\EU1/TimesNewRoman(0)/m/n/12.045 Rawat S, Jain V, Kumar A, et al. Vuzzer: App
 lication-aware evolutionary
  []
 
-[109]
-Underfull \hbox (badness 6944) in paragraph at lines 567--569
+[109] [110]
+Underfull \hbox (badness 6944) in paragraph at lines 610--612
 []\EU1/TimesNewRoman(0)/m/n/12.045 Titan: Distributed Graph Database. [][]$[][]
 [][] [] [] [] [][][][][] [] [][][][][][][][][][][][][] []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 571--573
+Underfull \hbox (badness 10000) in paragraph at lines 614--616
 []\EU1/TimesNewRoman(0)/m/n/12.045 Newsletter signup. [][]$[][][][][] [] [] [] 
 [][][][][] [] [][][][][][][][][][] [] [][][] []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 571--573
+Underfull \hbox (badness 10000) in paragraph at lines 614--616
 [][][][][][][][] [] [][][][] [] [][][][][][][][][][][][][][][][] [] [][][][][][
 ][][][] []
  []
 
-[110]
-Underfull \hbox (badness 1596) in paragraph at lines 676--682
+[111]
+Underfull \hbox (badness 1596) in paragraph at lines 719--725
 []\EU1/TimesNewRoman(0)/m/n/12.045 Chollet F. keras: Deep Learning library for 
 Python. Runs on TensorFlow,
  []
 
-[111]) (./data/resume.tex [112]
+) (./data/resume.tex [112]
 Overfull \hbox (20.27905pt too wide) in paragraph at lines 9--10
 \EU1/TimesNewRoman(0)/m/n/12.045 nerability Through Similar Functions. PIERS201
 6.(EI \EU1/AdobeSongStd(1)/m/n/12.045 检 索，|  检 索 号 \EU1/TimesNewRoman(0)/m/n/12
@@ -2764,10 +2772,10 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 161.
 ### simple group (level 1) entered at line 159 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 40299 strings out of 493918
- 755761 string characters out of 6150564
- 908608 words of memory out of 5000000
- 42842 multiletter control sequences out of 15000+600000
+ 40320 strings out of 493918
+ 756538 string characters out of 6150564
+ 908707 words of memory out of 5000000
+ 42863 multiletter control sequences out of 15000+600000
  84306 words of font info for 315 fonts, out of 8000000 for 9000
  1144 hyphenation exceptions out of 8191
  59i,21n,66p,10452b,2222s stack positions out of 5000i,500n,10000p,200000b,80000s
