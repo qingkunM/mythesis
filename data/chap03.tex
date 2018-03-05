@@ -31,7 +31,7 @@
 
 \begin{definition}
  \label{性质图定义}
- 性质图$G=(V,E,\lambda ,\mu, s,d)$是一个有向的、边标记的、属性化的多重图，$V$是节点的集合，$E$是有向边的集合，$s: E \rightarrow V$和$d:E \rightarrow V$分别是有向边到源节点和目的节点的映射，$\lambda : E \rightarrow \sum $是边标记函数，将一条边映射到字符集$\sum$中的一个字符。节点和边都用键—值对表示性质，性质的赋值函数为$\mu:(V \cup E) \times K \rightarrow S$，$K$和$S$分别是性质的键和值。
+ 性质图$G=(V,E,\lambda ,\mu, s,d)$是一个有向的、边标记的、属性化的多重图，$V$是节点的集合，$E$是有向边的集合，$s: E \rightarrow V$和$d:E \rightarrow V$分别是有向边到源节点和目的节点的映射，$\lambda : E \rightarrow \sum $是边标记函数，将一条边映射到字符集$\sum$中的一个字符。节点和边都用键—值对表示性质，性质的映射函数为$\mu:(V \cup E) \times K \rightarrow S$，$K$和$S$分别是性质的键和值。
 \end{definition}
 
 源代码软件漏洞分析依赖于多种代码的中间表示例如语法分析树、抽象语法树、数据流图、控制流图等，对于C/C++，很多编译器的前端能够很容易的通过插桩的方式生成中间表示。但是当分析涉及到复杂的程序或者跨越多个程序搜集中间表示时，编译程序所需要的环境就很难得到保证，特别的是，一般的编译器前端无法处理代码有头文件缺失的情况。与源代码相关的中间表示都直接或者间接的建立在语法分析树的基础上，所以程序性质图的生成首先需要将源代码转换成语法分析树。在语法分析树的基础上生成抽象语法树、控制流图、数据流图，然后将各种中间表示合并为一个统一的表示形式——程序性质图，然后将程序性质图存入图数据库，用查询的方式搜索节点和边。程序性质图的生成过程如图\ref{程序性质图生成过程}所示。
@@ -1058,7 +1058,7 @@ SVM & 54 & 4 & 18 & 156 & 93.1 & 89.7 & 75 & 83.1\\ \hline
 
 表\ref{PERFORMANCE_OF_BOMINER_FOR_OUR_TEST_SUITE}所示是本章方法和BOMiner\upcite{padmanabhuni_predicting_2014}的对比。
 %Padmanabhuni在\upcite{padmanabhuni_predicting_2014}中设计了一个利用机器学习算法挖掘缓冲区溢出漏洞的工具BOMiner。
-BOMiner最多能检测出38个漏洞，比本章方法最差的分类器KNN少4个，比最优的分类器NB少18个。BOMiner最高的recall是65.5\%，比本章训练的所有分类器低。图\ref{compareToBOMiner}（a）是本章方法和BOMiner在混淆矩阵平均值上的比较。本章方法平均比BOMiner多发现14.8个漏洞，10.4个非漏洞。图\ref{compareToBOMiner}（b）是本章方法和BOMiner在衍生评估参数平均值上的比较。相比与BOMiner，本章方法在recall上增加了17.5\%，$F_1$值增加了21.1\%。造成性能差距的主要原因是BOMiner并没有更深入的讨论数组写sink和危险函数sink，BOMiner在处理这两类sink时获取的信息太少以至于不能正确的分类漏洞和非漏洞。
+BOMiner最多能检测出38个漏洞，比本章方法最差的分类器KNN少4个，比最优的分类器NB少18个。BOMiner最高的recall是65.5\%，比本章训练的所有分类器低。图\ref{compareToBOMiner}（a）是本章方法和BOMiner在混淆矩阵平均值上的比较。本章方法平均比BOMiner多发现14.8个漏洞，10.4个非漏洞。图\ref{compareToBOMiner}（b）是本章方法和BOMiner在衍生评估参数平均值上的比较。相比与BOMiner，本章方法在recall上增加了25.6\%，$F_1$值增加了21.1\%。造成性能差距的主要原因是BOMiner并没有更深入的讨论数组写sink和危险函数sink，BOMiner在处理这两类sink时获取的信息太少以至于不能正确的分类漏洞和非漏洞。
 
 \begin{table}[ht]
 \begin{center}
@@ -1066,7 +1066,7 @@ BOMiner最多能检测出38个漏洞，比本章方法最差的分类器KNN少4�
 \begin{small}
 \begin{tabular}{lllllllll}
 \hline
- {\bf Classifierss}& {\bf TP} & {\bf FN} & {\bf FP} & {\bf TN} & {\bf TPR(\%)} & {\bf TNR(\%)} & {\bf precision(\%)} & {\bf $F_1$(\%)}\\ \hline
+ {\bf Classifierss}& {\bf TP} & {\bf FN} & {\bf FP} & {\bf TN} & {\bf recall(\%)} & {\bf TNR(\%)} & {\bf precision(\%)} & {\bf $F_1$(\%)}\\ \hline
 KNN & 29 & 29 & 21 & 153 & 50.0 & 87.9 & 58 & 53.7\\ \hline
 DT & 31 & 27 & 35 & 139 & 53.4 & 79.9 & 47 & 50\\ \hline
 NB & 38 & 20 & 46 & 128 & 65.5 & 73.6 & 45.2 & 53.5\\ \hline
@@ -1085,7 +1085,7 @@ SVM & 37 & 21 & 33 & 141 & 63.8 & 81 & 52.9 & 57.8\\ \hline
 \label{compareToBOMiner}
 \end{figure}
 
-表\ref{和Joern的混淆矩阵比较}是本章方法和Joern\upcite{yamaguchi_modeling_2014}的性能比较。Joern能够以很低的误报检测源代码缓冲区溢出漏洞。通过设计特定的搜索模式，Joern从linux内核中的驱动中检测了6个缓冲区溢出漏洞。但是，通过研究CVE数据库发驱动中已发现的漏洞有18个，通过分析驱动源代码发现有179个非漏洞sink函数。使用本章方法，最少可以检测12个缓冲区漏洞，五个分类器当中最小的recall是66.7\%，在这两个参数上本章方法要比Joern表现好。最高的TNR是93.8\%，比Joern低6\%。图\ref{compareToJoern}（a）是本章方法在linux驱动上和Joern的比较，本章方法平均比Joern多8.2个漏洞，平均比Joern多11.8个误报。图\ref{compareToJoern}（b）是本章方法衍生参数和Joern的比较，本章方法的平均recall是78.9\%，比Joern高了45.6\%，在TNR上仅仅低了6\%；平均precision比Joern低了24.1\%；平均$F_1$值比Joern高15.5\%。造成性能差异的原因有两个：（1）Joern仅仅专注于memcpy引起的缓冲区漏洞；（2）Joern使用的两个边界检测规则，即目的缓冲区的动态分配和关系表达式都可以当做本章的直接边界检测属性，二者虽然可以减少误报但增加了误报。
+表\ref{和Joern的混淆矩阵比较}是本章方法和Joern\upcite{yamaguchi_modeling_2014}的性能比较。Joern能够以很低的误报检测源代码缓冲区溢出漏洞。通过设计特定的搜索模式，Joern从linux内核中的驱动中检测了6个缓冲区溢出漏洞。但是，通过研究CVE数据库发驱动中已发现的漏洞有18个，通过分析驱动源代码发现有179个非漏洞sink函数。使用本章方法，最少可以检测12个缓冲区漏洞，五个分类器当中最小的recall是66.7\%，比Joern高33.4\%最高的TNR是93.9\%，比Joern低6\%。图\ref{compareToJoern}（a）是本章方法在linux驱动上和Joern的比较，本章方法平均比Joern多8.2个漏洞，平均比Joern多11.8个误报。图\ref{compareToJoern}（b）是本章方法衍生参数和Joern的比较，本章方法的平均recall是78.9\%，比Joern高了45.6\%，在TNR上仅仅低了6.6\%；平均precision比Joern低了24.1\%；平均$F_1$值比Joern高15.5\%。造成性能差异的原因有两个：（1）Joern仅仅专注于memcpy引起的缓冲区漏洞；（2）Joern使用的两个边界检测规则，即目的缓冲区的动态分配和关系表达式都可以当做本章的直接边界检测属性，二者虽然可以减少误报但增加了误报。
 
 \begin{table}[ht]
 \begin{center}
@@ -1093,7 +1093,7 @@ SVM & 37 & 21 & 33 & 141 & 63.8 & 81 & 52.9 & 57.8\\ \hline
 \begin{small}
 \begin{tabular}{lllllllll}
 \hline
- {\bf Classifierss}& {\bf TP} & {\bf FN} & {\bf FP} & {\bf TN} & {\bf TPR(\%)} & {\bf TNR(\%)} & {\bf precision(\%)} & {\bf $F_1$(\%)}\\ \hline
+ {\bf Classifierss}& {\bf TP} & {\bf FN} & {\bf FP} & {\bf TN} & {\bf recall(\%)} & {\bf TNR(\%)} & {\bf precision(\%)} & {\bf $F_1$(\%)}\\ \hline
 Joern & 6 & 12 & 2 & 177 & 33.3 & 98.9 & 75 & 46.2\\ \hline
 KNN & 12 & 6 & 11 & 168 & 66.7 & 93.9 & 52.2 & 58.6\\ \hline
 DT & 14 & 4 & 14 & 165 & 77.8 & 92.2 & 50 & 60.9\\ \hline
