@@ -44,9 +44,9 @@
 % \documentclass[master,otf,anon]{nudtpaper}
 %
 %公开版
-\documentclass[PhD,otf]{nudtpaper}
+%\documentclass[PhD,otf]{nudtpaper}
 %盲评版
-%\documentclass[anon]{nudtpaper}
+\documentclass[anon]{nudtpaper}
 \usepackage{mynudt}
 \usepackage{url}
 %new added package
@@ -57,6 +57,8 @@
 %\usepackage{color}
 %\usepackage[usenames,dvipsnames]{color}
 \usepackage{colortbl}
+%插入一整个pdf页的包
+\usepackage[final]{pdfpages}
 
 \usepackage{afterpage}
 
@@ -122,8 +124,12 @@
 % 需要注释掉denotation，并取消下面两个命令的注释。 \\
 % cleardoublepage% \\
 % printnomenclature% \\
+
+
 \maketitle
 \frontmatter
+
+
 \tableofcontents
 \listoftables
 \listoffigures

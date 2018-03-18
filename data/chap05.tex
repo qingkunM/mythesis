@@ -1,11 +1,12 @@
 
 \chapter{结合静态程序分析的高效符号执行技术研究}
 \label{chap-4}
-%wb
+%wb begin
 符号执行作为一种典型的动态测试方法，在理论上能够有效遍历目标软件的
 状态空间，从而深度挖掘软件中存在的漏洞。但对复杂
 的源代码软件进行完整的符号执行测试是一个NP完全问题。因此，现有的测试方
-法必须在完备性和有效性之间做权衡。%wb
+法必须在完备性和有效性之间做权衡。%wb end
+
 导致符号执行路径空间爆炸的一个非常关键的因素是程序中的循环语句。在分析循环程序时，符号执行每一次进入循环体内部，都需要构造两条分支路径，分别对应了循环条件为真或假的情况。
 总的分支路径数目随着循环次数的增加呈指数级增加。
 特别的，如果循环控制变量与输入相关，且没有对循环展开次数进行人为的限定，则循环将进行无限展开，甚至一个简单的循环将直接导致符号执行的路径爆炸问题。
@@ -66,38 +67,50 @@ $\pi$的初始值为布尔常量$true$。
 	$\pi_{false} = \pi \wedge  \neg e$。
 \end{enumerate}
 
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[scale=1.2]{chap05/示例程序1符号执行树}
+\end{center}
+\caption{示例程序1符号执行树}
+\label{exam1-se-tree}
+\end{figure}
 
-\begin{figure}[h]
-\centering
-\begin{minipage}{0.3\textwidth}
-%\begin{figure}
-	\begin{tikzpicture}[sibling distance=4em,
-	every node/.style = {shape=rectangle, rounded corners, draw
-	}]]
-%		top color=white, bottom color=blue!20}]]
-	\node {A}
-	child { node {B } 
-		child { node { C }
-			child { node { E }
-				child {node {F}
-					child {node {H}
-						child {node {$true$}}
-					}
-				}
-				child {node {G}
-					child {node {$false$}}
-				}
-			}
-		}
-		child { node { D }
-			child {node {$false$}
-			}
-		}
-	};
-	\end{tikzpicture}
-%\end{figure}
-\end{minipage}%
-\begin{minipage}{0.7\textwidth}
+%\begin{figure}[h]
+%\label{exam1-se-label}
+%\centering
+%\begin{minipage}{0.3\textwidth}
+%%\begin{figure}
+%	\begin{tikzpicture}[sibling distance=4em,
+%	every node/.style = {shape=rectangle, rounded corners, draw
+%	}]]
+%%		top color=white, bottom color=blue!20}]]
+%	\node {A}
+%	child { node {B } 
+%		child { node { C }
+%			child { node { E }
+%				child {node {F}
+%					child {node {H}
+%						child {node {$true$}}
+%					}
+%				}
+%				child {node {G}
+%					child {node {$false$}}
+%				}
+%			}
+%		}
+%		child { node { D }
+%			child {node {$false$}
+%			}
+%		}
+%	};
+%	\end{tikzpicture}
+%%\end{figure}
+%\end{minipage}%
+%\begin{minipage}{0.7\textwidth}
+\begin{table}[ht]
+\begin{center}
+\caption{示例程序１符号执行树及其计算过程}
+\label{exam1-se-table}
 \begin{tabular}{| c | c | c | c | }
 	\hline
 	节点　& $\sigma$ & $\pi$ & $stmt$ \\ 
@@ -112,13 +125,15 @@ $\pi$的初始值为布尔常量$true$。
 	H & $\{a = m, b = n, x=2(m+n), y=4\}$ & $ m \neq 0 \wedge n =0 $ & $assert(x\neq y)$ \\
 	\hline  
 \end{tabular}
-\end{minipage}
-\caption{示例程序１符号执行树及其计算过程}
-\end{figure}
+%\end{minipage}
+
+\end{center}
+\end{table}
+%\end{figure}
 
 
-图\ref{fig-example1}中Ｃ程序代码的符号执行过程如下图所示，
-左边部分表示了符号执行的执行树，右边的表格列出了执行树的每个节点中的数据信息。
+图\ref{fig-example1}中Ｃ程序代码的符号执行过程如表\ref{exam1-se-table}所示，表格列出了执行树的每个节点中的数据信息，图\ref{exam1-se-tree}为对应的符号执行树。
+%左边部分表示了符号执行的执行树，右边的表格列出了执行树的每个节点中的数据信息。
 
 从执行树中，可以看出路径$ABDEFH$表示了一条从程序初始入口到目标断言的执行，
 该路径由指令序列$x=1,y=0;if(a\neq 0);y=3+x;if(b==0);x=2*(a+b);assert(x\neq y)$构成。
@@ -196,16 +211,16 @@ void LoopExample(int x) {
 抽象解释为设计实用抽象技术，以及证明其的可靠性和正确性提供了理论工具。
 
 %wq
-抽象解释理论是Patrick Cousot及其夫人于1977年提出的静态程序分析理论。
-基于抽象解释理论的静态程序分析技术的基本思想是，在保证抽象逼近可靠性的前提下，
-对程序不动点语义计算过程的各个层次进行抽象逼近， 使得计算过程收敛或加速其收敛，
-然后依据逼近计算的不动点语义验证程序需要满足的性质，
-若验证过程中出现虚假反例， 则对抽象过程进行精化。
-基于抽象解释理论的形式化验证的特点是可靠但不完备的。
-如果分析结果表明抽象系统满足验证性质， 则抽象解释理论保证原程序也满足验证性质;
-若验证结果表明抽象系统不满足验证性质，
-则原系统可能满足验证性质(表明抽象过程中出现了不满足验证性质的虚假反例)，
-可能不满足验证性质(原系统存在不满足验证性质的真实反例)， 需要更精细的抽象分析。
+%抽象解释理论是Patrick Cousot及其夫人于1977年提出的静态程序分析理论。
+%基于抽象解释理论的静态程序分析技术的基本思想是，在保证抽象逼近可靠性的前提下，
+%对程序不动点语义计算过程的各个层次进行抽象逼近， 使得计算过程收敛或加速其收敛，
+%然后依据逼近计算的不动点语义验证程序需要满足的性质，
+%若验证过程中出现虚假反例， 则对抽象过程进行精化。
+%基于抽象解释理论的形式化验证的特点是可靠但不完备的。
+%如果分析结果表明抽象系统满足验证性质， 则抽象解释理论保证原程序也满足验证性质;
+%若验证结果表明抽象系统不满足验证性质，
+%则原系统可能满足验证性质(表明抽象过程中出现了不满足验证性质的虚假反例)，
+%可能不满足验证性质(原系统存在不满足验证性质的真实反例)， 需要更精细的抽象分析。
 %wq copy
 
 
@@ -495,11 +510,11 @@ $\Sigma(l)$表示了在该节点位置，程序变量所有可能取值的约束
 考虑图\ref{fig-example2}所示循环程序片段， 为了检测程序是否能够执行至第七行，
 符号执行进行路径搜索的同时，需要对while循环进行展开，展开次数与函数的输入参数$x$以及变量$i$相关。
 理论上，对于该程序片段，符号执行需要对循环进行20次展开，那么就需要遍历$2^{20}$个程序路径。
-图\ref{fig-tree2}和图\ref{fig-compute2}展示了对循环进行２次展开的符号执行过程。
+图\ref{fig-tree2}和表\ref{fig-compute2}展示了对循环进行２次展开的符号执行过程。
 
 \begin{figure}[htp]
 \centering
-\includegraphics{chap05/示例程序2符号执行树}
+\includegraphics[scale=1.2]{chap05/示例程序2符号执行树}
 \caption{示例程序2符号执行树}
 \label{fig-tree2}
 \end{figure}
@@ -536,7 +551,11 @@ $\Sigma(l)$表示了在该节点位置，程序变量所有可能取值的约束
 %		\label{fig-tree2}
 %\end{figure}
 
-\begin{figure}[h]
+%\begin{figure}[h]
+\begin{table}[ht]
+\begin{center}
+\caption{示例程序2符号执行计算过程}
+\label{fig-compute2}
 		\begin{tabular}{| c | c | c | c | }
 			\hline
 			节点　& $\sigma$ & $\pi$ & $stmt$ \\ 
@@ -555,9 +574,10 @@ $\Sigma(l)$表示了在该节点位置，程序变量所有可能取值的约束
 			L & $\{x = m, i=11, p=m-2\}$ & $ m > 0 \wedge i \geq 80 \wedge m-1>0$ & $abort()$ \\
 			\hline  
 		\end{tabular}
-	\caption{示例程序2符号执行计算过程}
-	\label{fig-compute2}
-\end{figure}
+
+\end{center}
+\end{table}
+%\end{figure}
 
 \begin{enumerate}
 \item 符号执行树中，程序路径$ABCEG$表示了一条从初始入口到目标指令的执行路径。
@@ -623,7 +643,7 @@ $i=3,p=x;while(p>0);i=i+4;p=p-1;if(i < 80);while(p>0);i=i+4;p=p-1;if(i\geq 80);a
 
 %程序的预处理，循环内部的所有的函数调用都进行内联，因为抽象解释工具不能处理函数调用的情况。
 
-（1）对于程序$prog$中的每个循环运行基于抽象解释的静态程序分析算法生成程序在各个位置的不动点（第3行），然后将不动点以注释的形式写入程序中（第4行），其中不动点是由各个变量的不变式组成。下面以图\ref{fig-example2}中的循环程序为例，阐述生成不变式的过程。首先在循环中加入一个初始值为0的计数变量counter，用于记录循环的展开次数。加入counter的目的是表达程序变量和循环展开次数的关系。为了在每个程序点产生不变式，本章在多面体抽象域\upcite{chen_interval_2009}中运行前向抽象解释算法进行静态分析。多面体抽象域是一个完全的数值关系域，可以用来表达任意的线性等式和不等式。多面体抽象域比数值域\upcite{chen_interval_2009}、五边形域\upcite{logozzo_pentagons:_2008}以及八边形域\upcite{mine_octagon_2006}表达能力更强，同时耗费的资源也更多。
+（1）对于程序$prog$中的每个循环运行基于抽象解释的静态程序分析算法生成程序在各个位置的不动点（第3行），然后将不动点以注释的形式写入程序中（第4行），其中不动点是由各个变量的不变式组成。下面以图\ref{fig-example2}中的循环程序为例，阐述生成不变式的过程。首先在循环中加入一个初始值为0的计数变量counter，用于记录循环的展开次数。加入counter的目的是表达程序变量和循环展开次数的关系。为了在每个程序点产生不变式，本章在多面体抽象域\upcite{cousot_automatic_nodate}中运行前向抽象解释算法进行静态分析。多面体抽象域是一个完全的数值关系域，可以用来表达任意的线性等式和不等式。多面体抽象域比数值域\upcite{chen_interval_2009}、五边形域\upcite{logozzo_pentagons:_2008}以及八边形域\upcite{mine_octagon_2006}表达能力更强，同时耗费的资源也更多。
 如图\ref{fig-example3}第5-6行所示，此不变式表示要到达当前程序点变量x需要满足的约束条件。插入不动点的位置有三类：循环的入口处，分支语句处以及循环结束处，分别对应图\ref{fig-example3}的第5-6行、第10-11行以及第13-14行。
 
 （2）在进行符号执行之前，需要通过插桩的方式插入特殊指令（第6行），使得在符号执行时能够识别需要处理的循环对象。在每个循环的开始处插入"LSEntry"表示循环处理开始，如图\ref{fig-example3}的第3行；在循环的结束处插入“LSEnd”表示循环处理结束，如图\ref{fig-example3}的第15行。
@@ -784,7 +804,7 @@ void LoopExample(int x) {
 \begin{center}
 \caption{FastSE、KLEE-Fix与KLEE的错误发现数量以及总时间耗费对比}
 \label{FastSE_KLEE-Fix与KLEE的发现错误数量以及总时间耗费对比}
-\begin{small}
+%\begin{small}
 \begin{tabular}{|l|l|l|l|}
 \hline
 {\bf } & {\bf Timeout数量} & {\bf 检测错误实例数量} & {\bf 总测试时间} \\
@@ -794,7 +814,7 @@ KLEE-Fix & 19 & 51 & 14小时13分34秒\\
 FastSE & 11 & 57 & 12小时31分55秒\\
 \hline
 \end{tabular}
-\end{small}
+%\end{small}
 \end{center}
 \end{table}
 
@@ -804,7 +824,7 @@ FastSE & 11 & 57 & 12小时31分55秒\\
 \begin{center}
 \caption{FastSE、KLEE-Fix与KLEE发现错误数量交叉对比}
 \label{FastSE_KLEE-Fix与KLEE发现错误数量交叉对比}
-\begin{small}
+%\begin{small}
 \begin{tabular}{|l|l|l|l|}
 \hline
 {\bf FastSE > KLEE-Fix} & {\bf FastSE > KLEE} & {\bf KLEE-Fix > FastSE} \\
@@ -813,7 +833,7 @@ FastSE & 11 & 57 & 12小时31分55秒\\
 13 & 3 & 5\\
 \hline
 \end{tabular}
-\end{small}
+%\end{small}
 \end{center}
 \end{table}
 
@@ -842,3 +862,6 @@ FastSE & 11 & 57 & 12小时31分55秒\\
 \section{本章小结}
 \label{sec-conclusion}
 本章研究并提出了一种基于抽象解释的高效符号执行技术。给定待分析的源程序，首先解析出程序的控制流图。区别于其他符号执行技术，新技术通过静态程序分析方法，从程序的控制流图中计算出循环程序的不变式，然后对程序进行插桩用循环不变式代替循环，形成新的控制流图。在新的控制流图上进行符号执行，符号执行的路径将大大减少。通过对100个测试程序进行实验并分析可以得出本方法在超过时间限制的实例数量、发现错误的实例数量以及总测试时间三个方面均优于原始符号执行工具KLEE以及对循环进行定长展开的KLEE-Fix。实验论证了本方法在符号执行有循环的程序时的有效性。
+
+%增加空白页，使下一章的初始页为奇数页
+\afterpage{\blankpage}

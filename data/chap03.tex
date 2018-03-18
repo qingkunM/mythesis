@@ -17,7 +17,7 @@
 
 \subsection{性质图}
 
-在图理论当中，有向图可以用一个关系对表示，$G=(V,E)$，$V$是节点集合，$E\subseteq(V \times V)$是节点之间边的集合。性质图的节点具有以下特性：{（1）}每个节点都对应一个唯一标识符；{（2）}每个节点都包含一个入边和出边集；{（3）}每个节点都包含键-值集。性质图的边具有相似的性质：{（1）}每条边对应一个唯一标识符；{（2）}每条边都包含一个标签表示边的类型；{（3）}每条边都有一个键值集；{（4）}每条边都有一个源节点和目的节点。图\ref{性质图示意图}展示了上述特性。
+在图理论当中，有向图可以用一个关系对表示，$G=(V,E)$，$V$是节点集合，$E\subseteq(V \times V)$是节点之间边的集合。性质图的节点具有以下特性：{（1）}每个节点都对应一个唯一标识符；{（2）}每个节点都包含一个入边和出边集；{（3）}每个节点都包含键—值集。性质图的边具有相似的性质：{（1）}每条边对应一个唯一标识符；{（2）}每条边都包含一个标签表示边的类型；{（3）}每条边都有一个键值集；{（4）}每条边都有一个源节点和目的节点。图\ref{性质图示意图}展示了上述特性。
 
 %\textbf{下面的图删除，}
 
@@ -45,7 +45,7 @@
 
 \subsection{鲁棒的源代码中间表示生成}
 \label{源代码的鲁棒分析}
-鲁棒的源代码中间表示生成顺序依次是语法分析树、抽象语法树、控制流图、数据流图。语法分析树建立在ANTLR\upcite{parr_definitive_2013}{(ANother Tool for Language Recognition)}的基础上。ANTLR是一种非常强大的用于读取、执行或者翻译结构性的文本以及二进制文件的解析器生成器，广泛的应用于构建编程语言解析器、工具和框架上。对于C/C++，基于岛屿语法{（Island Grammar）}，可以利用ANTLR实现三个层次上的语法解析器：分别是模块解析器、函数解析器以及语句解析器。模块解析器解析粗略的结构信息，例如函数、命名空间以及全局的变量声明。函数解析器解析辨别函数内部能够影响到程序控制流的程序结构，例如跳转语句goto、continue和break；选择语句，如if语句、switch语句；循环语句，如for循环、while循环和do-while循环。语句解析器主要的作用是将任意一个语句分解为表达式、操作符以及标识符等。岛屿语法\upcite{moonen_generating_2001}是一种定义文本结构的语言，通过此语法可以定制解析器的粒度。
+鲁棒的源代码中间表示生成顺序依次是语法分析树、抽象语法树、控制流图、数据流图。语法分析树建立在ANTLR\upcite{parr_definitive_2013}{(ANother Tool for Language Recognition)}的基础上。ANTLR是一种非常强大的用于读取、执行或者翻译结构性文本以及二进制文件的解析器生成器，广泛的应用于构建编程语言解析器、工具和框架上。对于C/C++，基于岛屿语法{（Island Grammar）}，可以利用ANTLR实现三个层次上的语法解析器：分别是模块解析器、函数解析器以及语句解析器。模块解析器解析粗略的结构信息，例如函数、命名空间以及全局的变量声明。函数解析器解析辨别函数内部能够影响到程序控制流的程序结构，例如跳转语句goto、continue和break；选择语句，如if语句、switch语句；循环语句，如for循环、while循环和do-while循环。语句解析器主要的作用是将任意一个语句分解为表达式、操作符以及标识符等。岛屿语法\upcite{moonen_generating_2001}是一种定义文本结构的语言，通过此语法可以定制解析器的粒度。
 
 图\ref{模块解析器的岛屿语法片段}是模块解析器的岛屿语法片段，第一行中的module表示一个模块，function\_def表示一个函数，simple\_decl表示变量或者类的声明，water表示其他的任意未定义字符，图\ref{模块解析器的岛屿语法片段}表达的意思是一个module可以由一个或者多个functionDef、simple\_decl、using\_directive或者water组成。图\ref{函数解析器的岛屿语法片段}是函数解析器的岛屿语法片段，表示函数有哪些元素组成，其中template\_declStart，return\_type，function\_name，compound\_statement分别表示函数模板、函数返回类型、函数名以及函数内容。图\ref{语句解析器的岛屿语法片段}是语句的岛屿语法片段，第一行表示statements可以由条件编译标识符{（pre\_opener，pre\_closer，pre\_else分别表示\#if，\#endif和\#else）}和语句statement构成。statement的组成当中最主要的是simple\_decl和expr\_statement。expr\_statement是Ｃ/C++作为程序主体的每一行代码，在岛屿语法中需要按照运算符的优先级、结合进行设计{（14-17行）}。解析器按照语法文件上规定的顺序解析程序中的非终结符，其他的未被制定的终结符和非终结符用water表示。
 
@@ -167,7 +167,7 @@ and_expression : inclusive_or_expression ('&&' and_expression)?;
 
 \begin{definition}
 \label{控制流性质图定义}
-控制流性质图可以用$G _{C}=(V_{C},E_{C},\lambda _{C}, \mu _{C}, s _{C}, d _{C})$表示，其中$V_{C}=\{ \upsilon | \upsilon \in V_{A} \cup \{ENTRY,EXIT\},\text{且} 对于每一个节点有\mu_C(isCFGNode, type)=True \}$，其中$ENTRY$和$EXIT$是控制流性质图的入口节点和结束节点，$E_{C}$是边的集合，标签函数$\lambda_C$将边映射到字符集 $\sum_C=\{true, false, \varepsilon \}$，$true$和$false$用于标记$Condition$语句的两种出边，$\varepsilon$用于表示顺序语句之间的边。
+控制流性质图可以用$G _{C}=(V_{C},E_{C},\lambda _{C}, \mu _{C}, s _{C}, d _{C})$表示，其中$V_{C}=\{ \upsilon | \upsilon \in V_{A} \cup \{ENTRY,EXIT\},\text{且} 对于每一个节点有\mu_C(isCFGNode, type)=True \}$，其中$ENTRY$和$EXIT$是控制流性质图的入口节点和结束节点，$E_{C}$是边的集合，标签函数$\lambda_C$将边映射到字符集 $\sum_C=\{true, false, \varepsilon \}$，$true$和$false$用于标记条件语句的两种出边，$\varepsilon$用于表示顺序语句之间的边。
 \end{definition}
 
 图\ref{控制依赖性质图实例}是图\ref{一个简单的实例程序}的控制依赖性质图的一部分（删除了$ENTRY$节点），从图中可以看出所有节点的$isCFGNode$属性都为$True$。
@@ -202,7 +202,7 @@ and_expression : inclusive_or_expression ('&&' and_expression)?;
 
 \subsection{程序性质图的基本遍历方式}
 \label{程序性质图的基本遍历方式}
-生成程序性质图之后，需要有效的数据检索方法用以搜索源代码中特定的代码片段。图数据库提供了专门的查询语言Gremlin\upcite{gremlin}，给定节点或边，根据程序性质图边和节点的性质寻找相关节点和边，traversals为其形式化的表现形式。
+生成程序性质图之后，需要有效的数据检索方法用以搜索源代码中特定的代码片段。Neo4j图数据库提供了专门的查询语言Gremlin\upcite{gremlin}，给定节点或边，根据程序性质图边和节点的性质寻找相关节点和边，traversal为其形式化的表现形式。
 
 \begin{definition}
 \label{traversal定义}
@@ -319,11 +319,11 @@ void foo(char *p, int length, int padding)
 \item
 对于每一个内存拷贝函数获取相应的函数调用AST节点callExpr和对应的参数AST节点args（第5、6行），并且根据args获取语句节点statement，此statement和一样源代码对应，此节点同时也是CFG节点（isCFGNode属性为true）;
 \item 
-对于每一个参数获取参数表达式的符号节点，例如参数是一个表达式a+b，则获取的符号是a和b（第10行）；
+对于每一个参数获取参数表达式的符号（identifier）节点，例如参数是一个表达式a+b，则获取的符号是a和b（第10行）；
 \item 
 判断是否所有的符号都不包含在从输入函数到当前语句的数据流上（第11行），如果判断成立则说明此参数非输入可控，此时flag1设为false（第11-12行）；
 \item 
-根据当前语句节点，沿着控制流图逆向搜索所有的condition节点，对于每一个condition节点，判断是否有symbol是condition的子表达式，如果有说明存在边界检测（第14-17行）；
+根据当前语句节点，沿着控制流图逆向搜索所有的condition节点，对于每一个condition节点，判断是否有symbol是condition的子表达式，如果有，说明存在边界检测（第14-17行）；
 \item 根据flag1和flag2判断内存拷贝函数是否是为缓冲区溢出漏洞，并将当前函数的functionId和location加入到BOs（第21-22行）。
 \end{enumerate}
 
@@ -442,13 +442,15 @@ void foo(char *p, int length, int padding)
 
 \subsection{格式化字符串漏洞挖掘方法研究}
 %wb
-格式化函数是一系列标准库函数，比如 *printf 系列函数。这些函数接受可变数量的参数，其中一个参数作为其他参数的格式化描述，被称为格式化字符串参数。格式化函数执行时对格式化字符串参数进行解释，并根据其格式描述使用其它的参数填充对应的描述字符串，形成最终的输出。软件编写过程中一般会大量使用这类函数，用于输出、处理字符串等。但是，当格式化字符串与其他输入参数不相符时，就会出现意外情况，比如栈数据泄露，任意内存写等。格式化字符串漏洞一般是指：格式化字符串参数受外部输入影响，从而精心构造的输入可能窃取栈上数据或向内存任意位置写入数据。软件中一般会有很多位置使用格式化函数，如果将他们都直接标记出来，则误报率将会变得相当高，从而导致整个分析过程无效。因此，需要做进一步的分析，尽可能地提高分析精度。
+%格式化函数是一系列标准库函数，比如 *printf 系列函数。这些函数接受可变数量的参数，其中一个参数作为其他参数的格式化描述，被称为格式化字符串参数。格式化函数执行时对格式化字符串参数进行解释，并根据其格式描述使用其它的参数填充对应的描述字符串，形成最终的输出。软件编写过程中一般会大量使用这类函数，用于输出、处理字符串等。但是，当格式化字符串与其他输入参数不相符时，就会出现意外情况，比如栈数据泄露，任意内存写等。格式化字符串漏洞一般是指：格式化字符串参数受外部输入影响，从而精心构造的输入可能窃取栈上数据或向内存任意位置写入数据。软件中一般会有很多位置使用格式化函数，如果将他们都直接标记出来，则误报率将会变得相当高，从而导致整个分析过程无效。因此，需要做进一步的分析，尽可能地提高分析精度。
 %wb
+
+格式化字符串漏洞发生在程序不正确调用格式化字函数的时候，能够造成程序任意执行，栈内存读以及程序异常崩溃的后果，严重危害程序的安全性和稳定性。格式化字符串函数是指一系列ANSI\text{ }C转换函数，将程序中的原始态的变量转换成可读的形式，例如printf，fprintf等。格式化字符串是指格式化函数的参数，是一个ASCII Z字符串，由普通字符串和特殊字符串组成，形如printf ("The magic number is: \%d$\backslash$n", 1911)所示。若没有对输入做正确的验证，格式化函数的调用可能会造成漏洞。对于一个像\%x的格式化字符串参数被格式化函数解析并执行，格式化函数的语义会驱使程序在栈上读取更多的数据作为函数参数，若相应数据并未在栈上，则栈上的数据可能会被恶意的读或写。
 
 当调用格式化函数时，格式化字符串参数的来源可分为两种类型：字符串常量类型、变量类型。通过分析漏洞的形成机理和已有的格式化字符串漏洞发现：参数为字符串常量的调用链一般不会出现问题，受输入控制的变量类型则都有可能导致格式化字符串漏洞。输入可控的定义和缓冲区溢出输入可控的定义相同，表示输入函数或者当前函数的参数和格式化函数的参数存在数据依赖关系。基于程序性质图的格式化字符串漏洞的挖掘过程如算法\ref{格式化字符串漏洞检测算法}所示，算法的输出是格式化字符串漏洞可疑函数及可疑区域。格式化字符串漏洞可疑区域是指危险函数中*printf函数调用的行号，此信息由节点的location表示。算法\ref{格式化字符串漏洞检测算法}和算法\ref{内存拷贝函数缓冲区溢出漏洞检测算法}具有很大的相似性。不同的是算法\ref{格式化字符串漏洞检测算法}的输入配置文件是格式化函数和格式化参数的次序组成，例如对于printf函数，其第一个参数是格式化参数，可用一个二元组<printf,0>表示。算法\ref{格式化字符串漏洞检测算法}的具体执行过程如下：
 \begin{enumerate}[(1)]
 \item 从配置文件导出相应的格式化函数和格式化参数的次序（第2行）；
-\item 对于每一个格式化函数$fmtFun$，在性质图数据库中搜索所有的名为fmtFun的函数调用AST节点fmtcallExprs，针对每一个fmtcallExpr获取语句节点statement并获取参数节点arg（第3-7行）;
+\item 对于每一个格式化函数fmtFun，在性质图数据库中搜索所有的名为fmtFun的函数调用AST节点fmtcallExprs，针对每一个fmtcallExpr获取语句节点statement并获取参数节点arg（第3-7行）;
 \item 
 判断arg是否在从输入函数到当前语句的数据流上，如果判断成立则将当前函数的functionId和location加入到FVs；
 \end{enumerate}
@@ -478,8 +480,12 @@ void foo(char *p, int length, int padding)
 \end{algorithm}
 
 \subsection{UAF漏洞挖掘方法研究}
-%syf
-UAF漏洞属于指针相关的漏洞,其主要表现形式是引用已经被释放的内存对象。UAF 漏洞可能导致程序行为异常,经过精心构造的攻击代码可以利用 UAF 漏洞实现任意代码执行。根据 UAF 漏洞的表现形式,可以分析在内存释放函数 (如free、delete 等) 调用后，被释放的内存对象指针是否任然“存活“，即是否存在后续指令继续使用该指针的行为，如果发现被释放的内存对象指针任然“存活”，则报告一个可疑 UAF 漏洞。要实现上述过程需要分析每一个语句使用的符号和内存释放是否有数据和控制依赖关系，而每个语句节点使用的符号可以由程序符号图PSG（Program Symbol Graph）表示。
+
+根据通用缺陷列表（Common Weakness Enumeration，CWE）上的描述，如果一段内存区域在被释放后，被正常地分配给另外一个指针；仍指向此内存区域的原指针被再次使用，而此时的数据已经改变，会造成程序崩溃或出现未定义行为。因为浏览器经常出现UAF漏洞，所以近年来UAF受到很大的关注。
+%syf begin
+根据 UAF 漏洞的表现形式,可以分析在内存释放函数 (如free、delete 等) 调用后，被释放的内存对象指针是否任然“存活“，即是否存在后续指令继续使用该指针的行为判断漏洞是否存在。如果发现被释放的内存对象指针任然“存活”，则报告一个可疑 UAF 漏洞。
+%syf end
+要实现上述过程需要分析每一个语句使用的符号和内存释放是否有数据和控制依赖关系，而每个语句节点使用的符号可以由程序符号图PSG（Program Symbol Graph）表示。
 
 \begin{definition}
  \label{符号图定义}
@@ -532,7 +538,7 @@ UAF漏洞属于指针相关的漏洞,其主要表现形式是引用已经被释�
 
 （2）实验环境与过程
 
-本节在poppler0.10.6、a2ps4.14以及libxml2-2.9.3三个软件上分别对缓冲区溢出漏洞检测算法、格式化字符串漏洞检测算法以及UAF漏洞检测算法进行测试。实验采用的源代码语法解析器ANTLRv4\upcite{parr_definitive_2013}，图数据库为Neo4J\upcite{noauthor_neo4j_nodate}，图查询语言为Gremlin\upcite{rodriguez_gremlin_2015}，漏洞挖掘脚本语言为python。
+本节在poppler0.10.6、a2ps4.14以及libxml2-2.9.3三个软件上分别对缓冲区溢出漏洞检测算法、格式化字符串漏洞检测算法以及UAF漏洞检测算法进行测试。实验采用的源代码语法解析器ANTLRv4\upcite{parr_definitive_2013}，图数据库为Neo4j\upcite{noauthor_neo4j_nodate}，图查询语言为Gremlin\upcite{rodriguez_gremlin_2015}，漏洞挖掘脚本语言为python。
 实验的采用的硬件环境是Inter Xeon CPU E3-1231 v3 @ 3.40GHz，16G RAM。
 
 在漏洞挖掘之前，需要将源代码转化成程序性质图，然后使用算法\ref{内存拷贝函数缓冲区溢出漏洞检测算法}、算法\ref{缓冲区循环写缓冲区溢出漏洞检测算法}挖掘缓冲区溢出漏洞、使用算法\ref{格式化字符串漏洞检测算法}挖掘格式化字符串漏洞、使用算法\ref{UAF检测算法}挖掘UAF漏洞。
@@ -609,7 +615,9 @@ splash/Splash.cc & drawImage & Y & CVE-2009-3604\tabularnewline
 
 （3）UAF漏洞挖掘实验
 
-本实验测试的软件是libxml2-2.9.3，libxml2是一个xml c语言版的解析器，本为Gnome项目开发的工具，是一个基于MIT License的免费开源软件。它除了支持c语言版以外，还支持c++、PHP、Pascal、Ruby、Tcl等语言的绑定，能在Windows、Linux、Solaris、MacOsX等平台上运行。表\ref{use after free漏洞挖掘实验}是算法\ref{UAF检测算法}运行在libxml2-2.9.3上的实验结果。算法共检测了2个UAF漏洞对应的CVE编号分别为CVE-2016-1837和CVE-2016-1835。同时也产生了13个误报，误报率为86.7\%。虽然误报率较高，但是libxml2-2.9.3中包含245个内存释放，所以总体上算法\ref{UAF检测算法}大大缩小了需要关注的代码范围。
+本实验测试的软件是libxml2-2.9.3。libxml2是一个隶属于Gnome工程下的xml文件解析器，用C语言开发，受MIT开源许可证约束。虽然使用C语言开发，但多种语言（C++、PHP等）的绑定使其适用于很多环境。此外，libxml2可移植性非常强，能适用于Linux，Windows，MacOS等主流操作系统。
+%libxml2是一个xml c语言版的解析器，本为Gnome项目开发的工具，是一个基于MIT License的免费开源软件。它除了支持c语言版以外，还支持c++、PHP、Pascal、Ruby、Tcl等语言的绑定，能在Windows、Linux、Solaris、MacOsX等平台上运行。
+表\ref{use after free漏洞挖掘实验}是算法\ref{UAF检测算法}运行在libxml2-2.9.3上的实验结果。算法共检测了2个UAF漏洞对应的CVE编号分别为CVE-2016-1837和CVE-2016-1835。同时也产生了13个误报，误报率为86.7\%。虽然误报率较高，但是libxml2-2.9.3中包含245个内存释放，所以总体上算法\ref{UAF检测算法}大大缩小了需要关注的代码范围。
 
 \begin{table}[ht]
 \begin{center}
@@ -679,12 +687,12 @@ xzlib.c & xz\_head & N & N/A\tabularnewline
 \begin{small}
 \begin{tabular}{lll}
 \hline
-{\bf Sink Type} & {\bf Example} & {\bf Mapping Value} \\
+{\bf sink类型} & {\bf 示例} & {\bf 映射值} \\
 \hline
-pointer dereference & *p++ = 1 &  1\\
+指针解引用 & *p++ = 1 &  1\\
 \hline
-array write & p[i] = 1 & 2 \\ \hline
-dangerous function & strcpy(dst, src), strncpy(dst, src, n)\\
+数组写 & p[i] = 1 & 2 \\ \hline
+危险函数 & strcpy(dst, src), strncpy(dst, src, n)\\
 & strcat(dst, src), strncat(dst, src, n) & 3\\
 & memcpy(dst, src, n), memmove(dst, src, n) &\\
 & gets(str), fgets(str, n, fp)
@@ -737,7 +745,7 @@ static int reverseSamplesBytes (uint16 spp, uint16 bps, uint32 width, uint8 *src
 
 \subsubsection{容器}
 
-容器属性（Container）描述的是缓冲区包含在一个什么样的容器当中。一般的，容器结构越复杂缓冲区的使用越容易出现错误。根据Zitser\upcite{zitser_testing_2004}统计，7\%的漏洞缓冲区包含在Union结构中，而在本节的训练集中，近30\%的漏洞包含在不同的容器中，所以这里将容器也作为一个属性，容器属性的示例和映射规则规则如表\ref{Container_Attributes}所示。这里将union和struct二者都映射成2，是因为他们在编程上的相似性，others表示更复杂的结构如多重union或者struct等。
+容器属性（Container）描述的是缓冲区包含在一个什么样的容器当中。一般的，容器结构越复杂缓冲区的使用越容易出现错误。根据Zitser\upcite{zitser_testing_2004}统计，7\%的漏洞缓冲区包含在union结构中，而在本节的训练集中，近30\%的漏洞包含在不同的容器中，所以这里将容器也作为一个属性，容器属性的示例和映射规则规则如表\ref{Container_Attributes}所示。这里将union和struct二者都映射成2，是因为他们在编程上的相似性，others表示更复杂的结构如多重union或者struct等。
 
 
 \begin{table}[ht]
@@ -746,7 +754,7 @@ static int reverseSamplesBytes (uint16 spp, uint16 bps, uint32 width, uint8 *src
 \begin{small}
 \begin{tabular}{lll}
 \hline
-{\bf Instance } & {\bf Container Type} & {\bf Mapping Value} \\
+{\bf 示例 } & {\bf 容器类型} & {\bf 映射值} \\
 \hline
 p[256] & none &  0\\
 \hline
@@ -771,14 +779,14 @@ ohters & others & 3 \\ \hline
 \begin{small}
 \begin{tabular}{lll}
 \hline
-{\bf Operation Type } & {\bf Instance}\\
+{\bf 操作类型 } & {\bf 示例}\\
 \hline
-constant & p[256] \\ \hline
-addition & p[i+8], p[i-8], (p+8)[i], (p-8)[i] \\ \hline
-multiplication & p[i*8], p[i/8], p[i$\gg$8], p[i$\ll$8], (buf+8*n)[i] \\ \hline
-non-linear & p[i\%8], p[pow(i, j)], p[sqrt(i)] \\ \hline
-function call & p[f(i)], (p+f(n))[i], (getAdtres(n))[i] \\ \hline
-array access & p[buf[i]], (p+buf[n])[i], (buf[n])[i] \\ \hline
+常量 & p[256] \\ \hline
+加减法 & p[i+8], p[i-8], (p+8)[i], (p-8)[i] \\ \hline
+乘除法 & p[i*8], p[i/8], p[i$\gg$8], p[i$\ll$8], (buf+8*n)[i] \\ \hline
+非线性 & p[i\%8], p[pow(i, j)], p[sqrt(i)] \\ \hline
+函数调用 & p[f(i)], (p+f(n))[i], (getAdtres(n))[i] \\ \hline
+数组访问 & p[buf[i]], (p+buf[n])[i], (buf[n])[i] \\ \hline
 \end{tabular}
 \end{small}
 \end{center}
@@ -799,14 +807,14 @@ array access & p[buf[i]], (p+buf[n])[i], (buf[n])[i] \\ \hline
 \begin{small}
 \begin{tabular}{lll}
 \hline
-{\bf Operation Type } & {\bf Instance}\\
+{\bf 操作类型 } & {\bf 示例}\\
 \hline
-constant & not appliable \\ \hline
-addition & *p(i+8), *p(i-8) \\ \hline
-multiplication & *(p+i*8), *p(i/8), *p(i$>>$8), *p(i$<<8$) \\ \hline
-non-linear & *(p+i\%8), (p+pow(i, j)), *(p+sqrt(i)) \\ \hline
-function call & *(p+f(i)), *(getAddress()) \\ \hline
-array access & *(p+buf[i]) \\ \hline
+常量 & not appliable \\ \hline
+加减法 & *p(i+8), *p(i-8) \\ \hline
+乘除法 & *(p+i*8), *p(i/8), *p(i$>>$8), *p(i$<<8$) \\ \hline
+非线性 & *(p+i\%8), (p+pow(i, j)), *(p+sqrt(i)) \\ \hline
+函数调用 & *(p+f(i)), *(getAddress()) \\ \hline
+数组访问 & *(p+buf[i]) \\ \hline
 \end{tabular}
 \end{small}
 \end{center}
@@ -819,13 +827,13 @@ array access & *(p+buf[i]) \\ \hline
 \begin{small}
 \begin{tabular}{lll}
 \hline
-{\bf Operation Type } & {\bf Instance}\\ \hline
-constant & memcpy (dest, src, 256) \\ \hline
-addition & memcpy (dest, src, i+256) \\ \hline
-multiplication & memcpy (dest, src, i*8) \\ \hline
-non-linear & memcpy (dest, src, i\%8) \\ \hline
-function call & memcpy (dest, src, f(n)) \\ \hline
-array access & memcpy (dest, src, buf[255]) \\ \hline
+{\bf 操作类型 } & {\bf 示例}\\ \hline
+常量 & memcpy (dest, src, 256) \\ \hline
+加减法 & memcpy (dest, src, i+256) \\ \hline
+乘除法 & memcpy (dest, src, i*8) \\ \hline
+非线性 & memcpy (dest, src, i\%8) \\ \hline
+函数调用 & memcpy (dest, src, f(n)) \\ \hline
+数组访问 & memcpy (dest, src, buf[255]) \\ \hline
 \end{tabular}
 \end{small}
 \end{center}
@@ -905,7 +913,7 @@ void foo(int param)
 \subsection{扩展的程序性质图}
 \label{扩展的程序性质图}
 
-\ref{程序性质图}节中介绍了由过程内的抽象语法树、控制流图以及数据流图融合而成的程序性质图。在程序性质图中，每个节点都拥有多个属性，节点之间通过各种边连接，每条边拥有多个属性。通过抽象语法树性质图可以获取源代码的所有操作数和操作符，所以sink类型和容器属性可以很容易的获取；获取缓冲区位置和输入可控属性需要抽象语法树和数据流图；条件/循环深度需要抽象语法树和控制流图；直接/间接边界检测以及索引/地址/长度复杂度需要三类性质图的结合。但是，程序性质图不能处理过程间边界检测和函数调用深度，因为二者的获取需要过程间的数据依赖和控制依赖关系。为了解决这个问题，将过程间边界检测性质图和函数调用性质图并入到程序性质图形成扩展程序性质图。以下分别为过程间边界检测性质图与函数调用性质图的形式化定义。
+\ref{程序性质图}节中介绍了由过程内的抽象语法树性质图、控制流树性质图以及数据流树性质图融合而成的程序性质图。在程序性质图中，每个节点都拥有多个属性，节点之间通过各种边连接，每条边拥有多个属性。通过抽象语法树性质图可以获取源代码的所有操作数和操作符，所以sink类型和容器属性可以很容易的获取；获取缓冲区位置和输入可控属性需要抽象语法树和数据流图；条件/循环深度需要抽象语法树和控制流图；直接/间接边界检测以及索引/地址/长度复杂度需要三类性质图的结合。但是，程序性质图不能处理过程间边界检测和函数调用深度，因为二者的获取需要过程间的数据依赖和控制依赖关系。为了解决这个问题，将过程间边界检测性质图和函数调用性质图并入到程序性质图形成扩展程序性质图。以下分别为过程间边界检测性质图与函数调用性质图的形式化定义。
 
 \begin{definition}
  \label{过程间边界检测程序性质图}
@@ -973,7 +981,7 @@ void foo(char* src, int n){
 
 （1）实验目的与评估参数
 
-本节通过实验以及和其他工具对比，验证基于机器学习的缓冲区溢出漏洞方法的有效性。方法的性能通过混淆矩阵\upcite{stehman_selecting_1997}展示，如表\ref{confusion_matrix}所示。混淆矩阵描述了实际类别和挖掘类别的交叉组合，即真正类（True Positive，TP），假负类（False Positive，FP），真负类（True Negative，TN）以及假负类（False Negative，FN）。在漏洞挖掘领域，FP又被称为误报，表示一个非漏洞被分类器归为漏洞；FN又称为漏报，表示一个漏洞被分类器归为非漏洞；TP表示一个漏洞被分类器归为漏洞；TN表示一个非漏洞被分类器归为漏洞。在一个正常的程序中，非漏洞函数要远比漏洞函数多，如此会造成训练和测试集的不均衡，所以再次添加了其他的衍生评估参数，即召回率（recall）同时也被称为真值率（True Positive Rate，TPR），真负率（True Negative Rate，TNR），精度（precision）也被称为阳性预测值（Positive Predictive Value，PPV）以及$F_1$值，此四参数的计算如式\ref{衍生标准}所示。
+本节通过实验以及和其他工具对比，验证基于机器学习的缓冲区溢出漏洞方法的有效性。方法的性能通过混淆矩阵\upcite{stehman_selecting_1997}展示，如表\ref{confusion_matrix}所示。混淆矩阵描述了实际类别和挖掘类别的交叉组合，即真正类（True Positive，TP），假正类（False Positive，FP），真负类（True Negative，TN）以及假负类（False Negative，FN）。在漏洞挖掘领域，FP又被称为误报，表示一个非漏洞被分类器归为漏洞；FN又称为漏报，表示一个漏洞被分类器归为非漏洞；TP表示一个漏洞被分类器归为漏洞；TN表示一个非漏洞被分类器归为漏洞。在一个正常的程序中，非漏洞函数要远比漏洞函数多，如此会造成训练和测试集的不均衡，所以再次添加了其他的衍生评估参数，即召回率（recall）同时也被称为真值率（True Positive Rate，TPR），真负率（True Negative Rate，TNR），精度（precision）也被称为阳性预测值（Positive Predictive Value，PPV）以及$F_1$值，此四参数的计算如式\ref{衍生标准}所示。
 
 \begin{table}[ht]
 \begin{center}
@@ -1033,7 +1041,7 @@ BlueZ & CVE-2016-9917, CVE-2016-9804,\\ & CVE-2016-9803,  CVE-2016-9800 & 4 & 12
 
 何种分类器的性能更好是不可预知的，所以需要测试不同的分类器算法性能。本实验利用了五个著名的分类器：K近邻法（K-Nearest Neighbors，KNN），决策树（Decision Tree，DT），朴素贝叶斯（Naive Bayes，NB），AdaBoost以及支持向量机（Support Vector Machines，SVM）。为了这是的评估分类器性能，本实验采用了10重交叉验证。各分类器参数设定如下：KNN中的参数k为7，DT算法用的是C4.5，AdaBoost使用的弱分类器的数量是20，SVM使用的是RBF核，参数C=10，$\gamma = 0.01$。实验的采用的硬件环境是Inter Xeon CPU E3-1231 v3 @ 3.40GHz，16G RAM。
 
-实验过程如图\ref{fig:基于机器学习的缓冲区溢出漏洞挖掘框架}所示。首先，利用训练集，根据缓冲区溢出漏洞的静态特征训练出分类器；然后，从新的源代码中抽取缓冲区溢出漏洞静态特征并向量化，利用分类器挖掘缓冲区溢出漏洞。
+实验过程如图\ref{fig:基于机器学习的缓冲区溢出漏洞挖掘框架}所示。首先，利用训练集根据缓冲区溢出漏洞的静态特征训练出分类器；然后，从新的源代码中抽取缓冲区溢出漏洞静态特征并向量化，利用分类器挖掘缓冲区溢出漏洞。
 
 \subsubsection{结果分析}
 
@@ -1056,9 +1064,9 @@ SVM & 54 & 4 & 18 & 156 & 93.1 & 89.7 & 75 & 83.1\\ \hline
 \end{center}
 \end{table}
 
-表\ref{PERFORMANCE_OF_BOMINER_FOR_OUR_TEST_SUITE}所示是本章方法和BOMiner\upcite{padmanabhuni_predicting_2014}的对比。
+表\ref{PERFORMANCE_OF_BOMINER_FOR_OUR_TEST_SUITE}所示是本方法和BOMiner\upcite{padmanabhuni_predicting_2014}的对比。
 %Padmanabhuni在\upcite{padmanabhuni_predicting_2014}中设计了一个利用机器学习算法挖掘缓冲区溢出漏洞的工具BOMiner。
-BOMiner最多能检测出38个漏洞，比本章方法最差的分类器KNN少4个，比最优的分类器NB少18个。BOMiner最高的recall是65.5\%，比本章训练的所有分类器低。图\ref{compareToBOMiner}（a）是本章方法和BOMiner在混淆矩阵平均值上的比较。本章方法平均比BOMiner多发现14.8个漏洞，10.4个非漏洞。图\ref{compareToBOMiner}（b）是本章方法和BOMiner在衍生评估参数平均值上的比较。相比与BOMiner，本章方法在recall上增加了25.6\%，$F_1$值增加了21.1\%。造成性能差距的主要原因是BOMiner并没有更深入的讨论数组写sink和危险函数sink，BOMiner在处理这两类sink时获取的信息太少以至于不能正确的分类漏洞和非漏洞。
+BOMiner最多能检测出38个漏洞，比本方法最差的分类器KNN少4个，比最优的分类器NB少18个。BOMiner最高的recall是65.5\%，比本方法训练的所有分类器低。图\ref{compareToBOMiner}（a）是本方法和BOMiner在混淆矩阵平均值上的比较。本方法平均比BOMiner多发现14.8个漏洞，10.4个非漏洞。图\ref{compareToBOMiner}（b）是本方法和BOMiner在衍生评估参数平均值上的比较。相比与BOMiner，本方法在recall上增加了25.6\%，$F_1$值增加了21.1\%。造成性能差距的主要原因是BOMiner并没有更深入的讨论数组写sink和危险函数sink，BOMiner在处理这两类sink时获取的信息太少以至于不能正确的分类漏洞和非漏洞。
 
 \begin{table}[ht]
 \begin{center}
@@ -1085,7 +1093,7 @@ SVM & 37 & 21 & 33 & 141 & 63.8 & 81 & 52.9 & 57.8\\ \hline
 \label{compareToBOMiner}
 \end{figure}
 
-表\ref{和Joern的混淆矩阵比较}是本章方法和Joern\upcite{yamaguchi_modeling_2014}的性能比较。Joern能够以很低的误报检测源代码缓冲区溢出漏洞。通过设计特定的搜索模式，Joern从linux内核中的驱动中检测了6个缓冲区溢出漏洞。但是，通过研究CVE数据库发驱动中已发现的漏洞有18个，通过分析驱动源代码发现有179个非漏洞sink函数。使用本章方法，最少可以检测12个缓冲区漏洞，五个分类器当中最小的recall是66.7\%，比Joern高33.4\%最高的TNR是93.9\%，比Joern低6\%。图\ref{compareToJoern}（a）是本章方法在linux驱动上和Joern的比较，本章方法平均比Joern多8.2个漏洞，平均比Joern多11.8个误报。图\ref{compareToJoern}（b）是本章方法衍生参数和Joern的比较，本章方法的平均recall是78.9\%，比Joern高了45.6\%，在TNR上仅仅低了6.6\%；平均precision比Joern低了24.1\%；平均$F_1$值比Joern高15.5\%。造成性能差异的原因有两个：（1）Joern仅仅专注于memcpy引起的缓冲区漏洞；（2）Joern使用的两个边界检测规则，即目的缓冲区的动态分配和关系表达式都可以当做本章的直接边界检测属性，二者虽然可以减少误报但增加了误报。
+表\ref{和Joern的混淆矩阵比较}是本方法和Joern\upcite{yamaguchi_modeling_2014}的性能比较。Joern能够以很低的误报检测源代码缓冲区溢出漏洞。通过设计特定的搜索模式，Joern从linux内核中的驱动中检测了6个缓冲区溢出漏洞。但是，通过研究CVE数据库发驱动中已发现的漏洞有18个，通过分析驱动源代码发现有179个非漏洞sink函数。使用本方法，最少可以检测12个缓冲区漏洞，五个分类器当中最小的recall是66.7\%，比Joern高33.4\%最高的TNR是93.9\%，比Joern低6\%。图\ref{compareToJoern}（a）是本方法在linux驱动上和Joern的比较，本方法平均比Joern多8.2个漏洞，平均比Joern多11.8个误报。图\ref{compareToJoern}（b）是本方法衍生参数和Joern的比较，本方法的平均recall是78.9\%，比Joern高了45.6\%，在TNR上仅仅低了6.6\%；平均precision比Joern低了24.1\%；平均$F_1$值比Joern高15.5\%。造成性能差异的原因有两个：（1）Joern仅仅专注于memcpy引起的缓冲区漏洞；（2）Joern使用的两个边界检测规则，即目的缓冲区的动态分配和关系表达式都可以当做本的直接边界检测属性，二者虽然可以减少误报但增加了误报。
 
 \begin{table}[ht]
 \begin{center}
@@ -1113,9 +1121,9 @@ SVM & 16 & 2 & 17 & 162 & 88.9 & 90.5 & 48.5 & 62.8\\ \hline
 \label{compareToJoern}
 \end{figure}
 
-除了在在训练集上检验方法的性能，本节在poppler 0.10.6进行了测试，并与FlawFinder做了比较，以验证本章方法在减少可以函数数量的作用。Poppler是一个广泛应用的开源PDF库，历史上被发现了很多漏洞。至今poppler 0.10.6已经被发现了10个被证实的CVE：CVE-2015-8868, CVE-2013-1788, CVE-2010-3704, CVE-2009-3938, CVE-2009-3608, CVE-2009-3607, CVE-2009-3606, CVE-2009-3604以及 CVE-2009-3603。表\ref{PERFORMANCES_OF_OUR_FIVE_CLASSIFIERS_ON_POPPLER0.10.6}展示了5个分类器在poppler 0.10.6的性能，SVFs（Suspect Vulnerable Functions）是TP和FP之和，表示需要考虑的可以函数；Sink （Sink Functions表）示所有的满足三种sink类型的函数；All （All Functions）表示poppler 0.10.6源码中包含的所有函数数量。5个分类器的平均TP为8.8，表示本方法可以检测11个漏洞中的9个。9个CVE有11个漏洞的原因是CVE-2013-1788有三个漏洞函数。平均recall是80\%，平均TNR为94\%，因为非漏洞函数的数量远小于漏洞函数数所以平均$F_1$较低只有28.9\%。从实验结果可以看出，本方法可以以很低的漏报率发现绝大多数漏洞。
+除了在在训练集上检验方法的性能，本节在poppler 0.10.6进行了测试，并与FlawFinder做了比较，以验证本方法在减少可以函数数量的作用。Poppler是一个广泛应用的开源PDF库，历史上被发现了很多漏洞。至今poppler 0.10.6已经被发现了10个被证实的CVE：CVE-2015-8868, CVE-2013-1788, CVE-2010-3704, CVE-2009-3938, CVE-2009-3608, CVE-2009-3607, CVE-2009-3606, CVE-2009-3604以及 CVE-2009-3603。表\ref{PERFORMANCES_OF_OUR_FIVE_CLASSIFIERS_ON_POPPLER0.10.6}展示了5个分类器在poppler 0.10.6的性能，SVFs（Suspect Vulnerable Functions）是TP和FP之和，表示需要考虑的可以函数；Sink （Sink Functions表）示所有的满足三种sink类型的函数；All （All Functions）表示poppler 0.10.6源码中包含的所有函数数量。5个分类器的平均TP为8.8，表示本方法可以检测11个漏洞中的9个。9个CVE有11个漏洞的原因是CVE-2013-1788有三个漏洞函数。平均recall是80\%，平均TNR为94\%，因为非漏洞函数的数量远小于漏洞函数数所以平均$F_1$较低只有28.9\%。从实验结果可以看出，本方法可以以很低的漏报率发现绝大多数漏洞。
 
-Flawfinder\upcite{flawfinder_nodate}是一个基于语法分析的静态漏洞扫描器。当在poppler 0.10.6运行Flawfinder时，其能发现11个中的8个缓冲区溢出漏洞，稍稍低于本章方法。但是Flawfinder同时产生了500误报，是本章方法的12倍之多。以此可以看出，本章方法在缩小可疑函数上效果非常显著。
+Flawfinder\upcite{flawfinder_nodate}是一个基于语法分析的静态漏洞扫描器。当在poppler 0.10.6运行Flawfinder时，其能发现11个中的8个缓冲区溢出漏洞，稍稍低于本方法。但是Flawfinder同时产生了500误报，是本方法的12倍之多。以此可以看出，本方法在缩小可疑函数上效果非常显著。
 
 \begin{table}[ht]
 \newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
@@ -1141,7 +1149,7 @@ SVM & 10 & 1 & 35 & 650 & 90.9 & 94.9 & 22.2 & 35.7 & 45  \\ \hline
 
 （1）提出了基于程序性质图的源代码漏洞挖掘方法，用于标定可疑区域。该方法首先利用鲁棒的中间表示生成语法分析树、抽象语法树、控制流图、数据流图；然后通过性质图将三种中间表示聚合成统一的程序性质图，并定义程序性质图遍历方式；最后根据缓冲区溢出漏洞、格式化字符串漏洞以及UAF漏洞的特征给出三类漏洞的挖掘算法。通过在poppler0.10.6、a2ps4.14以及libxml2-2.9.3三个软件上的实验表明，基于程序性质图能够有效的挖掘多种源代码漏洞，并具备扩展性。
 
-（2）提出了一种基于机器学习的缓冲区溢出漏洞挖掘方法。该方法首先将22种程序静态特征约简成7类，分别是sink类型、缓冲区位置、容器、索引/地址/长度复杂度、边界检测、循环/条件/函数调用深度以及是否输入可控；其次通过扩展的程序性质图提取静态特征；然后在CVE库中查找现存的缓冲区溢出程序和未溢出程序作为训练集，并选取5种有监督机器学习算法在训练集中训练分类器；最后利用分类器在新的源代码程序中挖掘漏洞。实验结果表明，5个分类器的平均召回率（recall亦称为TPR,True Positive Rate） 是83.5\%,平均真负率（TNR，True Negative Rate）为85.9\%，最好的召回率达到了96.6\%，最好的真负率达到了91.4\%。因为实验的数据是非均衡数据，所以准确率（Precision）和$F_1$稍低，分别为68.9\%和75.2\%。将此方法应用到poppler0.10.6上，并和经典的静态分析工具FlawFinder做对比，本方法能够将误报率消减到1/12。实验证明，本方法能够有效的挖掘缓冲区溢出漏洞。
+（2）提出了一种基于机器学习的缓冲区溢出漏洞挖掘方法。该方法首先将22种程序静态特征约简成7类，分别是sink类型、缓冲区位置、容器、索引/地址/长度复杂度、边界检测、循环/条件/函数调用深度以及是否输入可控；其次通过扩展的程序性质图提取静态特征；然后在CVE库中查找现存的缓冲区溢出程序和未溢出程序作为训练集，并选取5种有监督机器学习算法在训练集中训练分类器；最后利用分类器在新的源代码程序中挖掘漏洞。实验结果表明，5个分类器的平均召回率 是83.5\%,平均真负率为85.9\%，最好的召回率达到了96.6\%，最好的真负率达到了91.4\%。因为实验的数据是非均衡数据，所以准确率和$F_1$稍低，分别为68.9\%和75.2\%。将此方法应用到poppler0.10.6上，并和经典的静态分析工具FlawFinder做对比，本方法能够将误报率消减到1/12。实验证明，本方法能够有效的挖掘缓冲区溢出漏洞。
 
 %增加空白页，使下一章的初始页为奇数页
 \afterpage{\blankpage}
